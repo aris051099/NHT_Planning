@@ -67,19 +67,35 @@ using std::endl;
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
 std::default_random_engine generator(seed);
-std::uniform_real_distribution<double> distribution(0.0,2.0*PI);
-std::uniform_real_distribution<double> distribution_prob(0.0,1);
+std::uniform_real_distribution<double> rand_speed(0.0,1.0);
+std::uniform_real_distribution<double> rand_ang_vel(0.0,2.0);
+std::uniform_real_distribution<double> rand_xdot(0.0,1.0);
+std::uniform_real_distribution<double> rand_x(0.0,5.0);
+std::uniform_real_distribution<double> rand_theta(0.0,2.0*PI);
+std::uniform_real_distribution<double> rand_thetadot(0.0,1);
+
+
+std::uniform_real_distribution<double> dist_prob(0.0,1);
 
 /// @brief 
 /// @param filepath 
 /// @return map, x_size, y_size
 
 //Added by AF
-double rand_sample()
+double* rand_state(double xstate[])
 {
-	double rand_ = distribution(generator);
-	return rand_;
+	xstate[0] = rand_x(generator);
+	xstate[1] = rand_xdot(generator);
+	xstate[2] = rand_theta(generator);
+	xstate[3] = rand_thetadot(generator);
+	return xstate;
 };
+
+double *rand_control(double u_control[])
+{
+	u_control[0] = rand_speed(generator);
+	u_control[1] = rand_ang_vel(generator);
+}
 
 #include "Vertice.h"
 #include "helper_func.h"
@@ -548,126 +564,15 @@ static void planner(
 	*plan = NULL;
 	*planlength = 0;
 	int K = 100000; // Initial number of samples
-	int i,j;
 	int countNumInvalid = 0; 
 	int iter = 1; // Initializing iterator for loop
 	int max_iter = 5; // Maximum number of iterations when running planner
 
-	bool notvalid = false; // Set to TRUE if desired random start & goal configurations
-	while(notvalid)	
-	{
-		for(int i = 0; i<numofDOFs; ++i)
-		{
-			armstart_anglesV_rad[i] = rand_sample();
-			armgoal_anglesV_rad[i] = rand_sample();
-		}
-		if(IsValidArmConfiguration(armstart_anglesV_rad, numofDOFs, map, x_size, y_size) && IsValidArmConfiguration(armgoal_anglesV_rad, numofDOFs, map, x_size, y_size))
-			notvalid = false;
-		else 
-			continue;
-	} 
 
-	cout<<"Start Position"<<endl; //Printing Start Position Angles 
-	for(int i = 0; i < numofDOFs; ++i)
-	{
-		cout<<armstart_anglesV_rad[i]<<", ";
-	}
-	cout<<endl;
-
-	cout<<"Goal Position"<< endl; //Printing Goal Position Angles
-		for(int i = 0; i < numofDOFs; ++i)
-	{
-		cout<<armgoal_anglesV_rad[i]<<", ";
-	}
-	cout<<endl;
-
-	// int tries = 0
-	// Planner
-	while(plan_vec.empty())
-	// for(int tries = 0; tries < 5; ++tries)
-	{
-		auto start_time = std::chrono::system_clock::now();
-		vertx.clear(); // Clear all the vector from previous fails
-		vertx2.clear();
-		plan_vec.clear();	
-		switch (whichplanner)
-		{
-		case RRT: // 0 = RRT 
-			cout<<"Planner Selected: RRT"<<endl;
-			ComputePathRRT(plan_vec,vertx,armstart_anglesV_rad,armgoal_anglesV_rad,map,numofDOFs,K,x_size,y_size);
-			break;
-		default:
-			cout<<"Please Stop Program and select a correct planner"<<endl;
-			break;
-		}
-		if(iter >= max_iter)
-		{
-			cout<<"No solution after" << iter << "iterations :("<< endl;
-			K += 10000;
-			cout<<"Running planner again with " << K << " samples" << endl;
-			iter = 0;
-		}
-		if(plan_vec.empty())
-		{
-			cout<< "Running planner " << max_iter-iter <<" more times." << endl;
-			++iter;
-		}
-		auto end_time = std::chrono::system_clock::now();
-    	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-		float time_passed = time_delay.count()*1e-9;
-		res[iter].time = time_passed;
-		res[iter].cost = plan_vec.front()->g;
-		res[iter].success_less_5 = (time_passed<=5) ? true:false;
-		res[iter].tree_size = vertx.size();
-		res[iter].tree_b_size = (!vertx2.empty()) ? vertx2.size(): 0;
-	}
-	// Formatting results
-	cout<<"--------------- RESULTS---------------"<<endl;
-	cout<<"Planning time: "<< res[iter].time << " seconds" << endl;
-	if(whichplanner == 1)
-	{
-		cout<<"Vertices generated in tree A: " << res[iter].tree_size << endl;
-		cout<<"Vertices generated in tree B: " << res[iter].tree_b_size << endl;
-	}
-	else
-		cout<<"Average vertices generated in graph " << res[iter].tree_size << endl;
-	cout<<"Path cost is " << res[iter].cost << endl;
-
-    // Computed Path into .txt
-	*plan = (double**) malloc(plan_vec.size()*sizeof(double*));
-    for (i = 0; i < plan_vec.size(); i++){
-        (*plan)[i] = (double*) malloc(numofDOFs*sizeof(double)); 
-        for(j = 0; j < numofDOFs; j++){
-            (*plan)[i][j]= plan_vec[plan_vec.size()-(i+1)]->angles[j];
-        }
-        if(!IsValidArmConfiguration((*plan)[i], numofDOFs, map, x_size, y_size)) {
-			++countNumInvalid;
-        }
-    }
-	printf("Linear interpolation collided at %d instances across the path\n", countNumInvalid);
-	*planlength = plan_vec.size();
-
-	if(!vertx.empty())
-	{
-		for(int i = 0; i < vertx.size()-1; ++i)
-		{
-			delete vertx[i];
-		}
-	}
-	if(!vertx2.empty())
-	{
-		for(int i = 0; i < vertx2.size()-1; ++i)
-		{
-			delete vertx2[i];
-		}
-	}
-	// if(!plan_vec.empty())
-	// {
-	// 	for(int i = 0; i < plan_vec.size()-1; ++i)
-	// 	{
-	// 		delete plan_vec[i];
-	// 	}
-	// }
+	auto start_time = std::chrono::system_clock::now();
+	auto end_time = std::chrono::system_clock::now();
+	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	float time_passed = time_delay.count()*1e-9;
     return;
 }
 
@@ -703,7 +608,7 @@ int main(int argc, char ** argv) {
 
 	double** plan = NULL;
 	int planlength = 0;
-	planner_results res[5]; 
+	// planner_results res[5]; 
 	planner(map, x_size, y_size, startPos, goalPos, numOfDOFs, &plan, &planlength,whichPlanner,res);
 
 	//// Feel free to modify anything above.
@@ -715,38 +620,5 @@ int main(int argc, char ** argv) {
     if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 
     	!equalDoubleArrays(plan[planlength-1], goalPos, numOfDOFs)) {
 		throw std::runtime_error("Start or goal position not matching");
-	}
-
-	/** Saves the solution to output file
-	 * Do not modify the output log file output format as it is required for visualization
-	 * and for grading.
-	 */
-	std::ofstream m_log_fstream;
-	m_log_fstream.open(outputFile, std::ios::trunc); // Creates new or replaces existing file
-	if (!m_log_fstream.is_open()) {
-		throw std::runtime_error("Cannot open file");
-	}
-	m_log_fstream << argv[1] << endl; // Write out map name first
-	/// Then write out all the joint angles in the plan sequentially
-	for (int i = 0; i < planlength; ++i) {
-		for (int k = 0; k < numOfDOFs; ++k) {
-			m_log_fstream << plan[i][k] << ",";
-		}
-		m_log_fstream << endl;
-	}
-
-	//Printing results if running multiple times:
-	std::ofstream m_result_fstream;
-	m_result_fstream.open("results.txt", std::ios::trunc);
-	for(int i = 0; i < 5;++i)
-	{
-		m_result_fstream << "Run#" << i << endl;
-		m_result_fstream << "Planning Time: " << res[i].time << endl;
-		m_result_fstream << "Vertices generated in graph a: " << res[i].tree_size << endl;
-		m_result_fstream << "Vertices generated in graph b: " << res[i].tree_b_size << endl;
-		m_result_fstream << "Path Cost:" << res[i].cost << endl;
-		m_result_fstream << "Succes rate under 5 secs: " << res[i].success_less_5 << endl;
-		m_result_fstream << endl;
-		m_result_fstream << endl;
 	}
 }
