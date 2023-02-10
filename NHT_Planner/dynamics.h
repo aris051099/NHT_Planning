@@ -50,16 +50,16 @@ int main()
   float ang_0 = 0.0; //rad Initial angular displacement;
 
   Eigen::Matrix4f A_dt; //Discrete time A_matrix(dt = 0.01) (From MATLAB)
-  A_dt << 1.0 ,4.902e-06 ,0.0 ,0.0 
-          ,0.0 ,0.0 ,0.0 ,0.0
+  A_dt << 1.0 ,0.007592 ,0.0 ,0.0 
+          ,0.0 ,0.5606 ,0.0 ,0.0
           ,0.0 ,0.0 ,1.0 ,0.001705
           ,0.0 ,0.0 ,0.0 ,0.002881;
   
   Eigen::MatrixXf B_dt(4,2); //Discrete time B_matrix(dt=0.01) (From MATLAB)
-  B_dt << 1.86e-06,0.0, 
-          0.0001861,0.0,
+  B_dt << 0.001579,0.0, 
+           0.2882,0.0,
           0.0 ,0.008201,
-          0.0 ,0.9858;
+          0.0 , 0.9858;
   
 
   Eigen::Vector4f x_k(x_0,0.0,ang_0,0.0);
