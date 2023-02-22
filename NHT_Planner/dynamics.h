@@ -13,15 +13,27 @@ int sec2msec(double sec)
 
 class Ustate : public state<double,2> 
 {
+  private:
+  double t_prop = 0;
   public:
     Ustate();
     Ustate(double u1,double u2);
+    Ustate(double u1,double u2,double t_prop);
     Ustate& operator=(const Ustate& incoming)
     {
       state_elem[0] = incoming[0];
       state_elem[1] = incoming[1];
+      this->t_prop = incoming.t_prop;
 
       return *this;
+    }
+    void set_tprop(double t)
+    {
+      this->t_prop = t;
+    }
+    double get_tprop()
+    {
+      return this->t_prop;
     }
     
 };
@@ -36,6 +48,13 @@ Ustate::Ustate(double u1, double u2)
 {
   state_elem[0] = u1;
   state_elem[1] = u2;
+}
+
+Ustate::Ustate(double u1, double u2, double inc_t)
+{
+  state_elem[0] = u1;
+  state_elem[1] = u2;
+  this->t_prop = inc_t;
 }
 
 std::ostream& operator<<(std::ostream& os, const Ustate& u)
@@ -57,10 +76,9 @@ class Xstate : public state<double,4>
 
     Xstate(const Xstate& inc);
 
-    void propagate(Xstate& x_old, Ustate& u_control, double prop_time)
+    void propagate(Xstate& x_k, Ustate& u_k)
     {
-      auto x_k = x_old.getPointer();
-      auto u_k = u_control.getPointer();
+      double prop_time = u_k.get_tprop();
       for(int i = 0; i < sec2msec(prop_time) ; ++i)
       {
         // printf("Iteration %d \n",i);

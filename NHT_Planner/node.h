@@ -54,9 +54,9 @@ class node
 
 class nodeHdle
 {
-	public:
+	protected:
 		node* node_p = nullptr;
-
+	public:
 		nodeHdle(node* incoming)
 		{
 			node_p = incoming;
@@ -65,6 +65,10 @@ class nodeHdle
 		nodeHdle()
 		{
 			node_p = new node; 
+		}
+		node* operator ->()
+		{
+			return node_p;
 		}
 		~nodeHdle()
 		{

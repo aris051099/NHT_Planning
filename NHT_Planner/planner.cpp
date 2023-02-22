@@ -328,7 +328,7 @@ int nearest_n_idx(Xstate& x_rand,std::vector<nodeHdle>& tree)
 	{
 		for(int i = 0; i < tree.size(); ++i)
 		{ 
-			double dist = euclidean(x_rand,tree[i].node_p->getXstate());
+			double dist = euclidean(x_rand,tree[i]->getXstate());
 			if(dist < r)
 			{
 				if(dist < min)
@@ -360,6 +360,14 @@ static void planner(
 {
 	int K = 10000;
 	std::vector<nodeHdle> tree;
+	Xstate x_prop;
+	Ustate u_k;
+	Ustate u_min;
+	int count = 0;
+	bool reached = false;
+	double dist = 0;
+	double prop_time=0;
+	double min_dist = std::numeric_limits<double>::infinity(); 
 
 	nodeHdle start_node(new node(0,euclidean(x_goal,x_0),nullptr,u_0));
 
@@ -368,10 +376,29 @@ static void planner(
 	{
 		Xstate x_rand(rand_x(gen),rand_xdot(gen),rand_theta(gen),rand_thetadot(gen));
 		int nn_idx = nearest_n_idx(x_rand,tree);
-	// 	if(nn_idx > 0)
-	// 	{
+		if(nn_idx > 0)
+		{
+			Xstate x_near = tree[nn_idx]->getXstate();
+			while(count > 10000)
+			{
+				count +=1;
+				u_k[0] = rand_u_vel(gen);
+				u_k[1] = rand_u_ang_vel(gen);
+				u_k.set_tprop(rand_t_prop(gen));
 
-	// 	}
+				x_prop.propagate(x_near,u_k);
+
+				dist = euclidean(x_goal,x_prop);
+				if(dist < min_dist)
+				{	
+					u_min = u_k;
+					min_dist = dist;
+				}
+				++count;
+			};
+			printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
+		}
+
 	}
 	/*
 	TODO:
@@ -402,13 +429,23 @@ int main(int argc, char ** argv) {
 	int x_size, y_size;
 	std::tie(map, x_size, y_size) = loadMap(argv[1]);
 	std::vector<Ustate> plan; 
-	Ustate u_start;
+	Ustate u_start(1,1);
 	Xstate x_start;
 	Xstate x_goal(2,0.1,0.3,0);
+	// double prop_time = rand_t_prop(gen);
+	// auto a = x_goal.getPointer();
+	// printf("Testing printf\n");
+	// printf("%f,%f,%f,%f \n",a[0],a[1],a[2],a[3]);
+	// printf("Testing std::cout\n");
+	// std::cout << x_goal<< std::endl;
+	// printf("Before prop\n");
+	// std::cout << x_prop << std::endl;
+	// printf("After prop\n");
+	// x_prop.propagate(x_start,u_start,prop_time);
+	// std::cout << x_prop << std::endl;
+	// nodeHdle test(new node(1,1,nullptr,u_start));
+	// test.node_p->setXstate(x_goal);
 	planner(map,x_size,y_size,x_start,u_start,x_goal,plan);
-
-	// planner_results res[5]; 
-	// planner(map, x_size, y_size, startPos, goalPos, numOfDOFs, &plan, &planlength,whichPlanner);
 
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
