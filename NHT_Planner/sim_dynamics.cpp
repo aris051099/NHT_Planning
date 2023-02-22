@@ -17,6 +17,7 @@
 
     std::default_random_engine generator(seed);
     std::uniform_real_distribution<double> rand_t_prop(0.0,2.0);
+    
     std::uniform_real_distribution<float> rand_u_vel(-1.0,1.0);
     std::uniform_real_distribution<float> rand_u_ang_vel(-2.0,2.0);
 
@@ -33,12 +34,12 @@
         return x_random;
     }
 
-    double error(Xstate& x_sgoal,Xstate& x_snear)
+    double error(Xstate& x_goal,Xstate& x_near)
     {
-        auto x_goal = x_sgoal.getPointer();
-        auto x_near = x_snear.getPointer();
+        // auto x_goal = x_sgoal.getPointer();
+        // auto x_near = x_snear.getPointer();
         double error = 0; 
-        for(int i = 0; i < x_sgoal.size(); ++i)
+        for(int i = 0; i < x_goal.size(); ++i)
         {
             error+= pow(x_goal[i]-x_near[i],2);
         }
@@ -62,6 +63,11 @@
         Xstate x_prop(0,0,0,0);
         Xstate x_goal(1,0,-0.3,0);
         Ustate u_input(u_vel,u_ang_vel);
+        // printf("X prop before copy \n");
+        // std::cout << x_prop << std::endl;
+        // printf("Testing copy operator\n");
+        // x_prop = x_goal;
+        // std::cout<< x_prop << std::endl;
         auto u_k = u_input.getEditPointer();
 
         printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s \n",prop_time,u_k[0],u_k[1]);
@@ -96,4 +102,5 @@
         std::cout << "Goal Condition" << std::endl;
         std::cout << x_goal << std::endl;
     }
+
 #endif 

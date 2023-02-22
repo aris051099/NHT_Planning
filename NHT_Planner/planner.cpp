@@ -20,6 +20,7 @@
 #include <limits>
 #include <queue>
 #include <unordered_set>
+#include "node.h" 
   
 
 /* Input Arguments */
@@ -53,65 +54,44 @@
 //the length of each link in the arm
 #define LINKLENGTH_CELLS 10
 
-// Some potentially helpful imports
-using std::vector;
-using std::array;
-using std::string;
-using std::runtime_error;
-using std::tuple;
-using std::make_tuple;
-using std::tie;
-using std::cout;
-using std::endl;
 
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
-std::default_random_engine generator(seed);
-std::uniform_real_distribution<double> rand_speed(0.0,1.0);
-std::uniform_real_distribution<double> rand_ang_vel(0.0,2.0);
-std::uniform_real_distribution<double> rand_xdot(0.0,1.0);
-std::uniform_real_distribution<double> rand_x(0.0,5.0);
-std::uniform_real_distribution<double> rand_theta(0.0,2.0*PI);
-std::uniform_real_distribution<double> rand_thetadot(0.0,1);
+std::default_random_engine gen(seed);
 
+std::uniform_real_distribution<double> rand_t_prop(0.0,5.0);
+
+std::uniform_real_distribution<double> rand_u_vel(-1.0,1.0);
+std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
+
+std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
+std::uniform_real_distribution<double> rand_x(-5.0,5.0);
+std::uniform_real_distribution<double> rand_theta(-2.0*PI,2.0*PI);
+std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
 
 std::uniform_real_distribution<double> dist_prob(0.0,1);
+
 
 /// @brief 
 /// @param filepath 
 /// @return map, x_size, y_size
 
-//Added by AF
-double* rand_state(double xstate[])
-{
-	xstate[0] = rand_x(generator);
-	xstate[1] = rand_xdot(generator);
-	xstate[2] = rand_theta(generator);
-	xstate[3] = rand_thetadot(generator);
-	return xstate;
-};
 
-double *rand_control(double u_control[])
-{
-	u_control[0] = rand_speed(generator);
-	u_control[1] = rand_ang_vel(generator);
-}
+// #include "Vertice.h"
 
-#include "Vertice.h"
-#include "helper_func.h"
 //Added by AF
 
-tuple<double*, int, int> loadMap(string filepath) {
+std::tuple<double*, int, int> loadMap(std::string filepath) {
 	std::FILE *f = fopen(filepath.c_str(), "r");
 	if (f) {
 	}
 	else {
 		printf("Opening file failed! \n");
-		throw runtime_error("Opening map file failed!");
+		throw std::runtime_error("Opening map file failed!");
 	}
 	int height, width;
 	if (fscanf(f, "height %d\nwidth %d\n", &height, &width) != 2) {
-		throw runtime_error("Invalid loadMap parsing map metadata");
+		throw std::runtime_error("Invalid loadMap parsing map metadata");
 	}
 	
 	////// Go through file and add to m_occupancy
@@ -123,7 +103,7 @@ tuple<double*, int, int> loadMap(string filepath) {
 			char c;
 			do {
 				if (fscanf(f, "%c", &c) != 1) {
-					throw runtime_error("Invalid parsing individual map data");
+					throw std::runtime_error("Invalid parsing individual map data");
 				}
 			} while (isspace(c));
 			if (!(c == '0')) { 
@@ -134,19 +114,19 @@ tuple<double*, int, int> loadMap(string filepath) {
 		}
 	}
 	fclose(f);
-	return make_tuple(map, width, height);
+	return std::make_tuple(map, width, height);
 }
 
 // Splits string based on deliminator
-vector<string> split(const string& str, const string& delim) {   
+std::vector<std::string> split(const std::string& str, const std::string& delim) {   
 		// https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c/64886763#64886763
 		const std::regex ws_re(delim);
 		return { std::sregex_token_iterator(str.begin(), str.end(), ws_re, -1), std::sregex_token_iterator() };
 }
 
 
-double* doubleArrayFromString(string str) {
-	vector<string> vals = split(str, ",");
+double* doubleArrayFromString(std::string str) {
+	std::vector<std::string> vals = split(str, ",");
 	double* ans = new double[vals.size()];
 	for (int i = 0; i < vals.size(); ++i) {
 		ans[i] = std::stod(vals[i]);
@@ -157,7 +137,7 @@ double* doubleArrayFromString(string str) {
 bool equalDoubleArrays(double* v1, double *v2, int size) {
     for (int i = 0; i < size; ++i) {
         if (abs(v1[i]-v2[i]) > 1e-3) {
-            cout << endl;
+            std::cout << std::endl;
             return false;
         }
     }
@@ -318,261 +298,90 @@ int IsValidArmConfiguration(double* angles, int numofDOFs, double*	map,
 	return 1;
 }
 
+double euclidean(Xstate& x_goal,Xstate& x_near)
+{
+	// auto x_goal = x_sgoal.getPointer();
+	// auto x_near = x_snear.getPointer();
+	double dist = 0; 
+	for(int i = 0; i < x_goal.size(); ++i)
+	{
+		dist+= pow(x_goal[i]-x_near[i],2);
+	}
+	return sqrt(dist);
+}
+
+double calc_radius(std::vector<nodeHdle>& tree)
+{
+	int d = 4; 
+	int gamma = 1;
+	int delta = (PI*PI)/2;
+	int V = tree.size();
+	return (gamma/delta)*pow((log(V)/V),1/d);
+}
+
+int nearest_n_idx(Xstate& x_rand,std::vector<nodeHdle>& tree)
+{
+	double min = std::numeric_limits<double>::infinity();
+	double r = calc_radius(tree);
+	int min_node_idx = 0;
+	if(!tree.empty())
+	{
+		for(int i = 0; i < tree.size(); ++i)
+		{ 
+			double dist = euclidean(x_rand,tree[i].node_p->getXstate());
+			if(dist < r)
+			{
+				if(dist < min)
+				{
+					min_node_idx = i;
+				}
+			}
+			else
+			{
+				min_node_idx = -1;
+			}
+		}
+	}
+	return min_node_idx;
+
+}
+
+
 //-------------------------Below Added by AF----------------------------------------------------
 //-------------------------BELOW RRT Functions & Code ------------------------------------------------
-vertice* get_nearest_neighbor(	
-	vertice*& rand_con,
-	vector<vertice*>& vertex)
-	{
-		double min_rad = std::numeric_limits<double>::infinity();
-		vertice* nearest_n;
-		for(vertice* v:vertex)
-			{
-				double rad = euclidean(v,rand_con);
-				if(rad < min_rad)
-				{
-					min_rad = rad;
-					nearest_n = v;
-				}
-			}
-		return nearest_n;
-	}
-vertice* move_eps(
-	vertice*& q_near,
-	vertice*& q,
-	vertice* q_new,
-	double eps) 
-{
-	int DOF = q->getDOF();
-	vertice* direc = normalized_direc(q_near,q,DOF);
-	for(int i = 0; i < DOF; ++i)
-	{
-		q_new->angles[i] = q_near->angles[i] + eps*direc->angles[i];
-	}
-	return q_new;
-};
-
-bool check_newconfig(
-	vertice*& random_conf,
-	vertice*& q_near,
-	vertice* q_new,
-	double* map,
-	double eps,
-	int numofDOFs,
-	int x_size,
-	int y_size)
-	{
-		int n = 10;
-		double ang_trans[numofDOFs];
-		double dist =euclidean(q_near,random_conf);
-		if(dist < eps)
-		{
-			// If q is closer than epsilon then set qnew as q
-			for (int i = 0; i < n ; i++)
-				{
-					for(int j = 0; j < numofDOFs ; j++)
-					{
-						ang_trans[j] = q_near->angles[j] + ((double)(i)/(n-1))*(random_conf->angles[j] - q_near->angles[j]);
-					}
-					if(!IsValidArmConfiguration(ang_trans, numofDOFs, map, x_size, y_size))
-					{
-						//If in the first iteration is not valid then qnew is trapped
-						if(i <= 1)
-						{
-							return false;
-						}
-						//If not in the first of any other iteration. Move up to i-1 where is not trapped
-						else
-						{
-							for(int j = 0; j < numofDOFs ; j++)
-							{
-								q_new->angles[j] = q_near->angles[j] + ((double)(i-1)/(n-1))*(random_conf->angles[j] - q_near->angles[j]);
-							}
-							return true;	
-						}
-						return false;
-					}
-				}
-			for(int j = 0; j < numofDOFs ; j++)
-			{
-				q_new->angles[j] = random_conf->angles[j];
-			}
-			return true;
-		}
-		else
-		{
-			//If not closer than epsilon, interpolate to epsilon
-			// qnew = move_eps(qnear,random_conf,eps);
-			for (int i = 0; i < n ; i++)
-			{
-				for(int j = 0; j < numofDOFs ; j++)
-				{
-					ang_trans[j] = q_near->angles[j] + ((double)(i)/(n-1))*(q_new->angles[j] - q_near->angles[j]);
-				}
-				if(!IsValidArmConfiguration(ang_trans, numofDOFs, map, x_size, y_size))
-				{
-					//If in the first iteration is not valid then qnew is trapped
-					if(i <= 1)
-					{
-						return false;
-					}
-					//If not in the first of any other iteration. Move up to i-1 where is not trapped
-					else
-					{
-						for(int j = 0; j < numofDOFs ; j++)
-						{
-							q_new->angles[j] = q_near->angles[j] + ((double)(i-1)/(n-1))*(q_new->angles[j] - q_near->angles[j]);
-						}
-						return true;
-					}
-					return false;
-				}
-			}
-			return true;
-		} 
-	};
-
-void extend_RRT(
-	vector<vertice*>& tree,
-	vertice*& random_conf,
-	vertice*& last_node,
-	double* map,
-	int x_size,
-	int y_size,
-	int numofDOFs,
-	int K
-)
-{
-	double eps = 1.4;	//Epsilon distance
-	//Get top nearest neihgbor 
-	vertice* nearest_n = get_nearest_neighbor(random_conf,tree);
-	//Move by epsilon 
-	vertice* qnew = new vertice(numofDOFs);
-	qnew = move_eps(nearest_n,random_conf,qnew,eps);
-	if(check_newconfig(random_conf,nearest_n,qnew,map,eps,numofDOFs,x_size,y_size))//Return qnew, and its status if either reached,trapped or advanced
-	{
-		tree.emplace_back(qnew);//Push back qnew to the tree 
-		nearest_n->childs.emplace_back(qnew); //Create edge between qnew and nearest_n 
-		qnew->childs.emplace_back(nearest_n); //Edge in both ways	
-		qnew->setParent(nearest_n);//Set parent for back track 
-		qnew->g = nearest_n->g + euclidean(nearest_n,qnew); //Calculatint cost
-		if(equalDoubleArrays(qnew->angles,random_conf->angles,numofDOFs))
-			{
-				qnew->state = 0; //Reached
-				last_node = qnew;
-			}
-		else
-			{
-				qnew->state = 1; //Advanced
-				last_node = qnew;
-			}
-	}
-	else
-	{
-		nearest_n->state = 2; //Trapped
-		last_node = nearest_n;
-		delete qnew; //We can safely delete this variable if its trapped as it will not be used. 
-	}
-};
-
-void Build_RRT(
-	vector<vertice*>& tree,
-	double* start_config,
-	double* end_config,
-	double* map,
-	int K,
-	int numofDOFs,
-	int x_size,
-	int y_size,
-	bool& reached)
-{
-	vertice* start_vert = new vertice(start_config,K,numofDOFs); //Creating the start position as a vertice node 
-	vertice* goal_vert = new vertice(end_config,K+1,numofDOFs); // Creating goal position as a vertice node
-	start_vert->g = 0; //Initializing the start cost 
-	tree.emplace_back(start_vert); //Pushing back start node into the tree to initialize search 
-	vertice* last_node; //This will give the last node status given by check_new config 
-	for(int i = 0; i < K ; ++i)
-	{
-		vertice* random_config = new vertice(i,numofDOFs); //Creating a vertice with random angles position
-		double prob = (double)distribution_prob(generator); //Creating random number representing probability 
-		if(prob > 0.95) //Goal biasing by 5% 
-		{
-			random_config = goal_vert; //Assigning qrandom to be goal
-		}
-		extend_RRT(tree,random_config,last_node,map,x_size,y_size,numofDOFs,K);
-		//Check if goal is reached
-		if(equalDoubleArrays(tree.back()->angles,end_config,numofDOFs))
-			{
- 				cout<<"GOAL Reached"<<endl; 
-				reached = true;
-				return;
-			}
-	}
-	cout<<"Run out of samples"<< endl;
-	cout<<"Goal not founded" << endl;
-	return;
-};
-
-void ComputePathRRT(
-	vector<vertice*>& path_,
-	vector<vertice*>& tree,
-	double* start_config,
-	double* end_config,
-	double* map,
-	int numDOF,
-	int K,
-	int x_size,
-	int y_size)
-{
-	bool reached = false;//Initializing boolean to see if the goal was reached
-	Build_RRT(tree,start_config,end_config,map,K,numDOF,x_size,y_size,reached);	//Builds the tree from the start to the goal position
-	if(reached) //If goal its reached then execute backtrack
-	{
-		path_.emplace_back(tree.back());
-		while(!(path_.back()->parent == nullptr))//Stopping until the parent is nullptr because it means is the start node
-		{
-			vertice* father = path_.back() -> parent;
-			path_.emplace_back(father);
-		}
-		cout<<"Exporting computed path" << endl;
-	}
-	else
-	{
-		cout<<"Path not founded :(" << endl;
-	}
-};
-//-------------------------ABOVE RRT Functions & Code ------------------------------------------------
-//-------------------------Above Added by AF----------------------------------------------------
-
-
 static void planner(
 			double* map,
 			int x_size,
 			int y_size,
-			double* armstart_anglesV_rad,
-			double* armgoal_anglesV_rad,
-            int numofDOFs,
-            double*** plan,
-            int* planlength,
-			int whichplanner,
-			planner_results* res)
+			Xstate& x_0, 
+			Ustate& u_0,
+			Xstate& x_goal,
+			std::vector<Ustate>& plan)
 {
+	int K = 10000;
+	std::vector<nodeHdle> tree;
+
+	nodeHdle start_node(new node(0,euclidean(x_goal,x_0),nullptr,u_0));
+
+	tree.emplace_back(start_node);
+	for(int i = 0; i < K; ++i)
+	{
+		Xstate x_rand(rand_x(gen),rand_xdot(gen),rand_theta(gen),rand_thetadot(gen));
+		int nn_idx = nearest_n_idx(x_rand,tree);
+	// 	if(nn_idx > 0)
+	// 	{
+
+	// 	}
+	}
+	/*
+	TODO:
+		-Figure out the best way to return the control input and time of propagation
+
+		-How to do goal biasing? As of now, I can generate random points in the map and 
+		connect them. Having a maximum time of propagation of 5 secs
+			-Pick the minimum. Out of 10.000 propagations. pick the closes to the "goal"
+	*/
 	//no plan by default
-	vector<vertice*> plan_vec; //Vector containing the plan delivered by any algorithm
-	vector<vertice*> vertx; // Vector of vertices
-	vector<vertice*> vertx2;// Vector of vertices(RRT Connect)
-	*plan = NULL;
-	*planlength = 0;
-	int K = 100000; // Initial number of samples
-	int countNumInvalid = 0; 
-	int iter = 1; // Initializing iterator for loop
-	int max_iter = 5; // Maximum number of iterations when running planner
-
-
-	auto start_time = std::chrono::system_clock::now();
-	auto end_time = std::chrono::system_clock::now();
-	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-	float time_passed = time_delay.count()*1e-9;
     return;
 }
 
@@ -591,25 +400,15 @@ static void planner(
 int main(int argc, char ** argv) {
 	double* map;
 	int x_size, y_size;
-	tie(map, x_size, y_size) = loadMap(argv[1]);
-	const int numOfDOFs = std::stoi(argv[2]);
-	double* startPos = doubleArrayFromString(argv[3]);
-	double* goalPos = doubleArrayFromString(argv[4]);
-	int whichPlanner = std::stoi(argv[5]);
-	string outputFile = argv[6];
+	std::tie(map, x_size, y_size) = loadMap(argv[1]);
+	std::vector<Ustate> plan; 
+	Ustate u_start;
+	Xstate x_start;
+	Xstate x_goal(2,0.1,0.3,0);
+	planner(map,x_size,y_size,x_start,u_start,x_goal,plan);
 
-	if(!IsValidArmConfiguration(startPos, numOfDOFs, map, x_size, y_size)||
-			!IsValidArmConfiguration(goalPos, numOfDOFs, map, x_size, y_size)) {
-		throw runtime_error("Invalid start or goal configuration!\n");
-	}
-
-	///////////////////////////////////////
-	//// Feel free to modify anything below. Be careful modifying anything above.
-
-	double** plan = NULL;
-	int planlength = 0;
 	// planner_results res[5]; 
-	planner(map, x_size, y_size, startPos, goalPos, numOfDOFs, &plan, &planlength,whichPlanner,res);
+	// planner(map, x_size, y_size, startPos, goalPos, numOfDOFs, &plan, &planlength,whichPlanner);
 
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
@@ -617,8 +416,9 @@ int main(int argc, char ** argv) {
 	///////////////////////////////////////
 
     // Your solution's path should start with startPos and end with goalPos
-    if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 
-    	!equalDoubleArrays(plan[planlength-1], goalPos, numOfDOFs)) {
-		throw std::runtime_error("Start or goal position not matching");
-	}
+    // if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 
+    // 	!equalDoubleArrays(plan[planlength-1], goalPos, numOfDOFs)) {
+	// 	throw std::runtime_error("Start or goal position not matching");
+	// }
+	return 0;
 }

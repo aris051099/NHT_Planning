@@ -1,7 +1,7 @@
 template <class ComponentType,int NumComponent>
 class state
 {
-  protected:
+  public:
     double *state_elem = nullptr;
     int arr_size = NumComponent;
     state()
@@ -12,11 +12,10 @@ class state
     {
       if(state_elem != nullptr)
       {
-        delete state_elem;
+        delete [] state_elem;
         state_elem = nullptr;
       }
     }
-  public:
     const int size() const
     {
       return arr_size;
@@ -29,4 +28,18 @@ class state
     {
       return state_elem;
     }
+    double& operator[] (int index) const 
+    {
+      if(index > arr_size)
+      {
+        printf("Index out of bounds");
+      }
+      return state_elem[index];
+    } 
+    //   Test& operator=(const Test& t)
+    // {
+    //     cout << "Assignment operator called " << endl;
+    //     return *this;
+    // }
+
 };
