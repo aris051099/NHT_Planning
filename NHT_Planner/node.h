@@ -10,7 +10,7 @@ class node
 	public:
 		double f=0,g=0,h=0; 
 		node(){};
-		node(double g,double h, node* inc_parent,Ustate& inc_u_control):g{g},h{h},parent{inc_parent}
+		node(double g,double h, node* inc_parent,Ustate inc_u_control, Xstate X_inc):g{g},h{h},parent{inc_parent},reached_state{X_inc}
 		{
 			f = g+h;
 			u_control = inc_u_control;
@@ -48,34 +48,5 @@ class node
 		void calc_f()
 		{
 			this->f = this->g + this-> h;
-		}
-		friend class nodeHdle;
-};
-
-class nodeHdle
-{
-	protected:
-		node* node_p = nullptr;
-	public:
-		nodeHdle(node* incoming)
-		{
-			node_p = incoming;
-		}
-
-		nodeHdle()
-		{
-			node_p = new node; 
-		}
-		node* operator ->()
-		{
-			return node_p;
-		}
-		~nodeHdle()
-		{
-			if(node_p != nullptr)
-			{
-				delete node_p;
-				node_p = nullptr;
-			}
 		}
 };

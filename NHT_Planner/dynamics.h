@@ -35,6 +35,28 @@ class Ustate : public state<double,2>
     {
       return this->t_prop;
     }
+    bool operator==(const Ustate& incoming)
+    {
+      for(int i = 0 ; i < arr_size; ++i)
+      {
+        if(state_elem[i] != incoming[i])
+        {
+            return false;
+        }
+      }
+      return true;
+    }
+    bool operator !=(const Ustate& incoming)
+    {
+      for(int i = 0 ; i < arr_size; ++i)
+      {
+        if(state_elem[i] != incoming[i])
+        {
+            return true;
+        }
+      }
+      return false;
+    }
     
 };
 
@@ -98,6 +120,28 @@ class Xstate : public state<double,4>
       state_elem[2] = incoming[2];
       state_elem[3] = incoming[3];
       return *this;
+    }
+    bool operator==(const Xstate& incoming)
+    {
+      for(int i = 0 ; i < arr_size; ++i)
+      {
+        if(state_elem[i] != incoming[i])
+        {
+            return false;
+        }
+      }
+      return true;
+    }
+    bool operator !=(const Xstate& incoming)
+    {
+      for(int i = 0 ; i < arr_size; ++i)
+      {
+        if(state_elem[i] != incoming[i])
+        {
+            return true;
+        }
+      }
+      return false;
     }
 };
 

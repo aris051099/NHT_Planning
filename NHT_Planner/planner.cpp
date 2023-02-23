@@ -59,7 +59,7 @@ unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
 std::default_random_engine gen(seed);
 
-std::uniform_real_distribution<double> rand_t_prop(0.0,5.0);
+std::uniform_real_distribution<double> rand_t_prop(0.0,10.0);
 
 std::uniform_real_distribution<double> rand_u_vel(-1.0,1.0);
 std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
@@ -310,32 +310,31 @@ double euclidean(Xstate& x_goal,Xstate& x_near)
 	return sqrt(dist);
 }
 
-double calc_radius(std::vector<nodeHdle>& tree)
+double calc_radius()
 {
-	int d = 4; 
-	int gamma = 1;
-	int delta = (PI*PI)/2;
-	int V = tree.size();
+	double d = 4; 
+	double gamma = 20;
+	double delta = (PI*PI)/2;
+	double V = 2;
 	return (gamma/delta)*pow((log(V)/V),1/d);
 }
 
-int nearest_n_idx(Xstate& x_rand,std::vector<nodeHdle>& tree)
+int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 {
 	double min = std::numeric_limits<double>::infinity();
-	double r = calc_radius(tree);
+	// double r = calc_radius();
+	double r = 1.5;
 	int min_node_idx = 0;
 	if(!tree.empty())
 	{
 		for(int i = 0; i < tree.size(); ++i)
 		{ 
 			double dist = euclidean(x_rand,tree[i]->getXstate());
-			if(dist < r)
-			{
-				if(dist < min)
+				if(dist < r)
 				{
 					min_node_idx = i;
+					break;
 				}
-			}
 			else
 			{
 				min_node_idx = -1;
@@ -344,6 +343,15 @@ int nearest_n_idx(Xstate& x_rand,std::vector<nodeHdle>& tree)
 	}
 	return min_node_idx;
 
+}
+
+void CleanUp(std::vector<node*>& tree)
+{
+	for(auto p:tree)
+	{
+		delete p;
+	}
+	tree.clear();
 }
 
 
@@ -358,47 +366,70 @@ static void planner(
 			Xstate& x_goal,
 			std::vector<Ustate>& plan)
 {
-	int K = 10000;
-	std::vector<nodeHdle> tree;
+	int K = 100000;
+	std::vector<node*> tree;
+	Xstate x_rand;
 	Xstate x_prop;
+	Xstate x_min;
 	Ustate u_k;
 	Ustate u_min;
-	int count = 0;
 	bool reached = false;
-	double dist = 0;
+	double dist = 2;
 	double prop_time=0;
-	double min_dist = std::numeric_limits<double>::infinity(); 
 
-	nodeHdle start_node(new node(0,euclidean(x_goal,x_0),nullptr,u_0));
-
-	tree.emplace_back(start_node);
+	tree.push_back(new node(0,euclidean(x_goal,x_0),nullptr,u_0,x_0));
+	
 	for(int i = 0; i < K; ++i)
 	{
-		Xstate x_rand(rand_x(gen),rand_xdot(gen),rand_theta(gen),rand_thetadot(gen));
-		int nn_idx = nearest_n_idx(x_rand,tree);
-		if(nn_idx > 0)
+		printf("K: %d \n",i);
+		double prob = dist_prob(gen); //Creating random number representing probability 
+		if(prob > 0.95) //Goal biasing by 5% 
 		{
-			Xstate x_near = tree[nn_idx]->getXstate();
-			while(count > 10000)
+			x_rand = x_goal; //Assigning qrandom to be goal
+		}
+		else
+		{
+			Xstate x_r(rand_x(gen),rand_xdot(gen),rand_theta(gen),rand_thetadot(gen));
+			x_rand = x_r;
+		}
+
+		int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
+
+		if(nn_idx >= 0)
+		{
+			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
+			int count = 0;
+			double min_dist = std::numeric_limits<double>::infinity(); 
+			while(dist > 1.5)
 			{
-				count +=1;
 				u_k[0] = rand_u_vel(gen);
 				u_k[1] = rand_u_ang_vel(gen);
 				u_k.set_tprop(rand_t_prop(gen));
 
 				x_prop.propagate(x_near,u_k);
 
-				dist = euclidean(x_goal,x_prop);
+				dist = euclidean(x_rand,x_prop);
 				if(dist < min_dist)
 				{	
 					u_min = u_k;
 					min_dist = dist;
+					x_min = x_prop;
+					// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
+
 				}
 				++count;
+				if(count > 20000)
+					break;
 			};
-			printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
+			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
+			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
+			if(dist2goal < 0.1)
+			{
+				printf("Goal found \n");
+				CleanUp(tree);
+				return;
+			}
 		}
-
 	}
 	/*
 	TODO:
@@ -408,6 +439,8 @@ static void planner(
 		connect them. Having a maximum time of propagation of 5 secs
 			-Pick the minimum. Out of 10.000 propagations. pick the closes to the "goal"
 	*/
+	printf("No plan found \n");
+	CleanUp(tree);
 	//no plan by default
     return;
 }
@@ -429,9 +462,10 @@ int main(int argc, char ** argv) {
 	int x_size, y_size;
 	std::tie(map, x_size, y_size) = loadMap(argv[1]);
 	std::vector<Ustate> plan; 
-	Ustate u_start(1,1);
-	Xstate x_start;
+	Ustate u_start(0,0);
+	Xstate x_start(1.9,0.05,0.20,0);
 	Xstate x_goal(2,0.1,0.3,0);
+	std::cout << calc_radius() << std::endl;
 	// double prop_time = rand_t_prop(gen);
 	// auto a = x_goal.getPointer();
 	// printf("Testing printf\n");

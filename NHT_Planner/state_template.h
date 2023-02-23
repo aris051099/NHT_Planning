@@ -26,6 +26,14 @@ class state
       }
       return state_elem[index];
     } 
+    double& operator[] (int index)
+    {
+      if(index > arr_size)
+      {
+        printf("Index out of bounds");
+      }
+      return state_elem[index];
+    } 
     //   Test& operator=(const Test& t)
     // {
     //     cout << "Assignment operator called " << endl;
