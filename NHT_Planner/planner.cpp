@@ -303,13 +303,25 @@ double euclidean(Xstate& x_goal,Xstate& x_near)
 	// auto x_goal = x_sgoal.getPointer();
 	// auto x_near = x_snear.getPointer();
 	double dist = 0; 
-	for(int i = 0; i < x_goal.size(); ++i)
+	for(int i = 0; i < x_goal.size(); i+=2)
 	{
 		dist+= pow(x_goal[i]-x_near[i],2);
 	}
 	return sqrt(dist);
 }
 
+
+// double euclidean(Xstate& x_goal,Xstate& x_near)
+// {
+// 	// auto x_goal = x_sgoal.getPointer();
+// 	// auto x_near = x_snear.getPointer();
+// 	double dist = 0; 
+// 	for(int i = 0; i < x_goal.size(); ++i)
+// 	{
+// 		dist+= pow(x_goal[i]-x_near[i],2);
+// 	}
+// 	return sqrt(dist);
+// }
 double calc_radius()
 {
 	double d = 4; 
@@ -332,8 +344,11 @@ int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 			double dist = euclidean(x_rand,tree[i]->getXstate());
 				if(dist < r)
 				{
-					min_node_idx = i;
-					break;
+					if(dist < min)
+					{
+						min_node_idx = i;
+						min = dist;	
+					}
 				}
 			else
 			{
@@ -347,12 +362,21 @@ int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 
 void CleanUp(std::vector<node*>& tree)
 {
-	for(auto p:tree)
+	for(node* p:tree)
 	{
 		delete p;
 	}
 	tree.clear();
 }
+
+void getPlan(std::vector<node*>& plan,std::vector<node*>& tree)
+{
+	for(node* p = tree.back(); p != nullptr; p = plan.back()->getParent())
+	{
+		plan.push_back(p);
+	}
+	reverse(plan.begin(),plan.end());
+	};
 
 
 //-------------------------Below Added by AF----------------------------------------------------
@@ -364,24 +388,23 @@ static void planner(
 			Xstate& x_0, 
 			Ustate& u_0,
 			Xstate& x_goal,
-			std::vector<Ustate>& plan)
+			std::vector<node*>& plan,
+			std::vector<node*>& tree)
 {
 	int K = 100000;
-	std::vector<node*> tree;
 	Xstate x_rand;
 	Xstate x_prop;
 	Xstate x_min;
 	Ustate u_k;
 	Ustate u_min;
 	bool reached = false;
-	double dist = 2;
 	double prop_time=0;
 
 	tree.push_back(new node(0,euclidean(x_goal,x_0),nullptr,u_0,x_0));
 	
 	for(int i = 0; i < K; ++i)
 	{
-		printf("K: %d \n",i);
+		std::cout<< "K: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
 		if(prob > 0.95) //Goal biasing by 5% 
 		{
@@ -400,6 +423,7 @@ static void planner(
 			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
 			int count = 0;
 			double min_dist = std::numeric_limits<double>::infinity(); 
+			double dist = 2;
 			while(dist > 1.5)
 			{
 				u_k[0] = rand_u_vel(gen);
@@ -426,7 +450,15 @@ static void planner(
 			if(dist2goal < 0.1)
 			{
 				printf("Goal found \n");
-				CleanUp(tree);
+				printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
+				printf("Initial State: \n");
+				std::cout << x_0 << std::endl;
+				printf("Final state: \n");
+				std::cout << x_min << std::endl;
+				printf("Goal state:\n");
+				std::cout<<x_goal<< std::endl;
+				getPlan(plan,tree);
+				// CleanUp(tree);
 				return;
 			}
 		}
@@ -440,7 +472,7 @@ static void planner(
 			-Pick the minimum. Out of 10.000 propagations. pick the closes to the "goal"
 	*/
 	printf("No plan found \n");
-	CleanUp(tree);
+	// CleanUp(tree);
 	//no plan by default
     return;
 }
@@ -461,7 +493,8 @@ int main(int argc, char ** argv) {
 	double* map;
 	int x_size, y_size;
 	std::tie(map, x_size, y_size) = loadMap(argv[1]);
-	std::vector<Ustate> plan; 
+	std::vector<node*> plan; 
+	std::vector<node*> tree;
 	Ustate u_start(0,0);
 	Xstate x_start(1.9,0.05,0.20,0);
 	Xstate x_goal(2,0.1,0.3,0);
@@ -479,8 +512,11 @@ int main(int argc, char ** argv) {
 	// std::cout << x_prop << std::endl;
 	// nodeHdle test(new node(1,1,nullptr,u_start));
 	// test.node_p->setXstate(x_goal);
-	planner(map,x_size,y_size,x_start,u_start,x_goal,plan);
+	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
 
+	CleanUp(tree);
+	// CleanUp(plan);
+	plan.clear();
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
 	//// grading script will not work and you will recieve a 0.
