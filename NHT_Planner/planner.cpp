@@ -59,7 +59,7 @@ unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
 std::default_random_engine gen(seed);
 
-std::uniform_real_distribution<double> rand_t_prop(0.0,10.0);
+std::uniform_real_distribution<double> rand_t_prop(0.0,5.0);
 
 std::uniform_real_distribution<double> rand_u_vel(-1.0,1.0);
 std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
@@ -422,9 +422,8 @@ static void planner(
 		{
 			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
 			int count = 0;
-			double min_dist = std::numeric_limits<double>::infinity(); 
-			double dist = 2;
-			while(dist > 1.5)
+			double min_dist = std::numeric_limits<double>::infinity(); 			
+			for(int i = 0; i < 20000; ++i)
 			{
 				u_k[0] = rand_u_vel(gen);
 				u_k[1] = rand_u_ang_vel(gen);
@@ -432,18 +431,21 @@ static void planner(
 
 				x_prop.propagate(x_near,u_k);
 
-				dist = euclidean(x_rand,x_prop);
-				if(dist < min_dist)
+				double dist = euclidean(x_rand,x_prop);
+				if(dist < 0.1)
 				{	
 					u_min = u_k;
 					min_dist = dist;
 					x_min = x_prop;
-					// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
-
-				}
-				++count;
-				if(count > 20000)
 					break;
+					// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
+				}
+				else if(dist < min_dist)
+				{
+					u_min = u_k;
+					min_dist = dist;
+					x_min = x_prop;
+				}
 			};
 			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
 			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
@@ -496,20 +498,25 @@ int main(int argc, char ** argv) {
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
 	Ustate u_start(0,0);
-	Xstate x_start(1.9,0.05,0.20,0);
+	Xstate x_prop;
+	Xstate x_start(0,0,0,0);
 	Xstate x_goal(2,0.1,0.3,0);
+	u_start.set_tprop(1);
 	std::cout << calc_radius() << std::endl;
 	// double prop_time = rand_t_prop(gen);
 	// auto a = x_goal.getPointer();
 	// printf("Testing printf\n");
 	// printf("%f,%f,%f,%f \n",a[0],a[1],a[2],a[3]);
-	// printf("Testing std::cout\n");
+	// printf("Initial state\n");
+	// std::cout<<x_start << std::endl;
+	// printf("Goal State\n");
 	// std::cout << x_goal<< std::endl;
 	// printf("Before prop\n");
 	// std::cout << x_prop << std::endl;
 	// printf("After prop\n");
-	// x_prop.propagate(x_start,u_start,prop_time);
+	// x_prop.propagate(x_start,u_start);
 	// std::cout << x_prop << std::endl;
+	// std::cout <<x_start << std::endl;
 	// nodeHdle test(new node(1,1,nullptr,u_start));
 	// test.node_p->setXstate(x_goal);
 	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);

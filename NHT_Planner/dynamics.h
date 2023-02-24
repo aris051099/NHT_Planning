@@ -98,7 +98,7 @@ class Xstate : public state<double,4>
 
     Xstate(const Xstate& inc);
 
-    void propagate(Xstate& x_k, Ustate& u_k)
+    void propagate(Xstate x_k, Ustate& u_k)
     {
       double prop_time = u_k.get_tprop();
       for(int i = 0; i < sec2msec(prop_time) ; ++i)
@@ -109,6 +109,10 @@ class Xstate : public state<double,4>
         state_elem[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
         state_elem[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
         state_elem[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
+        x_k[0] = state_elem[0];
+        x_k[1] = state_elem[1];
+        x_k[2] = state_elem[2];
+        x_k[3] = state_elem[3];
         // std::cout << x_k << std::endl;
       }
     };
