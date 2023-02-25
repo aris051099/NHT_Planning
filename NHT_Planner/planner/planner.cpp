@@ -20,8 +20,7 @@
 #include <limits>
 #include <queue>
 #include <unordered_set>
-#include "node.h" 
-  
+#include <node.h>
 
 /* Input Arguments */
 #define	MAP_IN      prhs[0]
@@ -519,15 +518,26 @@ int main(int argc, char ** argv) {
 	// std::cout <<x_start << std::endl;
 	// nodeHdle test(new node(1,1,nullptr,u_start));
 	// test.node_p->setXstate(x_goal);
-	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
-
-	CleanUp(tree);
-	// CleanUp(plan);
-	plan.clear();
+	// planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
+	// CleanUp(tree);
+	// plan.clear();
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
 	//// grading script will not work and you will recieve a 0.
 	///////////////////////////////////////
+	// FsOpenWindow(0,0,1024,600,1);
+	// 	for(;;)
+	// 	{
+	// 		FsPollDevice();
+	// 		if(FSKEY_ESC==FsInkey())
+	// 		{
+	// 			break;
+	// 		}
+
+	// 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+	// 		FsSwapBuffers();
+	// 	}
 
     // Your solution's path should start with startPos and end with goalPos
     // if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 

@@ -1,5 +1,15 @@
+#include <iostream> 
 #include "state_template.h"
 #include "dynamics.h"
+#include <math.h>
+#include <algorithm>
+#include <chrono>
+#include <random>
+#include <string>
+#include <stdexcept>
+#include <regex> // For regex and split logic
+#include <fstream> // For reading/writing files
+#include <stdlib.h>
 class node 
 {
 	protected:
