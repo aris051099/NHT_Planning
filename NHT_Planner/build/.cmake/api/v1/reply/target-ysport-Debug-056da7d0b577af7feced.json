@@ -1,0 +1,315 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "public/ysport/src/libysport.a"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"target_link_libraries",
+			"include_directories",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ysport/src/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 271,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 316,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 295,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -Wl,--no-as-needed -g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src/."
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "ysclass::@8cff40a9c464f6ddc72f"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "lib"
+	},
+	"id" : "ysport::@4b0f1bcfa4d23cd458c2",
+	"name" : "ysport",
+	"nameOnDisk" : "libysport.a",
+	"paths" : 
+	{
+		"build" : "public/ysport/src",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysopenurl.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixencoding.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixfileinfo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixfileio.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixlocale.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixrunprocess.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixspecialpath.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/linux/ysunixsubsectimer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysfileinfo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysfileio.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/yslocale.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysspecialpath.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/yssubsectimer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysthread.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysencoding.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysfileinfo.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysfileio.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/yslocale.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysopenurl.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysport.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysrunprocess.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysspecialpath.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/yssubsectimer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysthread.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/ysplatformident.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

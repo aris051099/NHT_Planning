@@ -1,0 +1,121 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "public/ir_transceiver/lib/cheaplib/libcheaplib.a"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"include_directories",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheaplib/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 4,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 3,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheaplib"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"id" : "cheaplib::@e0fbbe2e6b81b4631268",
+	"name" : "cheaplib",
+	"nameOnDisk" : "libcheaplib.a",
+	"paths" : 
+	{
+		"build" : "public/ir_transceiver/lib/cheaplib",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheaplib"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheaplib/cheaputil.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheaplib/cheaputil.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

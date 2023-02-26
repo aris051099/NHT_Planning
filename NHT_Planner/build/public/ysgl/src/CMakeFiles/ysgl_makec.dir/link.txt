@@ -1,0 +1,1 @@
+/usr/bin/g++   -Wl,--no-as-needed -g  -rdynamic CMakeFiles/ysgl_makec.dir/glsl_src/makec.cpp.o  -o ../../../exe/ysgl_makec  ../../ysclass/src/libysclass.a -lpthread -static-libstdc++ -static-libgcc 

@@ -1,0 +1,1 @@
+/usr/bin/g++  -g   CMakeFiles/planner.dir/planner.cpp.o  -o planner  node/libnode.a public/fssimplewindow/src/libfssimplewindow.a -lGL -lGLU -lX11 

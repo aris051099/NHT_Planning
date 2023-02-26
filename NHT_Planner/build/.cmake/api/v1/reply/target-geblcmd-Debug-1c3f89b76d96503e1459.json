@@ -1,0 +1,515 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "public/ysgebl/src/cmdmain/geblcmd"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdmain/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 213,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 260,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 3
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -Wl,--no-as-needed -g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdlib"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdlib/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/kernel"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/kernel/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass11/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass11/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/gui"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/gui/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/gui_foundation"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/gui_foundation/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplewindow/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/yssystemfont/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/shellrender"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/shellrender/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/gl2"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/gl2/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmapfont/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/filedialog"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/filedialog/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmap/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysfontrenderer/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysfontrenderer/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src/gl2"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src/gl2/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src/gl2"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src/gl2/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/src/."
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "ysclass::@8cff40a9c464f6ddc72f"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysclass11::@064825d62c3f6bf3c5d7"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysport::@4b0f1bcfa4d23cd458c2"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysgl::@e4add9ad529fe3f39327"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysglcpp::@2736cce6812b6eaeaefb"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysglcpp_gl2::@a8289abd9a6121897768"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysbitmap::@d3209de0bf9981aae0e7"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysbitmapfont::@ec5f2bfcaa19fbe4118c"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "yssystemfont::@7d985d706196d54751c9"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fssimplewindow::@80f2029bf3d14ea56001"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fslazywindow::@a621f0a0d84dd998b84a"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysfontrenderer::@5eb3ef2240c2895bcb62"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fsguilib::@e6359fef44ba5bf7220f"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fsguilib_gl2::@7c54e0ac72e496815d35"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fsguifiledialog::@296fd454583c0d7c5b9c"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fsgui3d::@c9d33cae830cb1e1193f"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fsgui3d_gl2::@962e06c4b366cc503688"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "geblkernel::@c5e2bf1710f25e8f4ed0"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "geblutil::@372d564aee22848b5f6e"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "geblgl::@b93873174c23cfb69622"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "geblgui_foundation::@7ccdf341b8550928d588"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "geblgui::@a560e45cc3fd7b4315fb"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "geblcmdlib::@23495c8c7b016d47705d"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "PolygonCrest"
+	},
+	"id" : "geblcmd::@9f527e1f04054f19f493",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-Wl,--no-as-needed -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-rdynamic",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "../cmdlib/libgeblcmdlib.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libstdc++",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libgcc",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../gui/libgeblgui.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../gui_foundation/libgeblgui_foundation.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../shellrender/libgeblgl.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../kernelutil/libgeblutil.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../kernel/libgeblkernel.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysglcpp/src/libysglcpp.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysclass11/src/libysclass11.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysglcpp/src/gl2/libysglcpp_gl2.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fsguilib/filedialog/libfsguifiledialog.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fsgui3d/src/libfsgui3d.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fsguilib/src/libfsguilib.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysfontrenderer/src/libysfontrenderer.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fsgui3d/src/gl2/libfsgui3d_gl2.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fsguilib/src/gl2/libfsguilib_gl2.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../yssystemfont/src/libyssystemfont.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysbitmap/src/libysbitmap.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysbitmapfont/src/libysbitmapfont.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysgl/src/libysgl.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysport/src/libysport.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysclass/src/libysclass.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fslazywindow/src/libfslazywindow.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libstdc++",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libgcc",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fssimplewindow/src/libfssimplewindow.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lGL",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lGLU",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lX11",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "geblcmd",
+	"nameOnDisk" : "geblcmd",
+	"paths" : 
+	{
+		"build" : "public/ysgebl/src/cmdmain",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdmain"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdmain/main.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

@@ -1,0 +1,151 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "exe/ysgl_makec"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 187,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 188,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 3
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -Wl,--no-as-needed -g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src/."
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "ysclass::@8cff40a9c464f6ddc72f"
+		}
+	],
+	"id" : "ysgl_makec::@e4add9ad529fe3f39327",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-Wl,--no-as-needed -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-rdynamic",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "../../ysclass/src/libysclass.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libstdc++",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libgcc",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "ysgl_makec",
+	"nameOnDisk" : "ysgl_makec",
+	"paths" : 
+	{
+		"build" : "public/ysgl/src",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl_src/makec.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

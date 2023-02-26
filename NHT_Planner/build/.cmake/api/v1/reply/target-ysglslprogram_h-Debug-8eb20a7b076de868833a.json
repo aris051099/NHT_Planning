@@ -1,0 +1,247 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"add_dependencies"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 293,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 296,
+				"parent" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "ysglsl_expand_source::@e4add9ad529fe3f39327"
+		},
+		{
+			"id" : "ysgl_preproc::@e4add9ad529fe3f39327"
+		},
+		{
+			"id" : "ysgl_makeh::@e4add9ad529fe3f39327"
+		}
+	],
+	"id" : "ysglslprogram_h::@e4add9ad529fe3f39327",
+	"name" : "ysglslprogram_h",
+	"paths" : 
+	{
+		"build" : "public/ysgl/src",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "build/public/ysgl/src/CMakeFiles/ysglslprogram_h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/public/ysgl/src/CMakeFiles/ysglslprogram_h.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/ysglslprogram.h.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColor3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColor3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorPerVtxShading3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorPerVtxShading3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorPerPixShading3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorPerPixShading3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorBillBoard3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorBillBoard3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/flash3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/flash3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/flashByPointSprite3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/flashByPointSprite3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorMarker3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorMarker3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorMarkerByPointSprite3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorMarkerByPointSprite3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/bmpRendererVertexShaderSrc.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/bmpRendererFragmentShaderSrc.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/plain2DDrawingVertexShaderSrc.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/plain2DDrawingFragmentShaderSrc.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorPointSprite3DDrawingFragmentShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/glsl/variColorPointSprite3DDrawingVertexShader.glsl.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

@@ -1,0 +1,129 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "public/ir_transceiver/lib/yscomport/libcomportlib.a"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"include_directories",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 19,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 20,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 3,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		}
+	],
+	"id" : "comportlib::@b882743ee525a7b5f9fc",
+	"name" : "comportlib",
+	"nameOnDisk" : "libcomportlib.a",
+	"paths" : 
+	{
+		"build" : "public/ir_transceiver/lib/yscomport",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport/comport.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport/comport_null.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport/comport.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

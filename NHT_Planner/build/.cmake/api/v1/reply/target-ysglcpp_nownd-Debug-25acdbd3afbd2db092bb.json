@@ -1,0 +1,155 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "public/ysglcpp/src/nownd/libysglcpp_nownd.a"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"target_link_libraries",
+			"include_directories",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 217,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 262,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 3
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 241,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -Wl,--no-as-needed -g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd/."
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src/."
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "ysclass::@8cff40a9c464f6ddc72f"
+		}
+	],
+	"id" : "ysglcpp_nownd::@1587c78014f9465df73b",
+	"name" : "ysglcpp_nownd",
+	"nameOnDisk" : "libysglcpp_nownd.a",
+	"paths" : 
+	{
+		"build" : "public/ysglcpp/src/nownd",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd/ysglbuffermanager_nownd.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd/ysglbuffermanager_nownd.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

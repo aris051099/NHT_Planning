@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/fssimplefiledialog.dir/fssimplefiledialog.cpp.o"
+  "CMakeFiles/fssimplefiledialog.dir/linux/fssimplefiledialog_linux.cpp.o"
+  "libfssimplefiledialog.a"
+  "libfssimplefiledialog.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/fssimplefiledialog.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

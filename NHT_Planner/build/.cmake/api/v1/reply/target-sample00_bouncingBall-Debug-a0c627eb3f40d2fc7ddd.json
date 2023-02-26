@@ -1,0 +1,285 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "public/fslazywindow/samples/sample00-bouncingBall/sample00_bouncingBall"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_libraries",
+			"include_directories"
+		],
+		"files" : 
+		[
+			"/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/samples/sample00-bouncingBall/CMakeLists.txt",
+			"/home/afariach/Desktop/Path_Planning/public/src/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 219,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 266,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 3
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -Wl,--no-as-needed -g  "
+				},
+				{
+					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/imported/include"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplewindow/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass11/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass11/src/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/gl2"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/gl2/."
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmapfont/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src/."
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "ysclass::@8cff40a9c464f6ddc72f"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysclass11::@064825d62c3f6bf3c5d7"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysgl::@e4add9ad529fe3f39327"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysglcpp::@2736cce6812b6eaeaefb"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysglcpp_gl2::@a8289abd9a6121897768"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "ysbitmapfont::@ec5f2bfcaa19fbe4118c"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fssimplewindow::@80f2029bf3d14ea56001"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "fslazywindow::@a621f0a0d84dd998b84a"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "SAMPLES/fslazywindow"
+	},
+	"id" : "sample00_bouncingBall::@40a5085eb4e89ec06f4f",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-Wl,--no-as-needed -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-rdynamic",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "../../src/libfslazywindow.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "../../../ysglcpp/src/libysglcpp.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "../../../ysglcpp/src/gl2/libysglcpp_gl2.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libstdc++",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libgcc",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../fssimplewindow/src/libfssimplewindow.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lGL",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lGLU",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lX11",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysclass11/src/libysclass11.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysclass/src/libysclass.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysbitmapfont/src/libysbitmapfont.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "../../../ysgl/src/libysgl.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libstdc++",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-static-libgcc",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "sample00_bouncingBall",
+	"nameOnDisk" : "sample00_bouncingBall",
+	"paths" : 
+	{
+		"build" : "public/fslazywindow/samples/sample00-bouncingBall",
+		"source" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/samples/sample00-bouncingBall"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/samples/sample00-bouncingBall/main.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}

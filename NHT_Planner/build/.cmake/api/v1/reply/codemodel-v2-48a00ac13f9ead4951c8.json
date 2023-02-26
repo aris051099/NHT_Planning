@@ -1,0 +1,2078 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						73,
+						74
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.08"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						42
+					]
+				},
+				{
+					"build" : "node",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.08"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "node",
+					"targetIndexes" : 
+					[
+						40
+					]
+				},
+				{
+					"build" : "public",
+					"childIndexes" : 
+					[
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						19,
+						20,
+						21,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35,
+						36,
+						37,
+						38,
+						39,
+						40,
+						41,
+						42,
+						43,
+						44,
+						45,
+						46,
+						47,
+						48,
+						49,
+						50,
+						51,
+						52,
+						53,
+						54,
+						55,
+						56,
+						57,
+						58,
+						59,
+						60,
+						64,
+						72
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src"
+				},
+				{
+					"build" : "public/ysclass/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass/src",
+					"targetIndexes" : 
+					[
+						58
+					]
+				},
+				{
+					"build" : "public/ysclass11/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysclass11/src",
+					"targetIndexes" : 
+					[
+						59
+					]
+				},
+				{
+					"build" : "public/ysport/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysport/src",
+					"targetIndexes" : 
+					[
+						85
+					]
+				},
+				{
+					"build" : "public/ysgl/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgl/src",
+					"targetIndexes" : 
+					[
+						63,
+						64,
+						65,
+						66,
+						71,
+						72,
+						73
+					]
+				},
+				{
+					"build" : "public/ysglcpp/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src",
+					"targetIndexes" : 
+					[
+						67
+					]
+				},
+				{
+					"build" : "public/ysglcpp/src/gl2",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/gl2",
+					"targetIndexes" : 
+					[
+						69
+					]
+				},
+				{
+					"build" : "public/ysglcpp/src/gl1",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/gl1",
+					"targetIndexes" : 
+					[
+						68
+					]
+				},
+				{
+					"build" : "public/ysglcpp/src/nownd",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysglcpp/src/nownd",
+					"targetIndexes" : 
+					[
+						70
+					]
+				},
+				{
+					"build" : "public/ysbitmap/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmap/src",
+					"targetIndexes" : 
+					[
+						55
+					]
+				},
+				{
+					"build" : "public/ysbitmap/cmdtools",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmap/cmdtools",
+					"targetIndexes" : 
+					[
+						54,
+						60,
+						74,
+						75,
+						76,
+						77,
+						78,
+						79,
+						81,
+						82,
+						84,
+						86
+					]
+				},
+				{
+					"build" : "public/ysbitmaputil/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmaputil/src",
+					"targetIndexes" : 
+					[
+						57
+					]
+				},
+				{
+					"build" : "public/ysbitmapfont/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmapfont/src",
+					"targetIndexes" : 
+					[
+						56
+					]
+				},
+				{
+					"build" : "public/ysbitmapfont/cmdtools",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysbitmapfont/cmdtools",
+					"targetIndexes" : 
+					[
+						80
+					]
+				},
+				{
+					"build" : "public/yssystemfont/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssystemfont/src",
+					"targetIndexes" : 
+					[
+						83,
+						97
+					]
+				},
+				{
+					"build" : "public/fssimplewindow/src",
+					"childIndexes" : 
+					[
+						18
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplewindow/src",
+					"targetIndexes" : 
+					[
+						23,
+						24
+					]
+				},
+				{
+					"build" : "public/fssimplewindow/src/tests",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 17,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplewindow/src/tests",
+					"targetIndexes" : 
+					[
+						51,
+						52
+					]
+				},
+				{
+					"build" : "public/fssimplewindow/template",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplewindow/template",
+					"targetIndexes" : 
+					[
+						25
+					]
+				},
+				{
+					"build" : "public/fssimplewindow/samples",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplewindow/samples",
+					"targetIndexes" : 
+					[
+						43,
+						45,
+						46,
+						47,
+						48,
+						49,
+						50
+					]
+				},
+				{
+					"build" : "public/yssimplesound/src",
+					"childIndexes" : 
+					[
+						22
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssimplesound/src",
+					"targetIndexes" : 
+					[
+						88,
+						89,
+						90
+					]
+				},
+				{
+					"build" : "public/yssimplesound/src/unittest",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 21,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssimplesound/src/unittest",
+					"targetIndexes" : 
+					[
+						93,
+						95
+					]
+				},
+				{
+					"build" : "public/yssimplesound/test",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssimplesound/test",
+					"targetIndexes" : 
+					[
+						94
+					]
+				},
+				{
+					"build" : "public/yssimplesound/sample",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssimplesound/sample",
+					"targetIndexes" : 
+					[
+						91
+					]
+				},
+				{
+					"build" : "public/yssimplesound/sample_fssimplewindow",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssimplesound/sample_fssimplewindow",
+					"targetIndexes" : 
+					[
+						92
+					]
+				},
+				{
+					"build" : "public/fslazywindow/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/src",
+					"targetIndexes" : 
+					[
+						19
+					]
+				},
+				{
+					"build" : "public/fslazywindow/template",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/template",
+					"targetIndexes" : 
+					[
+						20
+					]
+				},
+				{
+					"build" : "public/fslazywindow/samples/sample00-bouncingBall",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fslazywindow/samples/sample00-bouncingBall",
+					"targetIndexes" : 
+					[
+						44
+					]
+				},
+				{
+					"build" : "public/fssimplefiledialog/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplefiledialog/src",
+					"targetIndexes" : 
+					[
+						21
+					]
+				},
+				{
+					"build" : "public/fssimplefiledialog/sample",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fssimplefiledialog/sample",
+					"targetIndexes" : 
+					[
+						22
+					]
+				},
+				{
+					"build" : "public/ysfontrenderer/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysfontrenderer/src",
+					"targetIndexes" : 
+					[
+						61
+					]
+				},
+				{
+					"build" : "public/ystexturemanager/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ystexturemanager/src",
+					"targetIndexes" : 
+					[
+						98
+					]
+				},
+				{
+					"build" : "public/ystexturemanager/src/gl",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ystexturemanager/src/gl",
+					"targetIndexes" : 
+					[
+						99
+					]
+				},
+				{
+					"build" : "public/ystexturemanager/src/null",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ystexturemanager/src/null",
+					"targetIndexes" : 
+					[
+						100
+					]
+				},
+				{
+					"build" : "public/fsguilib/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src",
+					"targetIndexes" : 
+					[
+						13
+					]
+				},
+				{
+					"build" : "public/fsguilib/src/gl2",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src/gl2",
+					"targetIndexes" : 
+					[
+						15
+					]
+				},
+				{
+					"build" : "public/fsguilib/src/gl1",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src/gl1",
+					"targetIndexes" : 
+					[
+						14
+					]
+				},
+				{
+					"build" : "public/fsguilib/src/nownd",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/src/nownd",
+					"targetIndexes" : 
+					[
+						16
+					]
+				},
+				{
+					"build" : "public/fsguilib/filedialog",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/filedialog",
+					"targetIndexes" : 
+					[
+						12
+					]
+				},
+				{
+					"build" : "public/fsguilib/template",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/template",
+					"targetIndexes" : 
+					[
+						17
+					]
+				},
+				{
+					"build" : "public/fsguilib/template_with_filedialog",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsguilib/template_with_filedialog",
+					"targetIndexes" : 
+					[
+						18
+					]
+				},
+				{
+					"build" : "public/fsgui3d/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src",
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"build" : "public/fsgui3d/src/gl1",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src/gl1",
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"build" : "public/fsgui3d/src/gl2",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/src/gl2",
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"build" : "public/fsgui3d/template",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/template",
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"build" : "public/fsgui3d/template_with_filedialog",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/template_with_filedialog",
+					"targetIndexes" : 
+					[
+						11
+					]
+				},
+				{
+					"build" : "public/fsgui3d/template-easy",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/fsgui3d/template-easy",
+					"targetIndexes" : 
+					[
+						10
+					]
+				},
+				{
+					"build" : "public/yssocket/src",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/yssocket/src",
+					"targetIndexes" : 
+					[
+						96
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/kernel",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/kernel",
+					"targetIndexes" : 
+					[
+						34
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/kernelutil",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil",
+					"targetIndexes" : 
+					[
+						35
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/shellrender",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/shellrender",
+					"targetIndexes" : 
+					[
+						28
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/shellrender/gl2",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/shellrender/gl2",
+					"targetIndexes" : 
+					[
+						30
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/shellrender/gl1",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/shellrender/gl1",
+					"targetIndexes" : 
+					[
+						29
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/shellrender/nownd",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/shellrender/nownd",
+					"targetIndexes" : 
+					[
+						31
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/gui_foundation",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/gui_foundation",
+					"targetIndexes" : 
+					[
+						33
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/gui",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/gui",
+					"targetIndexes" : 
+					[
+						32
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/main",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/main",
+					"targetIndexes" : 
+					[
+						62
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/cmdlib",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdlib",
+					"targetIndexes" : 
+					[
+						27
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/cmdmain",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/cmdmain",
+					"targetIndexes" : 
+					[
+						26
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/samples",
+					"childIndexes" : 
+					[
+						61,
+						62,
+						63
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/samples"
+				},
+				{
+					"build" : "public/ysgebl/src/samples/YsShellExt",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 60,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/samples/YsShellExt",
+					"targetIndexes" : 
+					[
+						87
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/samples/NonManifoldToConstEdge",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 60,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/samples/NonManifoldToConstEdge",
+					"targetIndexes" : 
+					[
+						41
+					]
+				},
+				{
+					"build" : "public/ysgebl/src/samples/BooleanSubtraction",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 60,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ysgebl/src/samples/BooleanSubtraction",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "public/ir_transceiver",
+					"childIndexes" : 
+					[
+						65,
+						66,
+						67,
+						69,
+						70,
+						71
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver"
+				},
+				{
+					"build" : "public/ir_transceiver/gui",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 64,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/gui",
+					"targetIndexes" : 
+					[
+						37
+					]
+				},
+				{
+					"build" : "public/ir_transceiver/cui_transmitter",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 64,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/cui_transmitter",
+					"targetIndexes" : 
+					[
+						36
+					]
+				},
+				{
+					"build" : "public/ir_transceiver/lib/cheapgui",
+					"childIndexes" : 
+					[
+						68
+					],
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 64,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheapgui",
+					"targetIndexes" : 
+					[
+						1,
+						2
+					]
+				},
+				{
+					"build" : "public/ir_transceiver/lib/cheapgui/template",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 67,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheapgui/template",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "public/ir_transceiver/lib/cheaplib",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 64,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/cheaplib",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "public/ir_transceiver/lib/irtoy",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 64,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/irtoy",
+					"targetIndexes" : 
+					[
+						38
+					]
+				},
+				{
+					"build" : "public/ir_transceiver/lib/yscomport",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 64,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/ir_transceiver/lib/yscomport",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "public/opencv",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/public/src/opencv"
+				},
+				{
+					"build" : "ym2612",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.08"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/MMLPlayer/ym2612",
+					"targetIndexes" : 
+					[
+						53
+					]
+				},
+				{
+					"build" : "mmlplayer",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.08"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/afariach/Desktop/Path_Planning/MMLPlayer/mmlplayer",
+					"targetIndexes" : 
+					[
+						39
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35,
+						36,
+						37,
+						38,
+						39,
+						40,
+						41,
+						42,
+						43,
+						44,
+						45,
+						46,
+						47,
+						48,
+						49,
+						50,
+						51,
+						52,
+						53,
+						54,
+						55,
+						56,
+						57,
+						58,
+						59,
+						60,
+						61,
+						62,
+						63,
+						64,
+						65,
+						66,
+						67,
+						68,
+						69,
+						70,
+						71,
+						72,
+						73,
+						74
+					],
+					"name" : "NHT_Planner",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29,
+						30,
+						31,
+						32,
+						33,
+						34,
+						35,
+						36,
+						37,
+						38,
+						39,
+						40,
+						41,
+						42,
+						43,
+						44,
+						45,
+						46,
+						47,
+						48,
+						49,
+						50,
+						51,
+						52,
+						53,
+						54,
+						55,
+						56,
+						57,
+						58,
+						59,
+						60,
+						61,
+						62,
+						63,
+						64,
+						65,
+						66,
+						67,
+						68,
+						69,
+						70,
+						71,
+						72,
+						73,
+						74,
+						75,
+						76,
+						77,
+						78,
+						79,
+						80,
+						81,
+						82,
+						83,
+						84,
+						85,
+						86,
+						87,
+						88,
+						89,
+						90,
+						91,
+						92,
+						93,
+						94,
+						95,
+						96,
+						97,
+						98,
+						99,
+						100
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 63,
+					"id" : "booleanSubtraction::@6d99e1cdea6c33fdafd7",
+					"jsonFile" : "target-booleanSubtraction-Debug-34231fa62583146c7d12.json",
+					"name" : "booleanSubtraction",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 67,
+					"id" : "cheapgui::@0af5695f37981cbe6fce",
+					"jsonFile" : "target-cheapgui-Debug-8d6c2c7e9427242d57e9.json",
+					"name" : "cheapgui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 67,
+					"id" : "cheapgui_gl1::@0af5695f37981cbe6fce",
+					"jsonFile" : "target-cheapgui_gl1-Debug-7761674abce8e47c48c3.json",
+					"name" : "cheapgui_gl1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 68,
+					"id" : "cheapgui_template::@cb15959045c5c922ed53",
+					"jsonFile" : "target-cheapgui_template-Debug-4bf4d66f1bcc17a91614.json",
+					"name" : "cheapgui_template",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 69,
+					"id" : "cheaplib::@e0fbbe2e6b81b4631268",
+					"jsonFile" : "target-cheaplib-Debug-fac4779ffc2602d6587b.json",
+					"name" : "cheaplib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 71,
+					"id" : "comportlib::@b882743ee525a7b5f9fc",
+					"jsonFile" : "target-comportlib-Debug-fe87c51da636afc9aec1.json",
+					"name" : "comportlib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 42,
+					"id" : "fsgui3d::@c9d33cae830cb1e1193f",
+					"jsonFile" : "target-fsgui3d-Debug-24ac4b05333ccc7c76e1.json",
+					"name" : "fsgui3d",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 43,
+					"id" : "fsgui3d_gl1::@390f4163e7a18410a628",
+					"jsonFile" : "target-fsgui3d_gl1-Debug-b3dcea42489faa5165b6.json",
+					"name" : "fsgui3d_gl1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 44,
+					"id" : "fsgui3d_gl2::@962e06c4b366cc503688",
+					"jsonFile" : "target-fsgui3d_gl2-Debug-d6fdccfdc22d7d734bcf.json",
+					"name" : "fsgui3d_gl2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 45,
+					"id" : "fsgui3d_template::@8dec7967c2f07d2d1204",
+					"jsonFile" : "target-fsgui3d_template-Debug-54db589aac253c3abc1c.json",
+					"name" : "fsgui3d_template",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 47,
+					"id" : "fsgui3d_template_easy::@b29103a65b4f9aa58074",
+					"jsonFile" : "target-fsgui3d_template_easy-Debug-f4078a8c1719c7516b4d.json",
+					"name" : "fsgui3d_template_easy",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 46,
+					"id" : "fsgui3d_template_with_filedialog::@c8eaa1b9bf1c8f5b2ffa",
+					"jsonFile" : "target-fsgui3d_template_with_filedialog-Debug-7397082cd0113d883dcf.json",
+					"name" : "fsgui3d_template_with_filedialog",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 39,
+					"id" : "fsguifiledialog::@296fd454583c0d7c5b9c",
+					"jsonFile" : "target-fsguifiledialog-Debug-be75a2f370d5de3b84b6.json",
+					"name" : "fsguifiledialog",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 35,
+					"id" : "fsguilib::@e6359fef44ba5bf7220f",
+					"jsonFile" : "target-fsguilib-Debug-6409d5ce3aa12515aea4.json",
+					"name" : "fsguilib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 37,
+					"id" : "fsguilib_gl1::@8986608eb6d0190861cb",
+					"jsonFile" : "target-fsguilib_gl1-Debug-d2c4a334159fb6906171.json",
+					"name" : "fsguilib_gl1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 36,
+					"id" : "fsguilib_gl2::@7c54e0ac72e496815d35",
+					"jsonFile" : "target-fsguilib_gl2-Debug-d331ca34b5ffcbfc612d.json",
+					"name" : "fsguilib_gl2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 38,
+					"id" : "fsguilib_nownd::@a2e0f27f8db66818da10",
+					"jsonFile" : "target-fsguilib_nownd-Debug-525caaa020c483da808a.json",
+					"name" : "fsguilib_nownd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 40,
+					"id" : "fsguilib_template::@52cbc229ef664b905764",
+					"jsonFile" : "target-fsguilib_template-Debug-c55ecb5d7d656c3facb1.json",
+					"name" : "fsguilib_template",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 41,
+					"id" : "fsguilib_template_with_filedialog::@03e0b954ac0c50f269fd",
+					"jsonFile" : "target-fsguilib_template_with_filedialog-Debug-497e37ad19a657c011a3.json",
+					"name" : "fsguilib_template_with_filedialog",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 26,
+					"id" : "fslazywindow::@a621f0a0d84dd998b84a",
+					"jsonFile" : "target-fslazywindow-Debug-65341bd9b345d8a31156.json",
+					"name" : "fslazywindow",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 27,
+					"id" : "fslazywindow_template::@03e82632e4eefe3b4091",
+					"jsonFile" : "target-fslazywindow_template-Debug-3c54a12c01a8a69453a8.json",
+					"name" : "fslazywindow_template",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 29,
+					"id" : "fssimplefiledialog::@a27e802c782c6bbfbf10",
+					"jsonFile" : "target-fssimplefiledialog-Debug-c08db72472e93bf56576.json",
+					"name" : "fssimplefiledialog",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 30,
+					"id" : "fssimplefiledialog_sample::@092937c396a0d911dff5",
+					"jsonFile" : "target-fssimplefiledialog_sample-Debug-196fd48ab1525aa9c2e0.json",
+					"name" : "fssimplefiledialog_sample",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 17,
+					"id" : "fssimplenowindow::@80f2029bf3d14ea56001",
+					"jsonFile" : "target-fssimplenowindow-Debug-df932eb7f957a2172d76.json",
+					"name" : "fssimplenowindow",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 17,
+					"id" : "fssimplewindow::@80f2029bf3d14ea56001",
+					"jsonFile" : "target-fssimplewindow-Debug-5565227232fc7e38535c.json",
+					"name" : "fssimplewindow",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 19,
+					"id" : "fssimplewindow_template::@ee073eec2a5236a881ef",
+					"jsonFile" : "target-fssimplewindow_template-Debug-5369c764f2e92f6c732f.json",
+					"name" : "fssimplewindow_template",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 59,
+					"id" : "geblcmd::@9f527e1f04054f19f493",
+					"jsonFile" : "target-geblcmd-Debug-1c3f89b76d96503e1459.json",
+					"name" : "geblcmd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 58,
+					"id" : "geblcmdlib::@23495c8c7b016d47705d",
+					"jsonFile" : "target-geblcmdlib-Debug-67b92b3b23cf6f492c85.json",
+					"name" : "geblcmdlib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 51,
+					"id" : "geblgl::@b93873174c23cfb69622",
+					"jsonFile" : "target-geblgl-Debug-96136ef04c6495e5d65d.json",
+					"name" : "geblgl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 53,
+					"id" : "geblgl_gl1::@c7e3506f223fbd36d3dc",
+					"jsonFile" : "target-geblgl_gl1-Debug-6b0199874b7059b16f45.json",
+					"name" : "geblgl_gl1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 52,
+					"id" : "geblgl_gl2::@6a899fa0e23e4ee9e225",
+					"jsonFile" : "target-geblgl_gl2-Debug-8662934acbc25f77ba47.json",
+					"name" : "geblgl_gl2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 54,
+					"id" : "geblgl_nownd::@215a539216a34b43286a",
+					"jsonFile" : "target-geblgl_nownd-Debug-01f7dba6d7bb08d055e2.json",
+					"name" : "geblgl_nownd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 56,
+					"id" : "geblgui::@a560e45cc3fd7b4315fb",
+					"jsonFile" : "target-geblgui-Debug-88f2768a2c1e2a744928.json",
+					"name" : "geblgui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 55,
+					"id" : "geblgui_foundation::@7ccdf341b8550928d588",
+					"jsonFile" : "target-geblgui_foundation-Debug-e2aff8d5f17dce726ea1.json",
+					"name" : "geblgui_foundation",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 49,
+					"id" : "geblkernel::@c5e2bf1710f25e8f4ed0",
+					"jsonFile" : "target-geblkernel-Debug-473ab764490c2bdf3615.json",
+					"name" : "geblkernel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 50,
+					"id" : "geblutil::@372d564aee22848b5f6e",
+					"jsonFile" : "target-geblutil-Debug-34fed68d55ac2d9525f2.json",
+					"name" : "geblutil",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 66,
+					"id" : "irsend::@46d2eb23e66ea7c09247",
+					"jsonFile" : "target-irsend-Debug-23a9a075ac04e353ee81.json",
+					"name" : "irsend",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 65,
+					"id" : "irsensor_gui::@33b5d52eb05773b7a8b2",
+					"jsonFile" : "target-irsensor_gui-Debug-8ca7a7924c358102cc73.json",
+					"name" : "irsensor_gui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 70,
+					"id" : "irtoylib::@810490c28c1e9e586cce",
+					"jsonFile" : "target-irtoylib-Debug-07f65457b3136ec00511.json",
+					"name" : "irtoylib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 74,
+					"id" : "mmlplayer::@e6ce53b571530d3131a3",
+					"jsonFile" : "target-mmlplayer-Debug-6b6cd4a888219e981c57.json",
+					"name" : "mmlplayer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "node::@83036dd679ff194edb3f",
+					"jsonFile" : "target-node-Debug-e9cf42fa50617946a06d.json",
+					"name" : "node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 62,
+					"id" : "nonManifoldToConstEdge::@0d543d8cf71b0b1ecba3",
+					"jsonFile" : "target-nonManifoldToConstEdge-Debug-b4432f43d1d92b9a98a6.json",
+					"name" : "nonManifoldToConstEdge",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "planner::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-planner-Debug-4888274b96f1f1c478c8.json",
+					"name" : "planner",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample00-lineart::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample00-lineart-Debug-c264dc5f9c9bb1e79f3f.json",
+					"name" : "sample00-lineart",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 28,
+					"id" : "sample00_bouncingBall::@40a5085eb4e89ec06f4f",
+					"jsonFile" : "target-sample00_bouncingBall-Debug-a0c627eb3f40d2fc7ddd.json",
+					"name" : "sample00_bouncingBall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample01-squash::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample01-squash-Debug-cbcdd5ef811e709f117a.json",
+					"name" : "sample01-squash",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample02-echo::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample02-echo-Debug-2d34bd7dd3dea2de6b4b.json",
+					"name" : "sample02-echo",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample03-mouse::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample03-mouse-Debug-8b2d997d5322415f5222.json",
+					"name" : "sample03-mouse",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample04-cube::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample04-cube-Debug-051c950820d5ecd67708.json",
+					"name" : "sample04-cube",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample05-key::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample05-key-Debug-43c36082a2f311ae72cc.json",
+					"name" : "sample05-key",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "sample06-15puzzle::@e55615331d27d04633b8",
+					"jsonFile" : "target-sample06-15puzzle-Debug-669ac92bc2eaad0f1609.json",
+					"name" : "sample06-15puzzle",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 18,
+					"id" : "test_fullscreen::@65cfea4dd3a7893e01e5",
+					"jsonFile" : "target-test_fullscreen-Debug-f6f2985b1e09cb9ec37b.json",
+					"name" : "test_fullscreen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 18,
+					"id" : "test_resize::@65cfea4dd3a7893e01e5",
+					"jsonFile" : "target-test_resize-Debug-b5f350158870c644556e.json",
+					"name" : "test_resize",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 73,
+					"id" : "ym2612::@7dd5e7b1dfd8fc0b9672",
+					"jsonFile" : "target-ym2612-Debug-ea4a78236778ea5fbc59.json",
+					"name" : "ym2612",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ys_bitmap_command_base::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ys_bitmap_command_base-Debug-9ea05cac386b14d7cdab.json",
+					"name" : "ys_bitmap_command_base",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 11,
+					"id" : "ysbitmap::@d3209de0bf9981aae0e7",
+					"jsonFile" : "target-ysbitmap-Debug-d701e75d5e20a881766e.json",
+					"name" : "ysbitmap",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 14,
+					"id" : "ysbitmapfont::@ec5f2bfcaa19fbe4118c",
+					"jsonFile" : "target-ysbitmapfont-Debug-5fe800f819aeb684479d.json",
+					"name" : "ysbitmapfont",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 13,
+					"id" : "ysbitmaputil::@bd5a61831710ad3d3905",
+					"jsonFile" : "target-ysbitmaputil-Debug-07eb2dd78c9cea9392f4.json",
+					"name" : "ysbitmaputil",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ysclass::@8cff40a9c464f6ddc72f",
+					"jsonFile" : "target-ysclass-Debug-f8fbc020aba4a0034814.json",
+					"name" : "ysclass",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "ysclass11::@064825d62c3f6bf3c5d7",
+					"jsonFile" : "target-ysclass11-Debug-d057743c60710a59b36e.json",
+					"name" : "ysclass11",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "yscropbmp::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-yscropbmp-Debug-885d7499a26fd7a0c859.json",
+					"name" : "yscropbmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 31,
+					"id" : "ysfontrenderer::@5eb3ef2240c2895bcb62",
+					"jsonFile" : "target-ysfontrenderer-Debug-ba19ccd40b9b3b14fb2e.json",
+					"name" : "ysfontrenderer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 57,
+					"id" : "ysgebl64::@81d24f8b5f7424658d5e",
+					"jsonFile" : "target-ysgebl64-Debug-fad0cea63ffab49800d8.json",
+					"name" : "ysgebl64",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysgl::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysgl-Debug-bd5460f7dfb4e57a068c.json",
+					"name" : "ysgl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysgl_makec::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysgl_makec-Debug-e82785c9023429c4bbbb.json",
+					"name" : "ysgl_makec",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysgl_makeh::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysgl_makeh-Debug-4ed81779dd046ce9c5cf.json",
+					"name" : "ysgl_makeh",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysgl_preproc::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysgl_preproc-Debug-ae151102bd49483b7e94.json",
+					"name" : "ysgl_preproc",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "ysglcpp::@2736cce6812b6eaeaefb",
+					"jsonFile" : "target-ysglcpp-Debug-6025a795a97a32105aa0.json",
+					"name" : "ysglcpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "ysglcpp_gl1::@a42102347c80eb121d6c",
+					"jsonFile" : "target-ysglcpp_gl1-Debug-a902455801d4eae91502.json",
+					"name" : "ysglcpp_gl1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "ysglcpp_gl2::@a8289abd9a6121897768",
+					"jsonFile" : "target-ysglcpp_gl2-Debug-6e76599f8cdea337bc1c.json",
+					"name" : "ysglcpp_gl2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 10,
+					"id" : "ysglcpp_nownd::@1587c78014f9465df73b",
+					"jsonFile" : "target-ysglcpp_nownd-Debug-25acdbd3afbd2db092bb.json",
+					"name" : "ysglcpp_nownd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysglsl_expand_source::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysglsl_expand_source-Debug-9461eb776c627212c785.json",
+					"name" : "ysglsl_expand_source",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysglslprogram_c::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysglslprogram_c-Debug-08d32f6a8510cfa44f29.json",
+					"name" : "ysglslprogram_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ysglslprogram_h::@e4add9ad529fe3f39327",
+					"jsonFile" : "target-ysglslprogram_h-Debug-8eb20a7b076de868833a.json",
+					"name" : "ysglslprogram_h",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysinvertbmp::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysinvertbmp-Debug-b1e297dd382bfeab4f40.json",
+					"name" : "ysinvertbmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysmakealphamask::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysmakealphamask-Debug-f66dbed36dbb15789a25.json",
+					"name" : "ysmakealphamask",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysmakeblackwhite::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysmakeblackwhite-Debug-b15554017f1022810418.json",
+					"name" : "ysmakeblackwhite",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysmakeblankbmp::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysmakeblankbmp-Debug-50058089bd43f337f993.json",
+					"name" : "ysmakeblankbmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysmakebmptile::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysmakebmptile-Debug-b8dd2c3190bb76d7ca80.json",
+					"name" : "ysmakebmptile",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysmakedensitymap::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysmakedensitymap-Debug-35588aafe7cbc110d781.json",
+					"name" : "ysmakedensitymap",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 15,
+					"id" : "ysmaketextbmp::@4a2b1f15adfbe3b3f844",
+					"jsonFile" : "target-ysmaketextbmp-Debug-cd1e908faa762cbbdbc9.json",
+					"name" : "ysmaketextbmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysmakewhitetransparent::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysmakewhitetransparent-Debug-43a3736a39dfc4212790.json",
+					"name" : "ysmakewhitetransparent",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysnegatebmp::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysnegatebmp-Debug-f25c53e37cce1f7a90c6.json",
+					"name" : "ysnegatebmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 16,
+					"id" : "ysnullsystemfont::@7d985d706196d54751c9",
+					"jsonFile" : "target-ysnullsystemfont-Debug-a0f6f5c1d071a8b267ea.json",
+					"name" : "ysnullsystemfont",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "yspastebmp::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-yspastebmp-Debug-8f1300d98cf4b182a39c.json",
+					"name" : "yspastebmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ysport::@4b0f1bcfa4d23cd458c2",
+					"jsonFile" : "target-ysport-Debug-056da7d0b577af7feced.json",
+					"name" : "ysport",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "ysresizebmp::@15b99e84dddd3132a54b",
+					"jsonFile" : "target-ysresizebmp-Debug-0605725e7b3c8e441203.json",
+					"name" : "ysresizebmp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 61,
+					"id" : "ysshellext_sample::@84c4ab6ba16179e555c3",
+					"jsonFile" : "target-ysshellext_sample-Debug-c9fae25ad9fc2d57362d.json",
+					"name" : "ysshellext_sample",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 21,
+					"id" : "yssimplesound::@46d6ca80c55bbff6d6d9",
+					"jsonFile" : "target-yssimplesound-Debug-ac3c7a9d079973a02281.json",
+					"name" : "yssimplesound",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 21,
+					"id" : "yssimplesound_linux_alsa::@46d6ca80c55bbff6d6d9",
+					"jsonFile" : "target-yssimplesound_linux_alsa-Debug-1023300a9c2a56d94451.json",
+					"name" : "yssimplesound_linux_alsa",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 21,
+					"id" : "yssimplesound_nownd::@46d6ca80c55bbff6d6d9",
+					"jsonFile" : "target-yssimplesound_nownd-Debug-b414de8b90c51181445b.json",
+					"name" : "yssimplesound_nownd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 24,
+					"id" : "yssimplesound_sample::@d207914c2585dea61281",
+					"jsonFile" : "target-yssimplesound_sample-Debug-19df90de40284a75da71.json",
+					"name" : "yssimplesound_sample",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 25,
+					"id" : "yssimplesound_sample_fssimplewindow::@eebcfcea6306800874b0",
+					"jsonFile" : "target-yssimplesound_sample_fssimplewindow-Debug-9a2efb17f1f9f09a6a25.json",
+					"name" : "yssimplesound_sample_fssimplewindow",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 22,
+					"id" : "yssimplesound_streamtest::@a656b6165fff5aa95680",
+					"jsonFile" : "target-yssimplesound_streamtest-Debug-e4192097ab3e646d0c01.json",
+					"name" : "yssimplesound_streamtest",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 23,
+					"id" : "yssimplesound_test::@738fd900f5818a658b66",
+					"jsonFile" : "target-yssimplesound_test-Debug-588d44b02e56aaf5eed1.json",
+					"name" : "yssimplesound_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 22,
+					"id" : "yssimplesound_test01::@a656b6165fff5aa95680",
+					"jsonFile" : "target-yssimplesound_test01-Debug-13ca60c2b147de338271.json",
+					"name" : "yssimplesound_test01",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 48,
+					"id" : "yssocket::@79fc9c095dab5cd69212",
+					"jsonFile" : "target-yssocket-Debug-65dc8aea38179ced09d2.json",
+					"name" : "yssocket",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 16,
+					"id" : "yssystemfont::@7d985d706196d54751c9",
+					"jsonFile" : "target-yssystemfont-Debug-9b1a609adf406c20d9c8.json",
+					"name" : "yssystemfont",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 32,
+					"id" : "ystexturemanager::@027fefb7af619ddd19a0",
+					"jsonFile" : "target-ystexturemanager-Debug-f5303e5c22581cb949d1.json",
+					"name" : "ystexturemanager",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 33,
+					"id" : "ystexturemanager_gl::@eb0e97ff4bcbe560d397",
+					"jsonFile" : "target-ystexturemanager_gl-Debug-2aca6525c020f0a2434c.json",
+					"name" : "ystexturemanager_gl",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 34,
+					"id" : "ystexturemanager_nownd::@6882dedb83ae56854298",
+					"jsonFile" : "target-ystexturemanager_nownd-Debug-03a4661e32442d9a3661.json",
+					"name" : "ystexturemanager_nownd",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/afariach/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build",
+		"source" : "/home/afariach/Desktop/Path_Planning/NHT_Planning/NHT_Planner"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

@@ -1,0 +1,1 @@
+/usr/bin/g++   -Wl,--no-as-needed -g  -rdynamic CMakeFiles/yssimplesound_sample_fssimplewindow.dir/main.cpp.o  -o yssimplesound_sample_fssimplewindow  ../../fssimplewindow/src/libfssimplewindow.a ../src/libyssimplesound.a ../src/libyssimplesound.a -lpthread -static-libstdc++ -static-libgcc -lGL -lGLU -lX11 -lasound 

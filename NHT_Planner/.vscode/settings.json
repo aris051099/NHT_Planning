@@ -47,6 +47,9 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "typeinfo": "cpp",
-        "bit": "cpp"
-    }
+        "bit": "cpp",
+    },
+    "cmake.debugConfig": {"args":["../map1.txt"],
+        "externalConsole": false,
+    },
 }
