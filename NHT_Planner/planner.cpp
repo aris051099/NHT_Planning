@@ -431,10 +431,10 @@ static void planner(
 	double prop_time=0;
 
 	tree.push_back(new node(0,euclidean(x_goal,x_0),nullptr,u_0,x_0));
-	
+	std::cout<< "Number of samples: "<< K << std::endl; 
 	for(int i = 0; i < K; ++i)
 	{
-		std::cout<< "K: "<< i << std::endl; 
+		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
 		if(prob > 0.95) //Goal biasing by 5% 
 		{
@@ -458,9 +458,7 @@ static void planner(
 				u_k[0] = (double) rand_u_vel(gen)/100.0;
 				u_k[1] = rand_u_ang_vel(gen);
 				u_k.set_tprop(rand_t_prop(gen));
-
-				if(small_control(u_k))
-					continue;
+ 
 
 				x_prop.propagate(x_near,u_k);
 
@@ -515,7 +513,6 @@ static void planner(
 void DrawTarget(int x,int y,int w,int h)
 {
 	glColor3ub(255,0,255);
-
 	glBegin(GL_QUADS);
 	glVertex2i(x  ,y); //0,0
 	glVertex2i(x+w,y); //1,0
@@ -524,6 +521,40 @@ void DrawTarget(int x,int y,int w,int h)
 	glEnd();
 }
 
+void DrawPOS(int x,int y,int w,int h)
+{
+	glColor3ub(255,0,0);
+	glBegin(GL_QUADS);
+	glVertex2i(x  ,y); //0,0
+	glVertex2i(x+w,y); //1,0
+	glVertex2i(x+w,y+h); // 1,1
+ 	glVertex2i(x  ,y+h); // 0,1
+	glEnd();
+}
+
+void polar2coord(double* coords,double x,double theta)
+{
+	coords[0] = x*cos(theta);
+	coords[1] = x*sin(theta);
+}
+
+void meter2pixel(double* coords_meters)
+{
+	coords_meters[0] = std::round(coords_meters[0]/0.01);
+	coords_meters[1] = std::round(coords_meters[1]/0.01);
+}
+
+void polar2meter(double* coords,double x,double theta)
+{
+	coords[0] = std::round((x*cos(theta))/0.01);
+	coords[1] = std::round((x*sin(theta))/0.01);
+}
+void print_pos(Xstate& x)
+{
+	double coords[2]={0,0};
+	polar2coord(coords,x[0],x[2]); 
+	std::cout<< std::round(coords[0]/0.01) << "," << std::round(coords[1]/0.01) << std::endl;
+}
 /** Your final solution will be graded by an grading script which will
  * send the default 6 arguments:
  *    map, numOfDOFs, commaSeparatedStartPos, commaSeparatedGoalPos, 
@@ -544,8 +575,13 @@ int main(int argc, char ** argv) {
 	Ustate u_start(0,0);
 	Xstate x_prop;
 	Xstate x_start(0,0,0,0);
+	printf("Initial condition in X,Y:\n");
+	print_pos(x_start);
 	Xstate x_goal(2,0,0.3,0);
+	printf("Goal condition in X,Y: \n");
+	print_pos(x_goal);
 	u_start.set_tprop(1);
+	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
 	// double prop_time = rand_t_prop(gen);
 	// auto a = x_goal.getPointer();
@@ -564,36 +600,56 @@ int main(int argc, char ** argv) {
 	// nodeHdle test(new node(1,1,nullptr,u_start));
 	// test.node_p->setXstate(x_goal);
 	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
-	CleanUp(tree);
-	plan.clear();
-
+	int plan_size = plan.size();
+	double coords[2] ={0,0};
+	double coords_start[2]={0,0};
+	polar2meter(coords_start,x_start[0],x_start[2]);
+	double coords_goal[2]={0,0};
+	polar2meter(coords_goal,x_goal[0],x_goal[2]);
+	int idx = 0; 
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
 	//// grading script will not work and you will recieve a 0.
 	///////////////////////////////////////
-	// FsOpenWindow(0,0,600,800,1);
-	// 	for(;;)
-	// 	{
-	// 		FsPollDevice();
-	// 		if(FSKEY_ESC==FsInkey())
-	// 		{
-	// 			break;
-	// 		}
+
+	// for(int i = 0; i < plan_size ; ++i)
+	// {
+	// 	Xstate state(plan[i]->getXstate());
+	// 	print_pos(state);
+	// }
 
 
-	// 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	FsOpenWindow(0,0,800,800,1);
 
-	// 		DrawTarget(200,400,10,15);
-
-
-
-	// 		FsSwapBuffers();
-	// 		FsSleep(10);
-	// 	}
+		for(;;)
+		{
+			FsPollDevice();
+			if(FSKEY_ESC==FsInkey())
+			{
+				break;
+			}
+			if(idx > plan_size)
+				idx = 0;
+			Xstate x(plan[idx]->getXstate());
+			polar2coord(coords,x[0],x[2]); 
+			meter2pixel(coords);
+			std::cout<< coords[0] << "," << coords[1] << std::endl;
+			
+			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			DrawPOS(400+coords_start[0],400+coords_start[1],20,20);
+			DrawPOS(400+coords_goal[0],400+coords_goal[1],20,20);
+			DrawTarget(400+coords[0],400+coords[1],10,15);
+			FsSwapBuffers();
+			FsSleep(500);
+			++idx; 
+		}
     // Your solution's path should start with startPos and end with goalPos
     // if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 
     // 	!equalDoubleArrays(plan[planlength-1], goalPos, numOfDOFs)) {
 	// 	throw std::runtime_error("Start or goal position not matching");
 	// }
+
+	CleanUp(tree);
+	plan.clear();
 	return 0;
 }
