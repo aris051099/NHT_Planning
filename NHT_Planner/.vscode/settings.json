@@ -56,9 +56,12 @@
         "optional": "cpp",
         "set": "cpp",
         "streambuf": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "condition_variable": "cpp",
+        "system_error": "cpp"
     },
     "cmake.debugConfig": {"args":["../map1.txt"],
-        "externalConsole": false,
+        "externalConsole": true,
+        "console": "externalTerminal"
     },
 }

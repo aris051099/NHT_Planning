@@ -521,6 +521,18 @@ void DrawTarget(int x,int y,int w,int h)
 	glEnd();
 }
 
+void DrawTarget_angle(int x,int y,int w,int h,double angle)
+{
+	double mag = sqrt(w*w + h*h);
+	glColor3ub(255,0,255);
+	glBegin(GL_QUADS);
+	glVertex2i(x,y); //0,0
+	glVertex2i(x+w*cos(angle),y+w*sin(angle)); //1,0
+	glVertex2i(x+mag*cos(0.785398+angle),y+mag*sin(0.785398+angle)); // 1,1
+ 	glVertex2i(x-h*sin(angle),y+h*cos(angle)); // 0,1
+	glEnd(); 
+}
+
 void DrawPOS(int x,int y,int w,int h)
 {
 	glColor3ub(255,0,0);
@@ -532,10 +544,10 @@ void DrawPOS(int x,int y,int w,int h)
 	glEnd();
 }
 
-void polar2coord(double* coords,double x,double theta)
+void polar2coord(double* coords,Xstate x)
 {
-	coords[0] = x*cos(theta);
-	coords[1] = x*sin(theta);
+	coords[0] = x[0]*cos(x[2]);
+	coords[1] = x[0]*sin(x[2]);
 }
 
 void meter2pixel(double* coords_meters)
@@ -552,7 +564,7 @@ void polar2meter(double* coords,double x,double theta)
 void print_pos(Xstate& x)
 {
 	double coords[2]={0,0};
-	polar2coord(coords,x[0],x[2]); 
+	polar2coord(coords,x); 
 	std::cout<< std::round(coords[0]/0.01) << "," << std::round(coords[1]/0.01) << std::endl;
 }
 /** Your final solution will be graded by an grading script which will
@@ -628,17 +640,21 @@ int main(int argc, char ** argv) {
 			{
 				break;
 			}
-			if(idx > plan_size)
+			if(idx >= plan_size)
 				idx = 0;
 			Xstate x(plan[idx]->getXstate());
-			polar2coord(coords,x[0],x[2]); 
+ 			double coords[2] ={0,0};
+
+			// Ustate u(plan[idx]->getUstate());
+			polar2coord(coords,x); 
 			meter2pixel(coords);
 			std::cout<< coords[0] << "," << coords[1] << std::endl;
 			
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			DrawPOS(400+coords_start[0],400+coords_start[1],20,20);
 			DrawPOS(400+coords_goal[0],400+coords_goal[1],20,20);
-			DrawTarget(400+coords[0],400+coords[1],10,15);
+			// DrawTarget(400+coords[0],400+coords[1],10,15);
+			DrawTarget_angle(400+coords[0],400+coords[1],10,15,x[2]);
 			FsSwapBuffers();
 			FsSleep(500);
 			++idx; 
