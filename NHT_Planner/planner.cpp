@@ -436,7 +436,7 @@ static void planner(
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.95) //Goal biasing by 5% 
+		if(prob > 0.20) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
 		}
@@ -567,6 +567,8 @@ void print_pos(Xstate& x)
 	polar2coord(coords,x); 
 	std::cout<< std::round(coords[0]/0.01) << "," << std::round(coords[1]/0.01) << std::endl;
 }
+
+
 /** Your final solution will be graded by an grading script which will
  * send the default 6 arguments:
  *    map, numOfDOFs, commaSeparatedStartPos, commaSeparatedGoalPos, 
@@ -592,7 +594,7 @@ int main(int argc, char ** argv) {
 	Xstate x_goal(2,0,0.3,0);
 	printf("Goal condition in X,Y: \n");
 	print_pos(x_goal);
-	u_start.set_tprop(1);
+	u_start.set_tprop(0);
 	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
 	// double prop_time = rand_t_prop(gen);
@@ -630,8 +632,13 @@ int main(int argc, char ** argv) {
 	// 	print_pos(state);
 	// }
 
+	Xstate x_k(plan[0]->getXstate());
 
-	FsOpenWindow(0,0,800,800,1);
+	int w_width = 1200;
+	int w_height = 1200;
+
+	FsOpenWindow(0,0,w_width,w_height,1);
+
 
 		for(;;)
 		{
@@ -642,21 +649,41 @@ int main(int argc, char ** argv) {
 			}
 			if(idx >= plan_size)
 				idx = 0;
-			Xstate x(plan[idx]->getXstate());
- 			double coords[2] ={0,0};
 
-			// Ustate u(plan[idx]->getUstate());
-			polar2coord(coords,x); 
-			meter2pixel(coords);
-			std::cout<< coords[0] << "," << coords[1] << std::endl;
-			
-			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			DrawPOS(400+coords_start[0],400+coords_start[1],20,20);
-			DrawPOS(400+coords_goal[0],400+coords_goal[1],20,20);
-			// DrawTarget(400+coords[0],400+coords[1],10,15);
-			DrawTarget_angle(400+coords[0],400+coords[1],10,15,x[2]);
-			FsSwapBuffers();
-			FsSleep(500);
+			Ustate u_k(plan[idx]->getUstate());
+			Xstate x_prop; 
+			int t_prop = sec2msec(u_k.get_tprop());
+			for(int i = 0; i < t_prop ; ++i)
+			{
+
+				// printf("Iteration %d \n",i);
+				// x_k = din_sytem.A_dt*x_k + din_sytem.B_dt*u_k;
+				x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
+				x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
+				x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
+				x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
+				x_k[0] = x_prop[0];
+				x_k[1] = x_prop[1];
+				x_k[2] = x_prop[2];
+				x_k[3] = x_prop[3];
+				// std::cout << x_k << std::endl;
+				// x_k = x_prop; 
+
+				double coords[2] ={0,0};
+				// Ustate u(plan[idx]->getUstate());
+				polar2coord(coords,x_prop); 
+				meter2pixel(coords);
+				std::cout<< coords[0] << "," << coords[1] << std::endl;
+				
+				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+				DrawPOS(w_width/2+coords_start[0],w_height/2+coords_start[1],20,20);
+				DrawPOS(w_width/2+coords_goal[0],w_height/2+coords_goal[1],20,20);
+				DrawTarget(w_width/2+coords[0],w_height/2+coords[1],10,15);
+				// DrawTarget_angle(400+coords[0],400+coords[1],10,15,x[2]);
+				FsSwapBuffers();
+				// FsSleep(1);
+			};
+
 			++idx; 
 		}
     // Your solution's path should start with startPos and end with goalPos
