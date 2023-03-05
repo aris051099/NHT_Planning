@@ -1,2 +1,0 @@
-/usr/bin/ar qc libym2612.a  CMakeFiles/ym2612.dir/ym2612.cpp.o CMakeFiles/ym2612.dir/ym2612wave.cpp.o
-/usr/bin/ranlib libym2612.a

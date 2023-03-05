@@ -482,7 +482,7 @@ static void planner(
 			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
 			if(dist2goal < 0.1)
 			{
-				printf("Goal found \n");
+				printf("Goal found at K: %d\n", i);
 				printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
 				printf("Initial State: \n");
 				std::cout << x_0 << std::endl;
@@ -512,7 +512,7 @@ static void planner(
 
 void DrawTarget(int x,int y,int w,int h)
 {
-	glColor3ub(255,0,255);
+	glColor3ub(255,200,10);
 	glBegin(GL_QUADS);
 	glVertex2i(x  ,y); //0,0
 	glVertex2i(x+w,y); //1,0
@@ -581,9 +581,9 @@ void print_pos(Xstate& x)
  * Programs that do not will automatically get a 0.
  * */
 int main(int argc, char ** argv) {
-	double* map;
-	int x_size, y_size;
-	std::tie(map, x_size, y_size) = loadMap(argv[1]);
+	double* map = nullptr;
+	int x_size=0, y_size=0;
+	// std::tie(map, x_size, y_size) = loadMap(argv[1]);
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
 	Ustate u_start(0,0);
@@ -597,22 +597,6 @@ int main(int argc, char ** argv) {
 	u_start.set_tprop(0);
 	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
-	// double prop_time = rand_t_prop(gen);
-	// auto a = x_goal.getPointer();
-	// printf("Testing printf\n");
-	// printf("%f,%f,%f,%f \n",a[0],a[1],a[2],a[3]);
-	// printf("Initial state\n");
-	// std::cout<<x_start << std::endl;
-	// printf("Goal State\n");
-	// std::cout << x_goal<< std::endl;
-	// printf("Before prop\n");
-	// std::cout << x_prop << std::endl;
-	// printf("After prop\n");
-	// x_prop.propagate(x_start,u_start);
-	// std::cout << x_prop << std::endl;
-	// std::cout <<x_start << std::endl;
-	// nodeHdle test(new node(1,1,nullptr,u_start));
-	// test.node_p->setXstate(x_goal);
 	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
 	int plan_size = plan.size();
 	double coords[2] ={0,0};
@@ -620,7 +604,7 @@ int main(int argc, char ** argv) {
 	polar2meter(coords_start,x_start[0],x_start[2]);
 	double coords_goal[2]={0,0};
 	polar2meter(coords_goal,x_goal[0],x_goal[2]);
-	int idx = 0; 
+	int idx = 1; 
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
 	//// grading script will not work and you will recieve a 0.
@@ -651,38 +635,42 @@ int main(int argc, char ** argv) {
 				idx = 0;
 
 			Ustate u_k(plan[idx]->getUstate());
-			Xstate x_prop; 
+			Xstate x_prop(plan[idx]->getXstate()); 
+			double coords[2] ={0,0};
+			// Ustate u(plan[idx]->getUstate());
+			polar2coord(coords,x_prop); 
+			meter2pixel(coords);
 			int t_prop = sec2msec(u_k.get_tprop());
-			for(int i = 0; i < t_prop ; ++i)
-			{
+			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			DrawPOS(w_width/2+coords_start[0],w_height/2+coords_start[1],20,20);
+			DrawPOS(w_width/2+coords_goal[0],w_height/2+coords_goal[1],20,20);
+			DrawTarget(w_width/2+coords[0],w_height/2+coords[1],10,15);
+			// DrawTarget_angle(400+coords[0],400+coords[1],10,15,x[2]);
+			FsSwapBuffers();
+			FsSleep(250);
 
-				// printf("Iteration %d \n",i);
-				// x_k = din_sytem.A_dt*x_k + din_sytem.B_dt*u_k;
-				x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
-				x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
-				x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
-				x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
-				x_k[0] = x_prop[0];
-				x_k[1] = x_prop[1];
-				x_k[2] = x_prop[2];
-				x_k[3] = x_prop[3];
-				// std::cout << x_k << std::endl;
-				// x_k = x_prop; 
+			// for(int i = 0; i < t_prop ; ++i)
+			// {
 
-				double coords[2] ={0,0};
-				// Ustate u(plan[idx]->getUstate());
-				polar2coord(coords,x_prop); 
-				meter2pixel(coords);
-				std::cout<< coords[0] << "," << coords[1] << std::endl;
-				
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-				DrawPOS(w_width/2+coords_start[0],w_height/2+coords_start[1],20,20);
-				DrawPOS(w_width/2+coords_goal[0],w_height/2+coords_goal[1],20,20);
-				DrawTarget(w_width/2+coords[0],w_height/2+coords[1],10,15);
-				// DrawTarget_angle(400+coords[0],400+coords[1],10,15,x[2]);
-				FsSwapBuffers();
-				// FsSleep(1);
-			};
+			// 	// printf("Iteration %d \n",i);
+			// 	// x_k = din_sytem.A_dt*x_k + din_sytem.B_dt*u_k;
+			// 	x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
+			// 	x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
+			// 	x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
+			// 	x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
+			// 	// x_k[0] = x_prop[0];
+			// 	// x_k[1] = x_prop[1];
+			// 	// x_k[2] = x_prop[2];
+			// 	// x_k[3] = x_prop[3];
+			// 	// std::cout << x_k << std::endl;
+			// 	x_k = x_prop; 
+
+			// 	double coords[2] ={0,0};
+			// 	// Ustate u(plan[idx]->getUstate());
+			// 	polar2coord(coords,x_prop); 
+			// 	meter2pixel(coords);
+			// 	// std::cout<< coords[0] << "," << coords[1] << std::endl;
+			// };
 
 			++idx; 
 		}

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libmmlplayer.a  CMakeFiles/mmlplayer.dir/mmlplayer.cpp.o CMakeFiles/mmlplayer.dir/defaultFMB.cpp.o
-/usr/bin/ranlib libmmlplayer.a

@@ -1,1 +1,0 @@
-/usr/bin/g++  -g  -rdynamic CMakeFiles/sample06-15puzzle.dir/sample06-15puzzle/sample06-15puzzle.cpp.o  -o sample06-15puzzle  ../src/libfssimplewindow.a ../../ysbitmapfont/src/libysbitmapfont.a -lGL -lGLU -lX11 ../../ysgl/src/libysgl.a -lpthread -static-libstdc++ -static-libgcc 

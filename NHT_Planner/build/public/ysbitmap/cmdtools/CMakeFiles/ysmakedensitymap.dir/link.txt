@@ -1,1 +1,0 @@
-/usr/bin/g++  -g  -rdynamic CMakeFiles/ysmakedensitymap.dir/ysmakedensitymap.cpp.o  -o ysmakedensitymap  ../../ysclass/src/libysclass.a ../src/libysbitmap.a -lpthread -static-libstdc++ -static-libgcc 

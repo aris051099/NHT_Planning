@@ -1,1 +1,0 @@
-/usr/bin/g++  -g  -rdynamic CMakeFiles/yscropbmp.dir/yscropbmp.cpp.o  -o yscropbmp  ../../ysclass/src/libysclass.a ../src/libysbitmap.a -lpthread -static-libstdc++ -static-libgcc 

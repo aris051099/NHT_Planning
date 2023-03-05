@@ -8,6 +8,7 @@ add_executable(planner planner.cpp)
 
 add_subdirectory(node)
 
+
 add_subdirectory(../../public/src ${CMAKE_BINARY_DIR}/public)
 add_subdirectory(../../MMLPlayer/ym2612 ${CMAKE_BINARY_DIR}/ym2612 )
 add_subdirectory(../../MMLPlayer/mmlplayer ${CMAKE_BINARY_DIR}/mmlplayer )

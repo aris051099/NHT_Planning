@@ -1,1 +1,0 @@
-/usr/bin/g++   -Wl,--no-as-needed -g  -rdynamic CMakeFiles/ysgl_preproc.dir/glsl_src/preproc.cpp.o  -o ../../../exe/ysgl_preproc  ../../ysclass/src/libysclass.a -lpthread -static-libstdc++ -static-libgcc 

@@ -1,1 +1,0 @@
-/usr/bin/g++  -g  -rdynamic CMakeFiles/ysnegatebmp.dir/ysnegatebmp.cpp.o  -o ysnegatebmp  ../../ysclass/src/libysclass.a ../src/libysbitmap.a -lpthread -static-libstdc++ -static-libgcc 

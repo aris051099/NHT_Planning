@@ -1,1 +1,0 @@
-/usr/bin/g++  -g  -rdynamic CMakeFiles/yssimplesound_test01.dir/main.cpp.o  -o yssimplesound_test01  ../../../fssimplewindow/src/libfssimplewindow.a ../libyssimplesound.a ../libyssimplesound_linux_alsa.a -lGL -lGLU -lX11 -lasound 

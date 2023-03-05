@@ -1,1 +1,0 @@
-/usr/bin/g++  -g  -rdynamic CMakeFiles/ysmakewhitetransparent.dir/ysmakewhitetransparent.cpp.o  -o ysmakewhitetransparent  ../../ysclass/src/libysclass.a ../src/libysbitmap.a -lpthread -static-libstdc++ -static-libgcc 

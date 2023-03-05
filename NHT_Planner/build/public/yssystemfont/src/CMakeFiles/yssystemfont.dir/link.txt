@@ -1,2 +1,0 @@
-/usr/bin/ar qc libyssystemfont.a  CMakeFiles/yssystemfont.dir/linux/ysunixsystemfont.cpp.o
-/usr/bin/ranlib libyssystemfont.a
