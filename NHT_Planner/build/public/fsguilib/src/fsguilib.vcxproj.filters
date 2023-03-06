@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\windows\fsguiclipboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\windows\fsguitimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguibase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguibitmaputil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguicanvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguidialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguidialogutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguidraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguipopupmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguirecent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguistatusbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\miscdlg\fsguicolordialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\miscdlg\fsguinumberdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguiboxselection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguibase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguibitmaputil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguicanvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguiclipboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguicommondrawing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguidialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguidialogutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguipopupmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguirecent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguistatusbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\fsguitimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\miscdlg\fsguicolordialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\miscdlg\fsguinumberdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fsguilib\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{F8D7D7F9-2B4A-3A83-A031-B94C819322DF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CC8FAD47-D88F-34B3-AD4D-567022ED43FA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

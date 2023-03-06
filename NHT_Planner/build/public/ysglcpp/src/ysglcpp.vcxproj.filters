@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffer_sphereutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffermanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglparticlemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglcascadedshadowmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffer_arrowutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffer_sphereutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglcpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffermanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglparticlemanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglcascadedshadowmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\ysglbuffer_arrowutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{F8D7D7F9-2B4A-3A83-A031-B94C819322DF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CC8FAD47-D88F-34B3-AD4D-567022ED43FA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

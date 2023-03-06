@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "public/opencv",
+		"source" : "C:/Users/arisa/Desktop/Path_Planning/public/src/opencv"
+	}
+}

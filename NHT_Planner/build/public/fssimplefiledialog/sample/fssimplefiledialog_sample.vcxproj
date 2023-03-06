@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C4BA7009-3CE8-3430-B3DA-A26BE6CB86FE}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>fssimplefiledialog_sample</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fssimplefiledialog_sample.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fssimplefiledialog_sample</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fssimplefiledialog_sample.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fssimplefiledialog_sample</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">fssimplefiledialog_sample.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">fssimplefiledialog_sample</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">fssimplefiledialog_sample.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">fssimplefiledialog_sample</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\fslazywindow\src\Debug\fslazywindow.lib;..\src\Debug\fssimplefiledialog.lib;..\..\fssimplewindow\src\Debug\fssimplewindow.lib;..\..\ysport\src\Debug\ysport.lib;..\..\ysclass\src\Debug\ysclass.lib;..\..\yssystemfont\src\Debug\yssystemfont.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/Debug/fssimplefiledialog_sample.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/Debug/fssimplefiledialog_sample.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\fslazywindow\src\Release\fslazywindow.lib;..\src\Release\fssimplefiledialog.lib;..\..\fssimplewindow\src\Release\fssimplewindow.lib;..\..\ysport\src\Release\ysport.lib;..\..\ysclass\src\Release\ysclass.lib;..\..\yssystemfont\src\Release\yssystemfont.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/Release/fssimplefiledialog_sample.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/Release/fssimplefiledialog_sample.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\fslazywindow\src\MinSizeRel\fslazywindow.lib;..\src\MinSizeRel\fssimplefiledialog.lib;..\..\fssimplewindow\src\MinSizeRel\fssimplewindow.lib;..\..\ysport\src\MinSizeRel\ysport.lib;..\..\ysclass\src\MinSizeRel\ysclass.lib;..\..\yssystemfont\src\MinSizeRel\yssystemfont.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/MinSizeRel/fssimplefiledialog_sample.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/MinSizeRel/fssimplefiledialog_sample.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fslazywindow\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplewindow\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src;C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysport\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\yssystemfont\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\fslazywindow\src\RelWithDebInfo\fslazywindow.lib;..\src\RelWithDebInfo\fssimplefiledialog.lib;..\..\fssimplewindow\src\RelWithDebInfo\fssimplewindow.lib;..\..\ysport\src\RelWithDebInfo\ysport.lib;..\..\ysclass\src\RelWithDebInfo\ysclass.lib;..\..\yssystemfont\src\RelWithDebInfo\yssystemfont.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/RelWithDebInfo/fssimplefiledialog_sample.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/RelWithDebInfo/fssimplefiledialog_sample.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\sample\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/fssimplefiledialog/sample/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/fssimplefiledialog/sample/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/fssimplefiledialog/sample/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/fssimplefiledialog/sample/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/build/public/fssimplefiledialog/sample/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\sample\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\fssimplefiledialog\sample\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\ZERO_CHECK.vcxproj">
+      <Project>{21BBF479-8E9C-302F-B360-97063B65E218}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fslazywindow\src\fslazywindow.vcxproj">
+      <Project>{D3407F82-9D31-3ED0-A9B3-B03354AF6EDE}</Project>
+      <Name>fslazywindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplefiledialog\src\fssimplefiledialog.vcxproj">
+      <Project>{16AE6A25-1D9D-3618-80F0-E48F4211BB4F}</Project>
+      <Name>fssimplefiledialog</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\fssimplewindow\src\fssimplewindow.vcxproj">
+      <Project>{4946BF39-AE4F-38D7-BA92-90C3700BC665}</Project>
+      <Name>fssimplewindow</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\ysclass\src\ysclass.vcxproj">
+      <Project>{0A6DD540-E158-34A8-A5D4-3F04C3BBC481}</Project>
+      <Name>ysclass</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\ysport\src\ysport.vcxproj">
+      <Project>{4F12D7E6-BC2F-3FDD-8974-51C83D21B7E4}</Project>
+      <Name>ysport</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\public\yssystemfont\src\yssystemfont.vcxproj">
+      <Project>{C86FCD7A-772D-3AD9-A21B-485A6FB2F9FC}</Project>
+      <Name>yssystemfont</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

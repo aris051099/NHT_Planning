@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "public/ir_transceiver",
+		"source" : "C:/Users/arisa/Desktop/Path_Planning/public/src/ir_transceiver"
+	}
+}

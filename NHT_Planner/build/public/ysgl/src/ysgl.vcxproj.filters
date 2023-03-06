@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglwindows.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglbitmap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglmath.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglsl3ddrawing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslbitmaprenderer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslplain2ddrawing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslsharedrenderer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslutil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslprogram.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslprogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglwindows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysgl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglbitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysgldef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglheader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglmath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglsl3ddrawing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslbitmaprenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslplain2ddrawing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslsharedrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\ysglslutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\bmpRendererFragmentShaderSrc.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\bmpRendererVertexShaderSrc.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\flash3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\flash3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\flashByPointSprite3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\flashByPointSprite3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\plain2DDrawingFragmentShaderSrc.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\plain2DDrawingVertexShaderSrc.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColor3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColor3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorBillBoard3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorBillBoard3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorMarker3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorMarker3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorMarkerByPointSprite3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorMarkerByPointSprite3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorPerPixShading3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorPerPixShading3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorPerVtxShading3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorPerVtxShading3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorPointSprite3DDrawingFragmentShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\930cc8f915ce080c3d9d1e0ed606ffdc\variColorPointSprite3DDrawingVertexShader.glsl.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\4d6b5ddd78ad7c341828b1d004090103\ysglslprogram.c.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\NHT_Planner\build\CMakeFiles\4d6b5ddd78ad7c341828b1d004090103\ysglslprogram.h.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{0F7914D5-4AFE-3210-9A6C-087A47068538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{F8D7D7F9-2B4A-3A83-A031-B94C819322DF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CC8FAD47-D88F-34B3-AD4D-567022ED43FA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

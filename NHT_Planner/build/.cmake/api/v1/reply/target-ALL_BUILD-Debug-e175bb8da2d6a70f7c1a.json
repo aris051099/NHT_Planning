@@ -1,0 +1,331 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "node::@83036dd679ff194edb3f"
+		},
+		{
+			"id" : "ysbitmap::@d3209de0bf9981aae0e7"
+		},
+		{
+			"id" : "ysclass11::@064825d62c3f6bf3c5d7"
+		},
+		{
+			"id" : "ysglcpp_gl2::@a8289abd9a6121897768"
+		},
+		{
+			"id" : "ysglcpp_gl1::@a42102347c80eb121d6c"
+		},
+		{
+			"id" : "ysglcpp_nownd::@1587c78014f9465df73b"
+		},
+		{
+			"id" : "planner::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "ysgl_makec::@e4add9ad529fe3f39327"
+		},
+		{
+			"id" : "ysgl_makeh::@e4add9ad529fe3f39327"
+		},
+		{
+			"id" : "ysclass::@8cff40a9c464f6ddc72f"
+		},
+		{
+			"id" : "ysport::@4b0f1bcfa4d23cd458c2"
+		},
+		{
+			"id" : "ysgl_preproc::@e4add9ad529fe3f39327"
+		},
+		{
+			"id" : "ysgl::@e4add9ad529fe3f39327"
+		},
+		{
+			"id" : "ysglcpp::@2736cce6812b6eaeaefb"
+		},
+		{
+			"id" : "ysmakebmptile::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ys_bitmap_command_base::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysresizebmp::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysmakewhitetransparent::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysnegatebmp::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysmakealphamask::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "yspastebmp::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysinvertbmp::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysmakedensitymap::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "yscropbmp::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysmakeblankbmp::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "ysmakeblackwhite::@15b99e84dddd3132a54b"
+		},
+		{
+			"id" : "sample05-key::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "sample06-15puzzle::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "test_resize::@65cfea4dd3a7893e01e5"
+		},
+		{
+			"id" : "fssimplewindow::@80f2029bf3d14ea56001"
+		},
+		{
+			"id" : "ysnullsystemfont::@7d985d706196d54751c9"
+		},
+		{
+			"id" : "ysbitmapfont::@ec5f2bfcaa19fbe4118c"
+		},
+		{
+			"id" : "sample00-lineart::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "yssimplesound_nownd::@46d6ca80c55bbff6d6d9"
+		},
+		{
+			"id" : "yssimplesound_test01::@a656b6165fff5aa95680"
+		},
+		{
+			"id" : "yssimplesound_streamtest::@a656b6165fff5aa95680"
+		},
+		{
+			"id" : "yssimplesound_test::@738fd900f5818a658b66"
+		},
+		{
+			"id" : "fssimplewindow_template::@ee073eec2a5236a881ef"
+		},
+		{
+			"id" : "sample04-cube::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "sample03-mouse::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "sample01-squash::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "yssimplesound::@46d6ca80c55bbff6d6d9"
+		},
+		{
+			"id" : "yssystemfont::@7d985d706196d54751c9"
+		},
+		{
+			"id" : "yssimplesound_sample::@d207914c2585dea61281"
+		},
+		{
+			"id" : "yssimplesound_sample_fssimplewindow::@eebcfcea6306800874b0"
+		},
+		{
+			"id" : "ysmaketextbmp::@4a2b1f15adfbe3b3f844"
+		},
+		{
+			"id" : "test_fullscreen::@65cfea4dd3a7893e01e5"
+		},
+		{
+			"id" : "ysbitmaputil::@bd5a61831710ad3d3905"
+		},
+		{
+			"id" : "sample02-echo::@e55615331d27d04633b8"
+		},
+		{
+			"id" : "fssimplenowindow::@80f2029bf3d14ea56001"
+		},
+		{
+			"id" : "yssimplesound_dsound::@46d6ca80c55bbff6d6d9"
+		},
+		{
+			"id" : "ystexturemanager_nownd::@6882dedb83ae56854298"
+		},
+		{
+			"id" : "fsgui3d_gl1::@390f4163e7a18410a628"
+		},
+		{
+			"id" : "ysfontrenderer::@5eb3ef2240c2895bcb62"
+		},
+		{
+			"id" : "fsguilib_gl1::@8986608eb6d0190861cb"
+		},
+		{
+			"id" : "fsguilib_nownd::@a2e0f27f8db66818da10"
+		},
+		{
+			"id" : "fsgui3d_template_easy::@b29103a65b4f9aa58074"
+		},
+		{
+			"id" : "geblutil::@372d564aee22848b5f6e"
+		},
+		{
+			"id" : "fsgui3d_template::@8dec7967c2f07d2d1204"
+		},
+		{
+			"id" : "fsguilib_template::@52cbc229ef664b905764"
+		},
+		{
+			"id" : "fslazywindow::@a621f0a0d84dd998b84a"
+		},
+		{
+			"id" : "yssocket::@79fc9c095dab5cd69212"
+		},
+		{
+			"id" : "ystexturemanager::@027fefb7af619ddd19a0"
+		},
+		{
+			"id" : "fslazywindow_template::@03e82632e4eefe3b4091"
+		},
+		{
+			"id" : "fssimplefiledialog_sample::@092937c396a0d911dff5"
+		},
+		{
+			"id" : "fsguilib::@e6359fef44ba5bf7220f"
+		},
+		{
+			"id" : "fsguifiledialog::@296fd454583c0d7c5b9c"
+		},
+		{
+			"id" : "fsguilib_template_with_filedialog::@03e0b954ac0c50f269fd"
+		},
+		{
+			"id" : "sample00_bouncingBall::@40a5085eb4e89ec06f4f"
+		},
+		{
+			"id" : "fssimplefiledialog::@a27e802c782c6bbfbf10"
+		},
+		{
+			"id" : "fsgui3d::@c9d33cae830cb1e1193f"
+		},
+		{
+			"id" : "fsgui3d_gl2::@962e06c4b366cc503688"
+		},
+		{
+			"id" : "fsgui3d_template_with_filedialog::@c8eaa1b9bf1c8f5b2ffa"
+		},
+		{
+			"id" : "geblkernel::@c5e2bf1710f25e8f4ed0"
+		},
+		{
+			"id" : "ystexturemanager_gl::@eb0e97ff4bcbe560d397"
+		},
+		{
+			"id" : "fsguilib_gl2::@7c54e0ac72e496815d35"
+		},
+		{
+			"id" : "cheaplib::@e0fbbe2e6b81b4631268"
+		},
+		{
+			"id" : "ym2612::@7dd5e7b1dfd8fc0b9672"
+		},
+		{
+			"id" : "geblgl_gl2::@6a899fa0e23e4ee9e225"
+		},
+		{
+			"id" : "geblgl_nownd::@215a539216a34b43286a"
+		},
+		{
+			"id" : "geblgl_gl1::@c7e3506f223fbd36d3dc"
+		},
+		{
+			"id" : "booleanSubtraction::@6d99e1cdea6c33fdafd7"
+		},
+		{
+			"id" : "irsend::@46d2eb23e66ea7c09247"
+		},
+		{
+			"id" : "cheapgui_gl1::@0af5695f37981cbe6fce"
+		},
+		{
+			"id" : "cheapgui_template::@cb15959045c5c922ed53"
+		},
+		{
+			"id" : "mmlplayer::@e6ce53b571530d3131a3"
+		},
+		{
+			"id" : "irtoylib::@810490c28c1e9e586cce"
+		},
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "geblgui_foundation::@7ccdf341b8550928d588"
+		},
+		{
+			"id" : "geblcmdlib::@23495c8c7b016d47705d"
+		},
+		{
+			"id" : "ysshellext_sample::@84c4ab6ba16179e555c3"
+		},
+		{
+			"id" : "geblgui::@a560e45cc3fd7b4315fb"
+		},
+		{
+			"id" : "ysgebl64::@81d24f8b5f7424658d5e"
+		},
+		{
+			"id" : "geblgl::@b93873174c23cfb69622"
+		},
+		{
+			"id" : "nonManifoldToConstEdge::@0d543d8cf71b0b1ecba3"
+		},
+		{
+			"id" : "irsensor_gui::@33b5d52eb05773b7a8b2"
+		},
+		{
+			"id" : "cheapgui::@0af5695f37981cbe6fce"
+		},
+		{
+			"id" : "geblcmd::@9f527e1f04054f19f493"
+		},
+		{
+			"id" : "comportlib::@b882743ee525a7b5f9fc"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "CMakePredefinedTargets"
+	},
+	"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+	"isGeneratorProvided" : true,
+	"name" : "ALL_BUILD",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

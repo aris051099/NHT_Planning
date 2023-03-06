@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "public/fssimplewindow/src",
+		"source" : "C:/Users/arisa/Desktop/Path_Planning/public/src/fssimplewindow/src"
+	}
+}
