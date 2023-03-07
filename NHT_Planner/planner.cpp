@@ -526,7 +526,7 @@ void DrawTarget_angle(int x,int y,int w,int h,double angle)
 
 	glColor3ub(255,200,10);
 
-	// angle = (angle/PI) * 180;
+	angle = (angle/PI) * 180;
 
 	glTranslatef(x,y, 0);      
 	glRotatef(angle, 0.0f, 0.0f, 1.0f);
@@ -571,30 +571,30 @@ void DrawPOS(int x,int y,int w,int h)
 
 }
 
-// void DrawPOS(int x,int y,int w,int h,double angle)
-// {
-// 	glColor3ub(255,0,0);
+void DrawPOSAngle(int x,int y,int w,int h,double angle)
+{
+	glColor3ub(255,0,0);
 
-// 	glTranslatef(x,y, 0);      
-// 	glRotatef(angle, 0.0f, 0.0f, 1.0f);
-// 	glTranslatef(-x, -y, 0);
+	glTranslatef(x,y, 0);      
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(-x, -y, 0);
 
-// 	glBegin(GL_QUADS);
+	glBegin(GL_QUADS);
 
-// 	glTexCoord3f(0.0,0.0,0.0);
-// 	glVertex3f(x-w/2 ,y-h/2,0); //0,0
+	glTexCoord3f(0.0,0.0,0.0);
+	glVertex3f(x-w/2 ,y-h/2,0); //0,0
 
-// 	glTexCoord3f(1.0,0.0,0.0);
-// 	glVertex3f(x+w-w/2,y-h/2,0); //1,0
+	glTexCoord3f(1.0,0.0,0.0);
+	glVertex3f(x+w-w/2,y-h/2,0); //1,0
 
-// 	glTexCoord3f(1.0,1.0,0);
-// 	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
+	glTexCoord3f(1.0,1.0,0);
+	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
 
-// 	glTexCoord3f(0.0,1.0,0.0);
-//  	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
+	glTexCoord3f(0.0,1.0,0.0);
+ 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
 
-// 	glEnd(); 
-// }
+	glEnd(); 
+}
 
 void polar2coord(double* coords,Xstate x)
 {
@@ -607,17 +607,17 @@ void meter2pixel(double* coords_meters)
 	coords_meters[0] = std::round(coords_meters[0]/0.01);
 	coords_meters[1] = std::round(coords_meters[1]/0.01);
 }
-
-void polar2meter(double* coords,double x,double theta)
-{
-	coords[0] = std::round((x*cos(theta))/0.01);
-	coords[1] = std::round((x*sin(theta))/0.01);
-}
 void print_pos(Xstate& x)
 {
 	double coords[2]={0,0};
 	polar2coord(coords,x); 
 	std::cout<< std::round(coords[0]/0.01) << "," << std::round(coords[1]/0.01) << std::endl;
+}
+
+void polar2meter(double* coords,double x,double theta)
+{
+	coords[0] = std::round((x*cos(theta))/0.01);
+	coords[1] = std::round((x*sin(theta))/0.01);
 }
 
 
@@ -635,12 +635,14 @@ void print_pos(Xstate& x)
 int main(int argc, char ** argv) {
 	double* map = nullptr;
 	int x_size=0, y_size=0;
-	// std::tie(map, x_size, y_size) = loadMap(argv[1]);
+	std::tie(map, x_size, y_size) = loadMap(argv[1]);
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
+	
 	Ustate u_start(0,0);
 	Xstate x_prop;
 	Xstate x_start(0,0,0,0);
+
 	printf("Initial condition in X,Y:\n");
 	print_pos(x_start);
 	Xstate x_goal(2,0,0.3,0);
@@ -649,6 +651,7 @@ int main(int argc, char ** argv) {
 	u_start.set_tprop(0);
 	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
+
 	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
 	int plan_size = plan.size();
 	double coords[2] ={0,0};
@@ -656,7 +659,18 @@ int main(int argc, char ** argv) {
 	polar2meter(coords_start,x_start[0],x_start[2]);
 	double coords_goal[2]={0,0};
 	polar2meter(coords_goal,x_goal[0],x_goal[2]);
-	int idx = 1; 
+	int idx = 1;
+
+	// Ustate u_test(1,1);
+	// Xstate x_test; 
+	// u_test.set_tprop(1);
+	// x_prop.propagate(x_start,u_test);
+	// printf("InClass function: \n");
+	// std::cout << x_prop << std::endl; 
+	// printf("OutClass function: \n");
+	// x_test = propagate(x_start,u_test);
+	// std::cout<< x_test << std::endl;
+
 	//// Feel free to modify anything above.
 	//// If you modify something below, please change it back afterwards as my 
 	//// grading script will not work and you will recieve a 0.
@@ -673,60 +687,37 @@ int main(int argc, char ** argv) {
 	int w_width = 1200;
 	int w_height = 1200;
 
-	FsOpenWindow(0,0,w_width,w_height,1);
+	// FsOpenWindow(0,0,w_width,w_height,1);
 
 
-		for(;;)
-		{
-			FsPollDevice();
-			if(FSKEY_ESC==FsInkey())
-			{
-				break;
-			}
-			if(idx >= plan_size)
-				idx = 0;
+	// 	for(;;)
+	// 	{
+	// 		FsPollDevice();
+	// 		if(FSKEY_ESC==FsInkey())
+	// 		{
+	// 			break;
+	// 		}
+	// 		if(idx >= plan_size)
+	// 			idx = 0;
 
-			Ustate u_k(plan[idx]->getUstate());
-			Xstate x_prop(plan[idx]->getXstate()); 
-			double coords[2] ={0,0};
-			// Ustate u(plan[idx]->getUstate());
-			polar2coord(coords,x_prop); 
-			meter2pixel(coords);
-			int t_prop = sec2msec(u_k.get_tprop());
-			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			// DrawPOS(30,30,20,20,idx);
-			// DrawPOS(w_width/2+coords_start[0],w_height/2+coords_start[1],20,20);
-			// DrawPOS(w_width/2+coords_goal[0]-10,w_height/2+coords_goal[1]-10,20,20);
-			// DrawTarget(w_width/2+coords[0],w_height/2+coords[1],10,15);
-			DrawTarget_angle(w_width/2+coords[0],w_height/2+coords[1],10,20,x_prop[2]);
-			FsSwapBuffers();
-			FsSleep(250);
+	// 		Ustate u_k(plan[idx]->getUstate());
+	// 		Xstate x_prop(plan[idx]->getXstate()); 
+	// 		double coords[2] ={0,0};
+	// 		// Ustate u(plan[idx]->getUstate());
+	// 		polar2coord(coords,x_prop); 
+	// 		meter2pixel(coords);
+	// 		int t_prop = sec2msec(u_k.get_tprop());
+	// 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	// 		// DrawPOS(30,30,20,20,idx);
+	// 		// DrawPOS(w_width/2+coords_start[0],w_height/2+coords_start[1],20,20);
+	// 		// DrawPOS(w_width/2+coords_goal[0],w_height/2+coords_goal[1],20,20);
+	// 		// DrawTarget(w_width/2+coords[0],w_height/2+coords[1],10,15);
+	// 		DrawTarget_angle(w_width/2+coords[0],w_height/2+coords[1],10,20,x_prop[2]);
+	// 		FsSwapBuffers();
+	// 		FsSleep(250);
 
-			// for(int i = 0; i < t_prop ; ++i)
-			// {
-
-			// 	// printf("Iteration %d \n",i);
-			// 	// x_k = din_sytem.A_dt*x_k + din_sytem.B_dt*u_k;
-			// 	x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
-			// 	x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
-			// 	x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
-			// 	x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
-			// 	// x_k[0] = x_prop[0];
-			// 	// x_k[1] = x_prop[1];
-			// 	// x_k[2] = x_prop[2];
-			// 	// x_k[3] = x_prop[3];
-			// 	// std::cout << x_k << std::endl;
-			// 	x_k = x_prop; 
-
-			// 	double coords[2] ={0,0};
-			// 	// Ustate u(plan[idx]->getUstate());
-			// 	polar2coord(coords,x_prop); 
-			// 	meter2pixel(coords);
-			// 	// std::cout<< coords[0] << "," << coords[1] << std::endl;
-			// };
-
-			++idx; 
-		}
+	// 		++idx; 
+	// 	}
     // Your solution's path should start with startPos and end with goalPos
     // if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 
     // 	!equalDoubleArrays(plan[planlength-1], goalPos, numOfDOFs)) {
