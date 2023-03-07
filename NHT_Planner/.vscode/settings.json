@@ -90,7 +90,7 @@
         "xtree": "cpp",
         "xutility": "cpp"
     },
-    "cmake.debugConfig": {"args":["../map1.txt"],
+    "cmake.debugConfig": {"args":["C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/map1.txt"],
         "externalConsole": true,
         "console": "externalTerminal"
     },

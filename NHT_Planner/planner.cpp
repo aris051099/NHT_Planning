@@ -298,6 +298,98 @@ int IsValidArmConfiguration(double* angles, int numofDOFs, double*	map,
 	return 1;
 }
 
+
+class object 
+{
+	public:
+		GLfloat x=0,y=0,angle=0,w=0,h=0;
+		GLubyte r=0,g=0,b=0;
+		object(void);
+		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
+		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
+		void setDim(GLfloat i_w, GLfloat i_h);
+		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle);
+		void Draw(void);
+		void Draw_Angle(void);
+};
+
+object::object(){};
+object::object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h):
+x{i_x},y{i_y},w{i_w},h{i_h}{};
+
+void object::setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b)
+{
+	this->r = i_r;
+	this->g = i_g;
+	this->b = i_b;
+}
+void object::setDim(GLfloat i_w, GLfloat i_h)
+{
+	this->h = i_h;
+	this->w = i_w;
+}
+
+void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
+{
+	this->x = i_x;
+	this->y = i_y;
+	this->angle = i_angle; 
+}
+
+void object::Draw()
+{
+	glColor3ub(this->r,this->g,this->b);
+	glBegin(GL_QUADS);
+
+
+	glTexCoord3f(0.0,0.0,0.0);
+	glVertex3f(x-w/2 ,y-h/2,0); //0,0
+
+	glTexCoord3f(1.0,0.0,0.0);
+	glVertex3f(x+w-w/2,y-h/2,0); //1,0
+
+	glTexCoord3f(1.0,1.0,0);
+	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
+
+	glTexCoord3f(0.0,1.0,0.0);
+ 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
+
+	glEnd(); 
+
+}
+
+void object::Draw_Angle()
+{
+	glColor3ub(this->r,this->g,this->b);
+
+	if(this->angle < 0)
+	{
+		this->angle = 2*PI-this->angle;
+	}
+	this->angle = (this->angle/PI) * 180;
+
+	glLoadIdentity();
+	glTranslatef(x,y, 0);      
+	glRotatef(angle, 0.0f, 0.0f, 1.0f);
+	glTranslatef(-x, -y, 0);
+
+	glBegin(GL_QUADS);
+
+	glTexCoord3f(0.0,0.0,0.0);
+	glVertex3f(x-w/2 ,y-h/2,0); //0,0
+
+	glTexCoord3f(1.0,0.0,0.0);
+	glVertex3f(x+w-w/2,y-h/2,0); //1,0
+
+	glTexCoord3f(1.0,1.0,0);
+	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
+
+	glTexCoord3f(0.0,1.0,0.0);
+ 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
+
+	glEnd(); 
+}
+
 double euclidean(Xstate& x_goal,Xstate& x_near)
 {
 	// auto x_goal = x_sgoal.getPointer();
@@ -496,104 +588,11 @@ static void planner(
 			}
 		}
 	}
-	/*
-	TODO:
-		-Figure out the best way to return the control input and time of propagation
 
-		-How to do goal biasing? As of now, I can generate random points in the map and 
-		connect them. Having a maximum time of propagation of 5 secs
-			-Pick the minimum. Out of 10.000 propagations. pick the closes to the "goal"
-	*/
 	printf("No plan found \n");
 	// CleanUp(tree);
 	//no plan by default
     return;
-}
-
-void DrawTarget(int x,int y,int w,int h)
-{
-	glColor3ub(255,200,10);
-	glBegin(GL_QUADS);
-	glVertex2i(x  ,y); //0,0
-	glVertex2i(x+w,y); //1,0
-	glVertex2i(x+w,y+h); // 1,1
- 	glVertex2i(x  ,y+h); // 0,1
-	glEnd();
-}
-
-void DrawTarget_angle(int x,int y,int w,int h,double angle)
-{
-
-	glColor3ub(255,200,10);
-
-	angle = (angle/PI) * 180;
-
-	glTranslatef(x,y, 0);      
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-x, -y, 0);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x-w/2 ,y-h/2,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w-w/2,y-h/2,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
-
-	glEnd(); 
-}
-
-void DrawPOS(int x,int y,int w,int h)
-{
-	glColor3ub(255,0,0);
-	glBegin(GL_QUADS);
-
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x-w/2 ,y-h/2,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w-w/2,y-h/2,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
-
-	glEnd(); 
-
-}
-
-void DrawPOSAngle(int x,int y,int w,int h,double angle)
-{
-	glColor3ub(255,0,0);
-
-	glTranslatef(x,y, 0);      
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-x, -y, 0);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x-w/2 ,y-h/2,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w-w/2,y-h/2,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
-
-	glEnd(); 
 }
 
 void polar2coord(double* coords,Xstate x)
@@ -638,10 +637,14 @@ int main(int argc, char ** argv) {
 	std::tie(map, x_size, y_size) = loadMap(argv[1]);
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
-	
+
 	Ustate u_start(0,0);
 	Xstate x_prop;
-	Xstate x_start(0,0,0,0);
+	Xstate x_start(0,0,PI/2,0);
+
+	object husky_robot;
+	object start_pos;
+	object goal_pos;
 
 	printf("Initial condition in X,Y:\n");
 	print_pos(x_start);
@@ -652,77 +655,109 @@ int main(int argc, char ** argv) {
 	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
 
+
 	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
+
 	int plan_size = plan.size();
 	double coords[2] ={0,0};
 	double coords_start[2]={0,0};
-	polar2meter(coords_start,x_start[0],x_start[2]);
 	double coords_goal[2]={0,0};
+
+	polar2meter(coords_start,x_start[0],x_start[2]);
 	polar2meter(coords_goal,x_goal[0],x_goal[2]);
-	int idx = 1;
 
-	// Ustate u_test(1,1);
-	// Xstate x_test; 
-	// u_test.set_tprop(1);
-	// x_prop.propagate(x_start,u_test);
-	// printf("InClass function: \n");
-	// std::cout << x_prop << std::endl; 
-	// printf("OutClass function: \n");
-	// x_test = propagate(x_start,u_test);
-	// std::cout<< x_test << std::endl;
 
-	//// Feel free to modify anything above.
-	//// If you modify something below, please change it back afterwards as my 
-	//// grading script will not work and you will recieve a 0.
-	///////////////////////////////////////
 
-	// for(int i = 0; i < plan_size ; ++i)
-	// {
-	// 	Xstate state(plan[i]->getXstate());
-	// 	print_pos(state);
-	// }
+	start_pos.setDim(20,20);
+	start_pos.setColor(255,0,0);
+	start_pos.Move(600+coords_start[0],600+coords_start[1],0);
 
-	Xstate x_k(plan[0]->getXstate());
+	goal_pos.setDim(20,20);
+	goal_pos.setColor(255,0,0);
+	goal_pos.Move(600+coords_goal[0],600+coords_goal[1],0);
 
+	husky_robot.setDim(20,15);
+	husky_robot.setColor(255,240,10);
+	husky_robot.Move(600+coords_start[0],600+coords_start[1],0);
+
+
+
+	int idx = 0;
 	int w_width = 1200;
 	int w_height = 1200;
 
-	// FsOpenWindow(0,0,w_width,w_height,1);
+	Xstate x_k(plan[0]->getXstate());
+
+	FsOpenWindow(0,0,w_width,w_height,1);
 
 
-	// 	for(;;)
-	// 	{
-	// 		FsPollDevice();
-	// 		if(FSKEY_ESC==FsInkey())
-	// 		{
-	// 			break;
-	// 		}
-	// 		if(idx >= plan_size)
-	// 			idx = 0;
+		for(;;)
+		{
+			FsPollDevice();
+			if(FSKEY_ESC==FsInkey())
+			{
+				break;
+			}
+			if(idx >= plan_size)
+				idx = 0;
 
-	// 		Ustate u_k(plan[idx]->getUstate());
-	// 		Xstate x_prop(plan[idx]->getXstate()); 
-	// 		double coords[2] ={0,0};
-	// 		// Ustate u(plan[idx]->getUstate());
-	// 		polar2coord(coords,x_prop); 
-	// 		meter2pixel(coords);
-	// 		int t_prop = sec2msec(u_k.get_tprop());
-	// 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	// 		// DrawPOS(30,30,20,20,idx);
-	// 		// DrawPOS(w_width/2+coords_start[0],w_height/2+coords_start[1],20,20);
-	// 		// DrawPOS(w_width/2+coords_goal[0],w_height/2+coords_goal[1],20,20);
-	// 		// DrawTarget(w_width/2+coords[0],w_height/2+coords[1],10,15);
-	// 		DrawTarget_angle(w_width/2+coords[0],w_height/2+coords[1],10,20,x_prop[2]);
-	// 		FsSwapBuffers();
-	// 		FsSleep(250);
+			Ustate u_k(plan[idx]->getUstate());
+			Xstate x_prop(plan[idx]->getXstate());
+			int t_prop = sec2msec(u_k.get_tprop());
 
-	// 		++idx; 
-	// 	}
-    // Your solution's path should start with startPos and end with goalPos
-    // if (!equalDoubleArrays(plan[0], startPos, numOfDOFs) || 
-    // 	!equalDoubleArrays(plan[planlength-1], goalPos, numOfDOFs)) {
-	// 	throw std::runtime_error("Start or goal position not matching");
-	// }
+			double coords[2] ={0,0};
+			// polar2coord(coords,x_prop); 
+			polar2meter(coords,x_prop[0],x_prop[2]);
+			// meter2pixel(coords)
+
+			husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
+
+			//Rendering
+
+			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			glLoadIdentity();
+
+			start_pos.Draw();
+			goal_pos.Draw();
+			husky_robot.Draw_Angle();
+
+			FsSwapBuffers();
+			FsSleep(250);
+
+			// for(int i = 0; i < sec2msec(t_prop) ; ++i)
+			// {
+
+			// 	if(FSKEY_ESC==FsInkey())
+			// 	{
+			// 		break;
+			// 	}
+			// 	x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
+			// 	x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
+			// 	x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
+			// 	x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
+
+			// 	x_k = x_prop;
+
+			// 	double coords[2] ={0,0};
+			// 	polar2coord(coords,x_prop); 
+			// 	meter2pixel(coords);
+				
+			// 	husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
+
+			// 	//Rendering
+			// 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			// 	glLoadIdentity();
+
+			// 	start_pos.Draw();
+			// 	goal_pos.Draw();
+			// 	husky_robot.Draw_Angle();
+
+			// 	FsSwapBuffers();
+			// 	FsSleep(1);
+			// }
+
+			++idx; 
+		}
 
 	CleanUp(tree);
 	plan.clear();
