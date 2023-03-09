@@ -22,6 +22,7 @@
 #include <unordered_set>
 #include <node.h>
 #include <fssimplewindow.h>
+#include <map.h>
 
 /* Input Arguments */
 #define	MAP_IN      prhs[0]
@@ -39,7 +40,9 @@
 #define	PLAN_OUT	plhs[0]
 #define	PLANLENGTH_OUT	plhs[1]
 
-#define GETMAPINDEX(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
+#define GETMAPINDEX_LL0(X, Y, XSIZE, YSIZE) ((YSIZE-Y-1)*XSIZE + X)
+#define GETMAPINDEX_UL1(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
+#define GETMAPINDEX_UL0(X, Y, XSIZE, YSIZE) ((Y-1)*XSIZE + (X-1))
 
 #if !defined(MAX)
 #define	MAX(A, B)	((A) > (B) ? (A) : (B))
@@ -81,224 +84,6 @@ std::uniform_real_distribution<double> dist_prob(0.0,1);
 
 //Added by AF
 
-std::tuple<double*, int, int> loadMap(std::string filepath) {
-	std::FILE *f = fopen(filepath.c_str(), "r");
-	if (f) {
-	}
-	else {
-		printf("Opening file failed! \n");
-		throw std::runtime_error("Opening map file failed!");
-	}
-	int height, width;
-	if (fscanf(f, "height %d\nwidth %d\n", &height, &width) != 2) {
-		throw std::runtime_error("Invalid loadMap parsing map metadata");
-	}
-	
-	////// Go through file and add to m_occupancy
-	double* map = new double[height*width];
-
-	double cx, cy, cz;
-	for (int y = 0; y < height; y++) {
-		for (int x = 0; x < width; x++) {
-			char c;
-			do {
-				if (fscanf(f, "%c", &c) != 1) {
-					throw std::runtime_error("Invalid parsing individual map data");
-				}
-			} while (isspace(c));
-			if (!(c == '0')) { 
-				map[y+x*width] = 1; // Note transposed from visual
-			} else {
-				map[y+x*width] = 0;
-			}
-		}
-	}
-	fclose(f);
-	return std::make_tuple(map, width, height);
-}
-
-// Splits string based on deliminator
-std::vector<std::string> split(const std::string& str, const std::string& delim) {   
-		// https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c/64886763#64886763
-		const std::regex ws_re(delim);
-		return { std::sregex_token_iterator(str.begin(), str.end(), ws_re, -1), std::sregex_token_iterator() };
-}
-
-
-double* doubleArrayFromString(std::string str) {
-	std::vector<std::string> vals = split(str, ",");
-	double* ans = new double[vals.size()];
-	for (int i = 0; i < vals.size(); ++i) {
-		ans[i] = std::stod(vals[i]);
-	}
-	return ans;
-}
-
-bool equalDoubleArrays(double* v1, double *v2, int size) {
-    for (int i = 0; i < size; ++i) {
-        if (abs(v1[i]-v2[i]) > 1e-3) {
-            std::cout << std::endl;
-            return false;
-        }
-    }
-    return true;
-}
-
-typedef struct {
-	int X1, Y1;
-	int X2, Y2;
-	int Increment;
-	int UsingYIndex;
-	int DeltaX, DeltaY;
-	int DTerm;
-	int IncrE, IncrNE;
-	int XIndex, YIndex;
-	int Flipped;
-} bresenham_param_t;
-
-
-void ContXY2Cell(double x, double y, short unsigned int* pX, short unsigned int *pY, int x_size, int y_size) {
-	double cellsize = 1.0;
-	//take the nearest cell
-	*pX = (int)(x/(double)(cellsize));
-	if( x < 0) *pX = 0;
-	if( *pX >= x_size) *pX = x_size-1;
-
-	*pY = (int)(y/(double)(cellsize));
-	if( y < 0) *pY = 0;
-	if( *pY >= y_size) *pY = y_size-1;
-}
-
-
-void get_bresenham_parameters(int p1x, int p1y, int p2x, int p2y, bresenham_param_t *params) {
-	params->UsingYIndex = 0;
-
-	if (fabs((double)(p2y-p1y)/(double)(p2x-p1x)) > 1)
-		(params->UsingYIndex)++;
-
-	if (params->UsingYIndex)
-		{
-			params->Y1=p1x;
-			params->X1=p1y;
-			params->Y2=p2x;
-			params->X2=p2y;
-		}
-	else
-		{
-			params->X1=p1x;
-			params->Y1=p1y;
-			params->X2=p2x;
-			params->Y2=p2y;
-		}
-
-	 if ((p2x - p1x) * (p2y - p1y) < 0)
-		{
-			params->Flipped = 1;
-			params->Y1 = -params->Y1;
-			params->Y2 = -params->Y2;
-		}
-	else
-		params->Flipped = 0;
-
-	if (params->X2 > params->X1)
-		params->Increment = 1;
-	else
-		params->Increment = -1;
-
-	params->DeltaX=params->X2-params->X1;
-	params->DeltaY=params->Y2-params->Y1;
-
-	params->IncrE=2*params->DeltaY*params->Increment;
-	params->IncrNE=2*(params->DeltaY-params->DeltaX)*params->Increment;
-	params->DTerm=(2*params->DeltaY-params->DeltaX)*params->Increment;
-
-	params->XIndex = params->X1;
-	params->YIndex = params->Y1;
-}
-
-void get_current_point(bresenham_param_t *params, int *x, int *y) {
-	if (params->UsingYIndex) {
-        *y = params->XIndex;
-        *x = params->YIndex;
-        if (params->Flipped)
-            *x = -*x;
-    }
-	else {
-        *x = params->XIndex;
-        *y = params->YIndex;
-        if (params->Flipped)
-            *y = -*y;
-    }
-}
-
-int get_next_point(bresenham_param_t *params) {
-	if (params->XIndex == params->X2) {
-        return 0;
-    }
-	params->XIndex += params->Increment;
-	if (params->DTerm < 0 || (params->Increment < 0 && params->DTerm <= 0))
-		params->DTerm += params->IncrE;
-	else {
-        params->DTerm += params->IncrNE;
-        params->YIndex += params->Increment;
-	}
-	return 1;
-}
-
-int IsValidLineSegment(double x0, double y0, double x1, double y1, double*	map,
-			 int x_size, int y_size) {
-	bresenham_param_t params;
-	int nX, nY; 
-	short unsigned int nX0, nY0, nX1, nY1;
-
-	//printf("checking link <%f %f> to <%f %f>\n", x0,y0,x1,y1);
-		
-	//make sure the line segment is inside the environment
-	if(x0 < 0 || x0 >= x_size ||
-		x1 < 0 || x1 >= x_size ||
-		y0 < 0 || y0 >= y_size ||
-		y1 < 0 || y1 >= y_size)
-		return 0;
-
-	ContXY2Cell(x0, y0, &nX0, &nY0, x_size, y_size);
-	ContXY2Cell(x1, y1, &nX1, &nY1, x_size, y_size);
-
-	//printf("checking link <%d %d> to <%d %d>\n", nX0,nY0,nX1,nY1);
-
-	//iterate through the points on the segment
-	get_bresenham_parameters(nX0, nY0, nX1, nY1, &params);
-	do {
-		get_current_point(&params, &nX, &nY);
-		if(map[GETMAPINDEX(nX,nY,x_size,y_size)] == 1)
-			return 0;
-	} while (get_next_point(&params));
-
-	return 1;
-}
-
-int IsValidArmConfiguration(double* angles, int numofDOFs, double*	map,
-			 int x_size, int y_size) {
-    double x0,y0,x1,y1;
-    int i;
-
-	 //iterate through all the links starting with the base
-	x1 = ((double)x_size)/2.0;
-	y1 = 0;
-	for(i = 0; i < numofDOFs; i++){
-		//compute the corresponding line segment
-		x0 = x1;
-		y0 = y1;
-		x1 = x0 + LINKLENGTH_CELLS*cos(2*PI-angles[i]);
-		y1 = y0 - LINKLENGTH_CELLS*sin(2*PI-angles[i]);
-
-		//check the validity of the corresponding line segment
-		if(!IsValidLineSegment(x0,y0,x1,y1,map,x_size,y_size))
-			return 0;
-	}    
-	return 1;
-}
-
-
 class object 
 {
 	public:
@@ -309,8 +94,8 @@ class object
 		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
 		void setDim(GLfloat i_w, GLfloat i_h);
 		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle);
-		void Draw(void);
-		void Draw_Angle(void);
+		void Draw_object(void);
+		void Draw_object_Angle(void);
 };
 
 object::object(){};
@@ -336,9 +121,10 @@ void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
 	this->angle = i_angle; 
 }
 
-void object::Draw()
+void object::Draw_object()
 {
 	glColor3ub(this->r,this->g,this->b);
+
 	glBegin(GL_QUADS);
 
 
@@ -358,7 +144,7 @@ void object::Draw()
 
 }
 
-void object::Draw_Angle()
+void object::Draw_object_Angle()
 {
 	glColor3ub(this->r,this->g,this->b);
 
@@ -414,6 +200,7 @@ double euclidean(Xstate& x_goal,Xstate& x_near)
 // 	}
 // 	return sqrt(dist);
 // }
+
 double calc_radius()
 {
 	double d = 4; 
@@ -631,10 +418,11 @@ void polar2meter(double* coords,double x,double theta)
  * make sure it can run with the original 6 commands.
  * Programs that do not will automatically get a 0.
  * */
-int main(int argc, char ** argv) {
-	double* map = nullptr;
+int main(int argc, char ** argv) 
+{
+	double* map_t = nullptr;
 	int x_size=0, y_size=0;
-	std::tie(map, x_size, y_size) = loadMap(argv[1]);
+	map map_1; 
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
 
@@ -646,6 +434,8 @@ int main(int argc, char ** argv) {
 	object start_pos;
 	object goal_pos;
 
+	map_1.loadMap(argv[1]);
+
 	printf("Initial condition in X,Y:\n");
 	print_pos(x_start);
 	Xstate x_goal(2,0,0.3,0);
@@ -655,8 +445,20 @@ int main(int argc, char ** argv) {
 	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
 
+	// for(int i = 0; i < map_1.width*map_1.height ; ++i)
+	// {
+	// 	if(i%50 == 0)
+	// 	{
+	// 		std::cout << std::endl;
+	// 	}
+	// 	std::cout << map_1.map_ptr[i] << " ";
 
-	planner(map,x_size,y_size,x_start,u_start,x_goal,plan,tree);
+	// }
+
+
+
+
+	planner(map_t,x_size,y_size,x_start,u_start,x_goal,plan,tree);
 
 	int plan_size = plan.size();
 	double coords[2] ={0,0};
@@ -665,8 +467,6 @@ int main(int argc, char ** argv) {
 
 	polar2meter(coords_start,x_start[0],x_start[2]);
 	polar2meter(coords_goal,x_goal[0],x_goal[2]);
-
-
 
 	start_pos.setDim(20,20);
 	start_pos.setColor(255,0,0);
@@ -680,11 +480,9 @@ int main(int argc, char ** argv) {
 	husky_robot.setColor(255,240,10);
 	husky_robot.Move(600+coords_start[0],600+coords_start[1],0);
 
-
-
 	int idx = 0;
 	int w_width = 1200;
-	int w_height = 1200;
+	int w_height = 1000;
 
 	Xstate x_k(plan[0]->getXstate());
 
@@ -700,7 +498,7 @@ int main(int argc, char ** argv) {
 			}
 			if(idx >= plan_size)
 				idx = 0;
-
+				
 			Ustate u_k(plan[idx]->getUstate());
 			Xstate x_prop(plan[idx]->getXstate());
 			int t_prop = sec2msec(u_k.get_tprop());
@@ -712,14 +510,16 @@ int main(int argc, char ** argv) {
 
 			husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
 
-			//Rendering
+			// //Rendering
 
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 
-			start_pos.Draw();
-			goal_pos.Draw();
-			husky_robot.Draw_Angle();
+			start_pos.Draw_object();
+			goal_pos.Draw_object();
+			husky_robot.Draw_object_Angle();
+
+			map_1.renderMap();
 
 			FsSwapBuffers();
 			FsSleep(250);
