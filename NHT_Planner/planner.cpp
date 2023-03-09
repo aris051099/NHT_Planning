@@ -69,7 +69,7 @@ std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
 
 std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
 std::uniform_real_distribution<double> rand_x(-5.0,5.0);
-std::uniform_real_distribution<double> rand_theta(-2.0*PI,2.0*PI);
+std::uniform_real_distribution<double> rand_theta(-PI,PI);
 std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
 
 std::uniform_real_distribution<double> dist_prob(0.0,1);
@@ -215,7 +215,7 @@ int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 	double min = std::numeric_limits<double>::infinity();
 	// double r = calc_radius();
 	double r = 1.5;
-	int min_node_idx = 0;
+	int min_node_idx = -1;
 	if(!tree.empty())
 	{
 		for(int i = 0; i < tree.size(); ++i)
@@ -229,10 +229,6 @@ int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 						min = dist;	
 					}
 				}
-			else
-			{
-				min_node_idx = -1;
-			}
 		}
 	}
 	return min_node_idx;
@@ -290,10 +286,7 @@ bool small_control(Ustate& u)
 
 //-------------------------Below Added by AF----------------------------------------------------
 //-------------------------BELOW RRT Functions & Code ------------------------------------------------
-static void planner(
-			double* map,
-			int x_size,
-			int y_size,
+static void planner(map& map_1,
 			Xstate& x_0, 
 			Ustate& u_0,
 			Xstate& x_goal,
@@ -315,7 +308,7 @@ static void planner(
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.20) //Goal biasing by 5% 
+		if(prob > 0.90) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
 		}
@@ -338,8 +331,8 @@ static void planner(
 				u_k[1] = rand_u_ang_vel(gen);
 				u_k.set_tprop(rand_t_prop(gen));
  
-
-				x_prop.propagate(x_near,u_k);
+				x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
+				// x_prop.propagate(x_near,u_k);
 
 				double dist = euclidean(x_rand,x_prop);
 				if(dist < 0.1)
@@ -357,6 +350,7 @@ static void planner(
 					x_min = x_prop;
 				}
 			};
+			std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
 			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
 			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
 			if(dist2goal < 0.1)
@@ -406,7 +400,21 @@ void polar2meter(double* coords,double x,double theta)
 	coords[1] = std::round((x*sin(theta))/0.01);
 }
 
+double euclidean(double xf,double yf,double xi,double yi)
+{
+	return sqrt(pow(xf-xi,2)+pow(yf-yi,2));
+}
 
+double calc_angle(double xf,double yf,double xi,double yi)
+{	
+	double angle = atan2(yf-yi,xf-xi);
+	if(angle < 0)
+	{
+		angle = 2*PI+angle;
+	}
+	return angle;
+
+}
 /** Your final solution will be graded by an grading script which will
  * send the default 6 arguments:
  *    map, numOfDOFs, commaSeparatedStartPos, commaSeparatedGoalPos, 
@@ -421,7 +429,12 @@ void polar2meter(double* coords,double x,double theta)
 int main(int argc, char ** argv) 
 {
 	double* map_t = nullptr;
+	double coords[2] ={0,0};
+	double coords_start[2]={20,25}; //20,25 (x,y)
+	double coords_goal[2]={7,46}; // 7, 46 (x,y)
+
 	int x_size=0, y_size=0;
+
 	map map_1; 
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
@@ -429,6 +442,8 @@ int main(int argc, char ** argv)
 	Ustate u_start(0,0);
 	Xstate x_prop;
 	Xstate x_start(0,0,PI/2,0);
+	Xstate x_goal(euclidean(7,46,20,25),0,atan2(24-25.0,7.0-20.0),0);
+
 
 	object husky_robot;
 	object start_pos;
@@ -438,13 +453,21 @@ int main(int argc, char ** argv)
 
 	printf("Initial condition in X,Y:\n");
 	print_pos(x_start);
-	Xstate x_goal(2,0,0.3,0);
 	printf("Goal condition in X,Y: \n");
 	print_pos(x_goal);
 	u_start.set_tprop(0);
 	printf("radius to test near neighbors:\n");
 	std::cout << calc_radius() << std::endl;
 
+	
+	// polar2meter(coords_start,x_start[0],x_start[2]);
+	x_start.map_coords[0] = coords_start[0];
+	x_start.map_coords[1] = coords_start[1];
+	// polar2meter(coords_goal,x_goal[0],x_goal[2]);
+	x_goal.map_coords[0] = coords_goal[0];
+	x_goal.map_coords[1] = coords_goal[1];
+
+	std::cout << x_start.map_coords[1] << std::endl;
 	// for(int i = 0; i < map_1.width*map_1.height ; ++i)
 	// {
 	// 	if(i%50 == 0)
@@ -455,18 +478,9 @@ int main(int argc, char ** argv)
 
 	// }
 
-
-
-
-	planner(map_t,x_size,y_size,x_start,u_start,x_goal,plan,tree);
+	planner(map_1,x_start,u_start,x_goal,plan,tree);
 
 	int plan_size = plan.size();
-	double coords[2] ={0,0};
-	double coords_start[2]={0,0};
-	double coords_goal[2]={0,0};
-
-	polar2meter(coords_start,x_start[0],x_start[2]);
-	polar2meter(coords_goal,x_goal[0],x_goal[2]);
 
 	start_pos.setDim(20,20);
 	start_pos.setColor(255,0,0);

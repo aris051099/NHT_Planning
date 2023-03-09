@@ -92,6 +92,8 @@ class Xstate : public state<double,4>
 {
   public:
 
+    double map_coords[2] = {0,0};
+
     Xstate();
 
     Xstate(double x1,double x2,double x3,double x4);
@@ -123,6 +125,8 @@ class Xstate : public state<double,4>
       state_elem[1] = incoming[1];
       state_elem[2] = incoming[2];
       state_elem[3] = incoming[3];
+      this-> map_coords[0] = incoming.map_coords[0];
+      this-> map_coords[1] = incoming.map_coords[1];
       return *this;
     }
     bool operator==(const Xstate& incoming)
@@ -171,6 +175,9 @@ Xstate::Xstate(const Xstate& inc)
   state_elem[1] = inc[1];
   state_elem[2] = inc[2];
   state_elem[3] = inc[3];
+
+  map_coords[0] = inc.map_coords[0];
+  map_coords[1] = inc.map_coords[1];
 }
 
 std::ostream& operator<<(std::ostream& os, const Xstate& x)
@@ -184,12 +191,12 @@ std::ostream& operator<<(std::ostream& os, const Xstate& x)
     return os;
 }
 
-bool check_collision(Xstate x_prop, double *map, int x_size,int y_size)
+bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size) 
 {
-  double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
-  if(coords[0] > 0 && coords[0] < x_size && coords[1] > 0 && coords[1] < y_size)
+  // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
+  if(x_prop.map_coords[0] > 0 && x_prop.map_coords[0] < x_size && x_prop.map_coords[1] > 0 && x_prop.map_coords[1] < y_size)
   {
-    int map_idx = coords[1] * x_size + coords[0];
+    int map_idx = (y_size-x_prop.map_coords[1]-1)*x_size + x_prop.map_coords[0];
     if(map[map_idx] == 1 )
     {
       return false;
@@ -225,9 +232,13 @@ Xstate propagate(Xstate x_k, Ustate u_k,double *map, int x_size, int y_size)
         x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
         x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
         x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
+        x_prop.map_coords[0] = std::round((x_prop[0]*cos(x_prop[3]))/0.01) + x_k.map_coords[0]; //Relative displacement + absolute
+        x_prop.map_coords[1] = std::round((x_prop[0]*sin(x_prop[3]))/0.01) + x_k.map_coords[1]; //Relative displacement + aboslute
         if(check_collision(x_prop,map,x_size,y_size))
         {
           x_k = x_prop;
+          x_k.map_coords[0] = x_prop.map_coords[0];
+          x_k.map_coords[1] = x_prop.map_coords[1];
         }
         else
         {
