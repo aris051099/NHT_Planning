@@ -197,7 +197,7 @@ bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size)
   if(x_prop.map_coords[0] > 0 && x_prop.map_coords[0] < x_size && x_prop.map_coords[1] > 0 && x_prop.map_coords[1] < y_size)
   {
     int map_idx = (y_size-x_prop.map_coords[1]-1)*x_size + x_prop.map_coords[0];
-    if(map[map_idx] == 1 )
+    if(map[map_idx] == 1.0 )
     {
       return false;
     }
@@ -222,7 +222,7 @@ Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
     After propagating one step, we calculate the (x,y) coordinate and make sure the cell is not 1;
     NOTES: This will also depend on the resolution of the map and the resolution for rendering. Be aware
   */
-      Xstate x_prop; 
+      Xstate x_prop(i_x_k); 
       Xstate x_k(i_x_k);
       double prop_time = u_k.get_tprop();
       for(int i = 0; i < sec2msec(prop_time) ; ++i)
@@ -231,8 +231,11 @@ Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
         x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
         x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
         x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
-        x_prop.map_coords[0] = std::round((x_prop[0]*cos(x_prop[3]))/0.01) + x_k.map_coords[0]; //Relative displacement + absolute
-        x_prop.map_coords[1] = std::round((x_prop[0]*sin(x_prop[3]))/0.01) + x_k.map_coords[1]; //Relative displacement + aboslute
+
+        x_prop.map_coords[0] = std::round((x_prop[0]*cos(x_prop[2]))) + x_k.map_coords[0]; //Relative displacement + absolute
+        x_prop.map_coords[1] = std::round((x_prop[0]*sin(x_prop[2]))) + x_k.map_coords[1]; //Relative displacement + aboslute
+        // std::cout<< x_prop.map_coords[0] << " , " << x_prop.map_coords[1] << std::endl;
+        // x_k  = x_prop;
         if(check_collision(x_prop,map,x_size,y_size))
         {
           x_k = x_prop;

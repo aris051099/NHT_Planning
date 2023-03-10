@@ -62,9 +62,9 @@ unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
 std::default_random_engine gen(seed);
 
-std::uniform_real_distribution<double> rand_t_prop(0.0,10.0);
+std::uniform_real_distribution<double> rand_t_prop(0.0,5.0);
 
-std::uniform_int_distribution<int> rand_u_vel(-100,100);
+std::uniform_int_distribution<int> rand_u_vel(0,100);
 std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
 
 std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
@@ -308,7 +308,7 @@ static void planner(map& map_1,
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.90) //Goal biasing by 5% 
+		if(prob > 0.95) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
 		}
@@ -350,8 +350,9 @@ static void planner(map& map_1,
 					x_min = x_prop;
 				}
 			};
-			std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
-			std::cout << x_min[0] << std::endl;
+			// std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
+			// std::cout << x_min[0] << std::endl;
+			printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
 			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
 			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
 			if(dist2goal < 0.1)
@@ -443,7 +444,7 @@ int main(int argc, char ** argv)
 	Ustate u_start(0,0);
 	Xstate x_prop;
 	Xstate x_start(0,0,PI/2,0);
-	Xstate x_goal(euclidean(7,46,20,25),0,atan2(24-25.0,7.0-20.0),0);
+	Xstate x_goal(euclidean(7,46,20,25),0,atan2(46-25.0,7.0-20.0),0);
 
 
 	object husky_robot;
@@ -478,7 +479,19 @@ int main(int argc, char ** argv)
 	// 	std::cout << map_1.map_ptr[i] << " ";
 
 	// }
+	{
+		Ustate u_test(1,0);
+		u_test.set_tprop(1);
+		Xstate x_prop_test;
+		Xstate x_prop_test2;
+		x_prop_test.propagate(x_start,u_test);
 
+		printf("Test:\n");
+		std::cout << x_prop_test << std::endl;
+		printf("Test 2:\n");
+		x_prop_test2 = propagate(x_start,u_test,map_1.map_ptr,map_1.width,map_1.height);
+		std::cout << x_prop_test2 << std::endl;
+	}
 	planner(map_1,x_start,u_start,x_goal,plan,tree);
 
 	int plan_size = plan.size();
