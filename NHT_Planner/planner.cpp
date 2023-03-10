@@ -62,13 +62,13 @@ unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
 std::default_random_engine gen(seed);
 
-std::uniform_real_distribution<double> rand_t_prop(0.0,5.0);
+std::uniform_real_distribution<double> rand_t_prop(0.0,10.0);
 
 std::uniform_int_distribution<int> rand_u_vel(-100,100);
 std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
 
 std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-std::uniform_real_distribution<double> rand_x(-5.0,5.0);
+std::uniform_real_distribution<double> rand_x(-5.0,70.0);
 std::uniform_real_distribution<double> rand_theta(-PI,PI);
 std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
 
@@ -181,7 +181,7 @@ double euclidean(Xstate& x_goal,Xstate& x_near)
 	// auto x_goal = x_sgoal.getPointer();
 	// auto x_near = x_snear.getPointer();
 	double dist = 0; 
-	for(int i = 0; i < x_goal.size(); i+=1)
+	for(int i = 0; i < x_goal.size(); i+=2)
 	{
 		dist+= pow(x_goal[i]-x_near[i],2);
 	}
@@ -351,6 +351,7 @@ static void planner(map& map_1,
 				}
 			};
 			std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
+			std::cout << x_min[0] << std::endl;
 			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
 			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
 			if(dist2goal < 0.1)

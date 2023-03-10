@@ -212,7 +212,7 @@ bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size)
   }
 }
 
-Xstate propagate(Xstate x_k, Ustate u_k,double *map, int x_size, int y_size)
+Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
 {
   /*
     The present function propagate the dynamics based on a specific input. In addition,
@@ -223,11 +223,10 @@ Xstate propagate(Xstate x_k, Ustate u_k,double *map, int x_size, int y_size)
     NOTES: This will also depend on the resolution of the map and the resolution for rendering. Be aware
   */
       Xstate x_prop; 
+      Xstate x_k(i_x_k);
       double prop_time = u_k.get_tprop();
       for(int i = 0; i < sec2msec(prop_time) ; ++i)
       {
-        // printf("Iteration %d \n",i);
-        // x_k = din_sytem.A_dt*x_k + din_sytem.B_dt*u_k;
         x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
         x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
         x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
