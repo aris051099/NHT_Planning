@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui_foundation\ysgebl_gui_foundation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui_foundation\ysshellexteditgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui_foundation\ysgebl_gui_foundation_io.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui_foundation\ysgebl_gui_foundation_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui_foundation\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{48B36038-92DD-33D1-9769-B6ADB4E09BC5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

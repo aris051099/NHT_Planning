@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\CMakeFiles\4d6b5ddd78ad7c341828b1d004090103\ysglslprogram.h.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\CMakeFiles\459b0d9b52bb2555059dcaf88b8b86cb\ysglslprogram_h.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgl\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgl\src\CMakeFiles\ysglslprogram_h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C68C8A8C-9ABB-39B0-8E33-D0A54628D734}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

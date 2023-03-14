@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\filename.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\fsgui3dapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\fsgui3dapp_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\fsgui3dapp_menusetup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\fsgui3dmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\miscdlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\textresource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\boolmenu\boolmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\filemenu\filemenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\viewmenu\viewmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_clarky.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_clarky_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_lens.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_naca6.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_naca6_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_supercritical.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_supercritical_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\config\config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\config\configmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\dnm\dnmmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\dnm\dnmtreedialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\editmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_createmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_create_airfoil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_intersectionmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_offsetmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_roundmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_sweepmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_stitch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\global\globalmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\help\helpmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\refbmp\refbmp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\refbmp\refbmpdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\sketch\sketch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\sketch\sketchmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\util\utilmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\repair\repairmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\viewmenu\viewdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\selectmenu\selectmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\selectmenu\selectbyproperty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\dnm\dnmpreview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\ysgebl_gui_extension_base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_align.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_pastemenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\boolmenu\booldialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\filename.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\filemenu\file_slideshowdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\miscdlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\textresource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\ysgeblversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_clarky_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\airfoil\ysairfoil_supercritical_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\config\polycreconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\config\configmenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\dnm\dnmtreedialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_createprimitivedialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_create_airfoil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_hemmingdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_insertdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_intersectiondialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_mirrorimagedialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_offsetdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_projdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_rounddialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_solidofrevolutiondialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\edit\edit_sweepdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\help\helpdlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\refbmp\refbmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\refbmp\refbmpdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\sketch\sketch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\util\utildlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\gui\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{969AE71F-307C-3030-9D57-74C1F17C8EA1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{48B36038-92DD-33D1-9769-B6ADB4E09BC5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

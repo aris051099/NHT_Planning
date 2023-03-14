@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{98FEAA91-ACBE-30B0-8D11-FFF9E030EA87}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>geblutil</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">geblutil.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">geblutil</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">geblutil.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">geblutil</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">geblutil.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">geblutil</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">geblutil.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">geblutil</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\arisa\Desktop\Path_Planning\public\src\imported\include;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel;C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernel\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysclass11\src\.;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src;C:\Users\arisa\Desktop\Path_Planning\public\src\ysglcpp\src\.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build/public/ysgebl/src/kernelutil/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build/public/ysgebl/src/kernelutil/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build/public/ysgebl/src/kernelutil/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/arisa/Desktop/Path_Planning/public/src/ysgebl/src/kernelutil/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner -BC:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build --check-stamp-file C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/build/public/ysgebl/src/kernelutil/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernelutil\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_boolutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_constedgeutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_copyutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_duplicateutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_localop.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_offsetutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_orientationutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_roundutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_selectionutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_splitop.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_topologyutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextplgfill.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_boundaryutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_clusteringutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_constedgeutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_diagnoseutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_duplicateutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_embeddingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_geomcalc.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_intersectionutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_localop.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_mappingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_offsetutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_orientationutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_patchutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_roundutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_splitop.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_sweeputil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_thickeningutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_trackingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_proximityutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_stitchingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_stitchingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_topologyutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\yshasshellext.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_facegrouputil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_condition.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_sewingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_facegrouputil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_polygontanglerepair.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_projectionutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_sewingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_deformationevaluator.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_commandsupport.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_triangulationutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_triangulationutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_edgepriorityqueue.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_smoothingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_thicknessutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_astar.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_facegroupgrowing.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_regiongrowing.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_unfoldingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_imprintingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_protrusionfinder.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_constedgeslider.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_alignmentutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_crawlingutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_primitiveshapeutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_repairutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_curvatureutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_snakeutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_constedgesmoother.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_quadmeshutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_facegroupextender.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_pipeaxisutil.cpp" />
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_itscreduction.cpp" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_boolutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_constedgeutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_copyutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_duplicateutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_localop.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_offsetutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_orientationutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_roundutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_selectionutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_splitop.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_topologyutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextplgfill.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_boundaryutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_clusteringutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_constedgeutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_def.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_diagnoseutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_duplicateutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_embeddingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_geomcalc.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_intersectionutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_localop.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_mappingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_offsetutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_orientationutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_patchutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_roundutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_splitop.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_stitchingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_sweeputil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_thickeningutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_trackingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\yshasshellext.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_commandsupport.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_condition.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_deformationevaluator.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_facegrouputil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_polygontanglerepair.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_projectionutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_proximityutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_sewingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_topologyutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_facegrouputil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_sewingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_stitchingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_triangulationutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellextedit_triangulationutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_edgepriorityqueue.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_smoothingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_thicknessutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_astar.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_facegroupgrowing.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_regiongrowing.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_unfoldingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_imprintingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_protrusionfinder.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_constedgeslider.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_alignmentutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_crawlingutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_primitiveshapeutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_repairutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_curvatureutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_snakeutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_constedgesmoother.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_quadmeshutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_facegroupextender.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_pipeaxisutil.h" />
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysgebl\src\kernelutil\ysshellext_itscreduction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\ZERO_CHECK.vcxproj">
+      <Project>{605DE3FE-CF48-33C1-819C-EDFEB25C1089}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysgebl\src\kernel\geblkernel.vcxproj">
+      <Project>{AA12A377-8835-338B-B84C-A9D9F8C1499A}</Project>
+      <Name>geblkernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysclass\src\ysclass.vcxproj">
+      <Project>{3A684F3F-E530-3C80-900A-C066F69D7FA9}</Project>
+      <Name>ysclass</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysclass11\src\ysclass11.vcxproj">
+      <Project>{E795AA70-B4C2-32EB-B238-76B115B34C6B}</Project>
+      <Name>ysclass11</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\arisa\Desktop\Path_Planning\NHT_Planning\build\public\ysglcpp\src\ysglcpp.vcxproj">
+      <Project>{556842B9-EAA6-3B0E-A5CE-49AFCBA64AF4}</Project>
+      <Name>ysglcpp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

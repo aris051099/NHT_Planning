@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\ysbitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\ysbitmaparray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\ysbitmappngif.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\yspng.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\yspngenc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\ysbitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\ysbitmaparray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\yspng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\yspngenc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\ysbitmaptemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\arisa\Desktop\Path_Planning\public\src\ysbitmap\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{969AE71F-307C-3030-9D57-74C1F17C8EA1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{48B36038-92DD-33D1-9769-B6ADB4E09BC5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
