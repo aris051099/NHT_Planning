@@ -96,6 +96,7 @@ class object
 		void setDim(GLfloat i_w, GLfloat i_h);
 		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle);
 		void Draw_object(void);
+		void Draw_in_center(void);
 		void Draw_object_Angle(void);
 };
 
@@ -128,37 +129,25 @@ void object::Draw_object()
 
 	glBegin(GL_QUADS);
 
-
 	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x-w/2 ,y-h/2,0); //0,0
+	glVertex3f(x,y,0); //0,0
 
 	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w-w/2,y-h/2,0); //1,0
+	glVertex3f(x+w,y,0); //1,0
 
 	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
+	glVertex3f(x+w,y+h,0); // 1,1
 
 	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
+ 	glVertex3f(x,y+h,0); // 0,1
 
 	glEnd(); 
 
 }
 
-void object::Draw_object_Angle()
+void object::Draw_in_center()
 {
 	glColor3ub(this->r,this->g,this->b);
-
-	if(this->angle < 0)
-	{
-		this->angle = 2*PI-this->angle;
-	}
-	this->angle = (this->angle/PI) * 180;
-
-	glLoadIdentity();
-	glTranslatef(x,y, 0);      
-	glRotatef(angle, 0.0f, 0.0f, 1.0f);
-	glTranslatef(-x, -y, 0);
 
 	glBegin(GL_QUADS);
 
@@ -175,6 +164,41 @@ void object::Draw_object_Angle()
  	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
 
 	glEnd(); 
+}
+
+void object::Draw_object_Angle()
+{
+	glColor3ub(this->r,this->g,this->b);
+
+	if(this->angle < 0)
+	{
+		this->angle = 2*PI-this->angle;
+	}
+	this->angle = (this->angle/PI) * 180;
+
+	// glLoadIdentity();
+	glPushMatrix();
+
+	glTranslatef(x,y, 0);      
+	glRotatef(angle, 0.0f, 0.0f, -1.0f);
+	glTranslatef(-x, -y, 0);
+
+	glBegin(GL_QUADS);
+
+	glTexCoord3f(0.0,0.0,0.0);
+	glVertex3f(x-w/2 ,y-h/2,0); //0,0
+
+	glTexCoord3f(1.0,0.0,0.0);
+	glVertex3f(x+w-w/2,y-h/2,0); //1,0
+
+	glTexCoord3f(1.0,1.0,0);
+	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
+
+	glTexCoord3f(0.0,1.0,0.0);
+ 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
+	glEnd(); 
+
+	glPopMatrix();
 }
 
 double euclidean(Xstate& x_goal,Xstate& x_near)
@@ -309,7 +333,7 @@ static void planner(map& map_1,
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.95) //Goal biasing by 5% 
+		if(prob > 0.20) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
 		}
@@ -353,7 +377,7 @@ static void planner(map& map_1,
 			};
 			// std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
 			// std::cout << x_min[0] << std::endl;
-			printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
+			// printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
 			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
 			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
 			if(dist2goal < 0.1)
@@ -417,6 +441,12 @@ double calc_angle(double xf,double yf,double xi,double yi)
 	}
 	return angle;
 
+}
+
+void map2block(double *map_coords,map map_1)
+{
+	map_coords[0] = map_1.block_x*std::round(map_coords[0]);
+	map_coords[1] = map_1.block_y*(map_1.height - std::round(map_coords[1]));
 }
 /** Your final solution will be graded by an grading script which will
  * send the default 6 arguments:
@@ -500,7 +530,7 @@ int main(int argc, char ** argv)
 		x_prop_test3 = propagate(x_prop_test3,u_test,map_1.map_ptr,map_1.width,map_1.height);
 		std::cout << x_prop_test3 << std::endl; 
 	}
-	// planner(map_1,x_start,u_start,x_goal,plan,tree);
+	planner(map_1,x_start,u_start,x_goal,plan,tree);
 
 	int plan_size = plan.size();
 
@@ -536,25 +566,26 @@ int main(int argc, char ** argv)
 				idx = 0;
 				
 			// Ustate u_k(plan[idx]->getUstate());
-			// Xstate x_prop(plan[idx]->getXstate());
+			Xstate x_prop(plan[idx]->getXstate());
 			// int t_prop = sec2msec(u_k.get_tprop());
 
-			double coords[2] ={0,0};
+			double coords[2] ={x_prop.map_coords[0],x_prop.map_coords[1]};
 			// polar2coord(coords,x_prop); 
 			// polar2meter(coords,x_prop[0],x_prop[2]);
 			// meter2pixel(coords)
-
-			// husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
+			map2block(coords,map_1);
+			husky_robot.Move(coords[0],coords[1],x_prop[2]);
 
 			// //Rendering
 
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			glLoadIdentity();
+			// glLoadIdentity();
 
 			map_1.renderMap();
 
 			start_pos.Draw_object();
 			goal_pos.Draw_object();
+			husky_robot.Draw_object_Angle();
 			// husky_robot.Draw_object_Angle();
 
 			FsSwapBuffers();
