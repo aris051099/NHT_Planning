@@ -41,8 +41,9 @@
 #define	PLANLENGTH_OUT	plhs[1]
 
 #define GETMAPINDEX_LL0(X, Y, XSIZE, YSIZE) ((YSIZE-Y-1)*XSIZE + X)
-#define GETMAPINDEX_UL1(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
-#define GETMAPINDEX_UL0(X, Y, XSIZE, YSIZE) ((Y-1)*XSIZE + (X-1))
+#define GETMAPINDEX_LL1(X, Y, XSIZE, YSIZE) ((YSIZE-Y)*XSIZE + X)
+#define GETMAPINDEX_UL0(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
+#define GETMAPINDEX_UL1(X, Y, XSIZE, YSIZE) ((Y-1)*XSIZE + (X-1))
 
 #if !defined(MAX)
 #define	MAX(A, B)	((A) > (B) ? (A) : (B))
@@ -68,7 +69,7 @@ std::uniform_int_distribution<int> rand_u_vel(0,100);
 std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
 
 std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-std::uniform_real_distribution<double> rand_x(-5.0,70.0);
+std::uniform_real_distribution<double> rand_x(0,70.0);
 std::uniform_real_distribution<double> rand_theta(-PI,PI);
 std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
 
@@ -484,6 +485,7 @@ int main(int argc, char ** argv)
 		u_test.set_tprop(1);
 		Xstate x_prop_test;
 		Xstate x_prop_test2;
+		Xstate x_prop_test3;
 		x_prop_test.propagate(x_start,u_test);
 
 		printf("Test:\n");
@@ -491,28 +493,34 @@ int main(int argc, char ** argv)
 		printf("Test 2:\n");
 		x_prop_test2 = propagate(x_start,u_test,map_1.map_ptr,map_1.width,map_1.height);
 		std::cout << x_prop_test2 << std::endl;
+		printf("Test 3:\n");
+		x_prop_test3 = propagate(x_prop_test2,u_test,map_1.map_ptr,map_1.width,map_1.height);
+		std::cout << x_prop_test3 << std::endl;
+		printf("Test 4: \n");
+		x_prop_test3 = propagate(x_prop_test3,u_test,map_1.map_ptr,map_1.width,map_1.height);
+		std::cout << x_prop_test3 << std::endl; 
 	}
-	planner(map_1,x_start,u_start,x_goal,plan,tree);
+	// planner(map_1,x_start,u_start,x_goal,plan,tree);
 
 	int plan_size = plan.size();
 
 	start_pos.setDim(20,20);
 	start_pos.setColor(255,0,0);
-	start_pos.Move(600+coords_start[0],600+coords_start[1],0);
+	start_pos.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 
 	goal_pos.setDim(20,20);
 	goal_pos.setColor(255,0,0);
-	goal_pos.Move(600+coords_goal[0],600+coords_goal[1],0);
+	goal_pos.Move(map_1.block_x*coords_goal[0],map_1.block_y*(map_1.height-coords_goal[1]),0);
 
 	husky_robot.setDim(20,15);
 	husky_robot.setColor(255,240,10);
-	husky_robot.Move(600+coords_start[0],600+coords_start[1],0);
+	husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 
 	int idx = 0;
-	int w_width = 1200;
+	int w_width = 1000;
 	int w_height = 1000;
 
-	Xstate x_k(plan[0]->getXstate());
+	// Xstate x_k(plan[0]->getXstate());
 
 	FsOpenWindow(0,0,w_width,w_height,1);
 
@@ -527,27 +535,27 @@ int main(int argc, char ** argv)
 			if(idx >= plan_size)
 				idx = 0;
 				
-			Ustate u_k(plan[idx]->getUstate());
-			Xstate x_prop(plan[idx]->getXstate());
-			int t_prop = sec2msec(u_k.get_tprop());
+			// Ustate u_k(plan[idx]->getUstate());
+			// Xstate x_prop(plan[idx]->getXstate());
+			// int t_prop = sec2msec(u_k.get_tprop());
 
 			double coords[2] ={0,0};
 			// polar2coord(coords,x_prop); 
-			polar2meter(coords,x_prop[0],x_prop[2]);
+			// polar2meter(coords,x_prop[0],x_prop[2]);
 			// meter2pixel(coords)
 
-			husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
+			// husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
 
 			// //Rendering
 
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 
+			map_1.renderMap();
+
 			start_pos.Draw_object();
 			goal_pos.Draw_object();
-			husky_robot.Draw_object_Angle();
-
-			map_1.renderMap();
+			// husky_robot.Draw_object_Angle();
 
 			FsSwapBuffers();
 			FsSleep(250);
