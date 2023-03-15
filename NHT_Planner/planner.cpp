@@ -59,19 +59,22 @@
 #define LINKLENGTH_CELLS 10
 
 
-unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 //1234 12345 123456 1234567 12345678
 std::default_random_engine gen(seed);
 
 std::uniform_real_distribution<double> rand_t_prop(0.0,5.0);
 
-std::uniform_int_distribution<int> rand_u_vel(0,100);
+std::uniform_int_distribution<int> rand_u_vel(-100,100);
 std::uniform_real_distribution<double> rand_u_ang_vel(-2.0,2.0);
 
 std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
 std::uniform_real_distribution<double> rand_x(0,70.0);
 std::uniform_real_distribution<double> rand_theta(-PI,PI);
 std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
+
+std::uniform_int_distribution<int> rand_map_coordsx(0,49);
+std::uniform_int_distribution<int> rand_map_coordsy(0,49);
 
 std::uniform_real_distribution<double> dist_prob(0.0,1);
 
@@ -213,6 +216,17 @@ double euclidean(Xstate& x_goal,Xstate& x_near)
 	return sqrt(dist);
 }
 
+double euclidean(double xf,double yf,double xi,double yi)
+{
+	return sqrt(pow(xf-xi,2)+pow(yf-yi,2));
+}
+
+double euclidean(double *coord_f,double *coord_b)
+{
+	return sqrt(pow(coord_f[0]-coord_b[0],2)+pow(coord_f[1]-coord_b[0],2));
+}
+
+
 
 // double euclidean(Xstate& x_goal,Xstate& x_near)
 // {
@@ -246,6 +260,32 @@ int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 		for(int i = 0; i < tree.size(); ++i)
 		{ 
 			double dist = euclidean(x_rand,tree[i]->getXstate());
+				if(dist < r)
+				{
+					if(dist < min)
+					{
+						min_node_idx = i;
+						min = dist;	
+					}
+				}
+		}
+	}
+	return min_node_idx;
+
+}
+
+int nearest_n_idx_map(Xstate x_rand,std::vector<node*>& tree)
+{
+	double min = std::numeric_limits<double>::infinity();
+	// double r = calc_radius();
+	double r = 7.5;
+	int min_node_idx = -1;
+	if(!tree.empty())
+	{
+		for(int i = 0; i < tree.size(); ++i)
+		{ 
+			Xstate x_t(tree[i]->getXstate());
+			double dist = euclidean(x_rand.map_coords,x_t.map_coords);
 				if(dist < r)
 				{
 					if(dist < min)
@@ -309,100 +349,6 @@ bool small_control(Ustate& u)
 
 }
 
-//-------------------------Below Added by AF----------------------------------------------------
-//-------------------------BELOW RRT Functions & Code ------------------------------------------------
-static void planner(map& map_1,
-			Xstate& x_0, 
-			Ustate& u_0,
-			Xstate& x_goal,
-			std::vector<node*>& plan,
-			std::vector<node*>& tree)
-{
-	int K = 100000;
-	Xstate x_rand;
-	Xstate x_prop;
-	Xstate x_min;
-	Ustate u_k;
-	Ustate u_min;
-	bool reached = false;
-	double prop_time=0;
-
-	tree.push_back(new node(0,euclidean(x_goal,x_0),nullptr,u_0,x_0));
-	std::cout<< "Number of samples: "<< K << std::endl; 
-	for(int i = 0; i < K; ++i)
-	{
-		// std::cout<< "Number of samples: "<< i << std::endl; 
-		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.20) //Goal biasing by 5% 
-		{
-			x_rand = x_goal; //Assigning qrandom to be goal
-		}
-		else
-		{
-			Xstate x_r(rand_x(gen),rand_xdot(gen),rand_theta(gen),rand_thetadot(gen));
-			x_rand = x_r;
-		}
-
-		int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
-
-		if(nn_idx >= 0)
-		{
-			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
-			int count = 0;
-			double min_dist = std::numeric_limits<double>::infinity(); 			
-			for(int i = 0; i < 20000; ++i)
-			{
-				u_k[0] = (double) rand_u_vel(gen)/100.0;
-				u_k[1] = rand_u_ang_vel(gen);
-				u_k.set_tprop(rand_t_prop(gen));
- 
-				x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
-				// x_prop.propagate(x_near,u_k);
-
-				double dist = euclidean(x_rand,x_prop);
-				if(dist < 0.1)
-				{	
-					u_min = u_k;
-					min_dist = dist;
-					x_min = x_prop;
-					break;
-					// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
-				}
-				else if(dist < min_dist)
-				{
-					u_min = u_k;
-					min_dist = dist;
-					x_min = x_prop;
-				}
-			};
-			// std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
-			// std::cout << x_min[0] << std::endl;
-			// printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
-			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
-			double dist2goal = euclidean(x_goal,tree.back()->getXstate());
-			if(dist2goal < 0.1)
-			{
-				printf("Goal found at K: %d\n", i);
-				printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
-				printf("Initial State: \n");
-				std::cout << x_0 << std::endl;
-				printf("Final state: \n");
-				std::cout << x_min << std::endl;
-				printf("Goal state:\n");
-				std::cout<<x_goal<< std::endl;
-				getPlan(plan,tree);
-				// CleanUp(tree);
-				return;
-			}
-		}
-	}
-
-	printf("No plan found \n");
-	// CleanUp(tree);
-	//no plan by default
-    return;
-}
-
 void polar2coord(double* coords,Xstate x)
 {
 	coords[0] = x[0]*cos(x[2]);
@@ -427,11 +373,6 @@ void polar2meter(double* coords,double x,double theta)
 	coords[1] = std::round((x*sin(theta))/0.01);
 }
 
-double euclidean(double xf,double yf,double xi,double yi)
-{
-	return sqrt(pow(xf-xi,2)+pow(yf-yi,2));
-}
-
 double calc_angle(double xf,double yf,double xi,double yi)
 {	
 	double angle = atan2(yf-yi,xf-xi);
@@ -442,12 +383,125 @@ double calc_angle(double xf,double yf,double xi,double yi)
 	return angle;
 
 }
+double calc_angle(double* xf,double* xi)
+{	
+	double angle = atan2(xf[1]-xi[1],xf[0]-xi[0]);
+	if(angle < 0)
+	{
+		angle = 2*PI+angle;
+	}
+	return angle;
+}
 
 void map2block(double *map_coords,map map_1)
 {
 	map_coords[0] = map_1.block_x*std::round(map_coords[0]);
 	map_coords[1] = map_1.block_y*(map_1.height - std::round(map_coords[1]));
 }
+
+//-------------------------Below Added by AF----------------------------------------------------
+//-------------------------BELOW RRT Functions & Code ------------------------------------------------
+static void planner(map& map_1,
+			Xstate& x_0, 
+			Ustate& u_0,
+			Xstate& x_goal,
+			std::vector<node*>& plan,
+			std::vector<node*>& tree)
+{
+	int K = 100000;
+	Xstate x_rand;
+	Xstate x_prop;
+	Xstate x_min;
+	Ustate u_k;
+	Ustate u_min;
+	bool reached = false;
+	double prop_time=0;
+
+	tree.push_back(new node(0,euclidean(x_goal,x_0),nullptr,u_0,x_0));
+	std::cout<< "Number of samples: "<< K << std::endl;   
+	for(int i = 0; i < K; ++i)
+	{
+		// std::cout<< "Number of samples: "<< i << std::endl; 
+		double prob = dist_prob(gen); //Creating random number representing probability 
+		if(prob > 0.95) //Goal biasing by 5% 
+		{
+			x_rand = x_goal; //Assigning qrandom to be goal
+		}
+		else
+		{
+			// Xstate x_r(rand_x(gen),rand_xdot(gen),rand_theta(gen),rand_thetadot(gen));
+			// x_rand = x_r;
+			auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+			std::default_random_engine gen(seed);
+			x_rand.map_coords[0] = rand_map_coordsx(gen);
+			x_rand.map_coords[1] = rand_map_coordsy(gen);
+		}
+
+		int nn_idx = nearest_n_idx_map(x_rand,tree);//Loops through the entire list for the closest neighbor
+
+		if(nn_idx >= 0)
+		{
+			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
+			Xstate x_r(euclidean(x_rand.map_coords,x_near.map_coords)+x_near[0],0.0,calc_angle(x_rand.map_coords,x_near.map_coords),0.0);
+			x_r.map_coords[0] = x_rand.map_coords[0];
+			x_r.map_coords[1] = x_rand.map_coords[1];
+			int count = 0;
+			double min_dist = std::numeric_limits<double>::infinity(); 			
+			for(int i = 0; i < 20000; ++i)
+			{
+				u_k[0] = (double) rand_u_vel(gen)/100.0;
+				u_k[1] = rand_u_ang_vel(gen);
+				u_k.set_tprop(rand_t_prop(gen));
+ 
+				x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
+				// x_prop.propagate(x_near,u_k);
+
+				double dist = euclidean(x_r,x_prop);
+				if(dist < 0.1)
+				{	
+					u_min = u_k;
+					min_dist = dist;
+					x_min = x_prop;
+					break;
+					// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
+				}
+				else if(dist < min_dist)
+				{
+					u_min = u_k;
+					min_dist = dist;
+					x_min = x_prop;
+				}
+			};
+			// std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
+			// std::cout << x_min[0] << std::endl;
+			// printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
+			tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
+			double dist2goal = euclidean(x_goal.map_coords,x_min.map_coords);
+			// double dist2goal = euclidean(x_goal,tree.back()->getXstate());
+			if(dist2goal < 0.1)
+			{
+				printf("Goal found at K: %d\n", i);
+				printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
+				printf("Initial State: \n");
+				std::cout << x_0 << std::endl;
+				printf("Final state: \n");
+				std::cout << x_min << std::endl;
+				printf("Goal state:\n");
+				std::cout<<x_goal<< std::endl;
+				getPlan(plan,tree);
+				// CleanUp(tree);
+				return;
+			}
+		}
+	}
+
+	printf("No plan found \n");
+	// CleanUp(tree);
+	//no plan by default
+    return;
+}
+
+
 /** Your final solution will be graded by an grading script which will
  * send the default 6 arguments:
  *    map, numOfDOFs, commaSeparatedStartPos, commaSeparatedGoalPos, 
@@ -480,7 +534,7 @@ int main(int argc, char ** argv)
 
 	object husky_robot;
 	object start_pos;
-	object goal_pos;
+ 	object goal_pos;
 
 	map_1.loadMap(argv[1]);
 
@@ -590,39 +644,6 @@ int main(int argc, char ** argv)
 
 			FsSwapBuffers();
 			FsSleep(250);
-
-			// for(int i = 0; i < sec2msec(t_prop) ; ++i)
-			// {
-
-			// 	if(FSKEY_ESC==FsInkey())
-			// 	{
-			// 		break;
-			// 	}
-			// 	x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
-			// 	x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
-			// 	x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
-			// 	x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
-
-			// 	x_k = x_prop;
-
-			// 	double coords[2] ={0,0};
-			// 	polar2coord(coords,x_prop); 
-			// 	meter2pixel(coords);
-				
-			// 	husky_robot.Move(w_width/2+coords[0],w_height/2+coords[1],x_prop[2]);
-
-			// 	//Rendering
-			// 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			// 	glLoadIdentity();
-
-			// 	start_pos.Draw();
-			// 	goal_pos.Draw();
-			// 	husky_robot.Draw_Angle();
-
-			// 	FsSwapBuffers();
-			// 	FsSleep(1);
-			// }
-
 			++idx; 
 		}
 
