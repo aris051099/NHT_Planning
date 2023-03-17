@@ -23,7 +23,7 @@
 #include <node.h>
 #include <fssimplewindow.h>
 #include <map.h>
-
+#include <ysglfontdata.h>
 /* Input Arguments */
 #define	MAP_IN      prhs[0]
 #define	ARMSTART_IN	prhs[1]
@@ -96,6 +96,7 @@ class object
 	public:
 		GLfloat x=0,y=0,angle=0,w=0,h=0;
 		GLubyte r=0,g=0,b=0;
+		int coords[2] = {0,0};
 		object(void);
 		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
 		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
@@ -104,6 +105,7 @@ class object
 		void Draw_object(void);
 		void Draw_in_center(void);
 		void Draw_object_Angle(void);
+		void Draw_coords(void);
 };
 
 object::object(){};
@@ -174,8 +176,7 @@ void object::Draw_in_center()
 
 void object::Draw_object_Angle()
 {
-	glColor3ub(this->r,this->g,this->b);
-
+	
 	if(this->angle < 0)
 	{
 		this->angle = 2*PI-this->angle;
@@ -185,9 +186,11 @@ void object::Draw_object_Angle()
 	// glLoadIdentity();
 	glPushMatrix();
 
-	glTranslatef(x,y, 0);      
+	glTranslatef(x+w/2,y+h/2, 0);      
 	glRotatef(angle, 0.0f, 0.0f, -1.0f);
-	glTranslatef(-x, -y, 0);
+	glTranslatef(-x-w/2, -y-h/2, 0);
+
+	glColor3ub(this->r,this->g,this->b);
 
 	glBegin(GL_QUADS);
 
@@ -204,7 +207,28 @@ void object::Draw_object_Angle()
  	glVertex3f(x,y+h,0); // 0,1
 	glEnd(); 
 
+	
+	glColor3ub(0,0,0);
+
+	glBegin(GL_LINES);
+	glVertex2i(x+w/2,y+h/2);
+	glVertex2i(x+w/2+20,y+h/2);
+	glEnd();
+
+
+
 	glPopMatrix();
+}
+
+void object::Draw_coords()
+{
+	glColor3ub(0,0,0);
+	glRasterPos2i(x+w,y+2*h);
+	char str[256];
+	int i_x = x;
+	int i_y = y;
+	sprintf(str,"%d,%d",coords[0],coords[1]);
+	YsGlDrawFontBitmap12x16(str);
 }
 
 double euclidean(Xstate& x_goal,Xstate& x_near)
@@ -424,7 +448,7 @@ static void planner(map& map_1,
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.95) //Goal biasing by 5% 
+		if(prob > 0.75) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
 		}
@@ -521,7 +545,7 @@ static void planner(map& map_1,
 int main(int argc, char ** argv) 
 {
 	double* map_t = nullptr;
-	double coords[2] ={0,0};
+	int coords[2] ={0,0};
 	double coords_start[2]={30,15}; //20,25 ; 30,15 (x,y)
 	double coords_goal[2]={7,46}; // 7, 46 (x,y)
 
@@ -602,16 +626,27 @@ int main(int argc, char ** argv)
 		x_prop_test3 = propagate(x_prop_test3,u_test,map_1.map_ptr,map_1.width,map_1.height);
 		std::cout << x_prop_test3 << std::endl; 
 	}
+	auto start_time = std::chrono::system_clock::now();
 	planner(map_1,x_start,u_start,x_goal,plan,tree);
-
+	auto end_time = std::chrono::system_clock::now();
+	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	float time_passed = time_delay.count()*1e-9;
+	
+	std::cout<<"--------------- RESULTS---------------"<<std::endl;
+	std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	
 	int plan_size = plan.size();
 
 	start_pos.setDim(20,20);
 	start_pos.setColor(255,0,0);
+	start_pos.coords[0] = coords_start[0];
+	start_pos.coords[1] = coords_start[1];
 	start_pos.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 
 	goal_pos.setDim(20,20);
 	goal_pos.setColor(255,0,0);
+	goal_pos.coords[0] = coords_goal[0];
+	goal_pos.coords[1] = coords_goal[1];
 	goal_pos.Move(map_1.block_x*coords_goal[0],map_1.block_y*(map_1.height-coords_goal[1]),0);
 
 	husky_robot.setDim(20,15);
@@ -619,10 +654,10 @@ int main(int argc, char ** argv)
 	husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 
 	int idx = 0;
-	int w_width = 1000;
-	int w_height = 1000;
+	int w_width = 750;
+	int w_height = 800;
 
-	// Xstate x_k(plan[0]->getXstate());
+	Xstate x_k(plan[0]->getXstate());
 
 	FsOpenWindow(0,0,w_width,w_height,1);
 
@@ -635,7 +670,7 @@ int main(int argc, char ** argv)
 				break;
 			}
 			if(idx >= plan_size)
-				idx = 0;
+ 				idx = 0;
 				
 			// Ustate u_k(plan[idx]->getUstate());
 			Xstate x_prop(plan[idx]->getXstate());
@@ -656,7 +691,11 @@ int main(int argc, char ** argv)
 			map_1.renderMap();
 
 			start_pos.Draw_object();
+			start_pos.Draw_coords();
+			
 			goal_pos.Draw_object();
+			goal_pos.Draw_coords();
+
 			husky_robot.Draw_object_Angle();
 			// husky_robot.Draw_object_Angle();
 
