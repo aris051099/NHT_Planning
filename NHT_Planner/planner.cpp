@@ -658,7 +658,7 @@ int main(int argc, char ** argv)
 	int w_height = 800;
 
 	Xstate x_k(plan[0]->getXstate());
-
+	double h = 0.01;
 	FsOpenWindow(0,0,w_width,w_height,1);
 
 
@@ -670,37 +670,73 @@ int main(int argc, char ** argv)
 				break;
 			}
 			if(idx >= plan_size)
- 				idx = 0;
-				
-			// Ustate u_k(plan[idx]->getUstate());
-			Xstate x_prop(plan[idx]->getXstate());
-			// int t_prop = sec2msec(u_k.get_tprop());
+ 			{	
+				idx = 0;
+				x_k = plan[0]->getXstate(); 
+				husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
+			}	 
+			Ustate u_k(plan[idx]->getUstate());
+			// Xstate x_prop(plan[idx]->getXstate());
+			int t_prop = sec2msec(u_k.get_tprop());
 
-			double coords[2] ={x_prop.map_coords[0],x_prop.map_coords[1]};
-			// polar2coord(coords,x_prop); 
-			// polar2meter(coords,x_prop[0],x_prop[2]);
-			// meter2pixel(coords)
-			map2block(coords,map_1);
-			husky_robot.Move(map_1.block_x*std::round(x_prop[0]),map_1.block_y*(map_1.height-std::round(x_prop[1])),x_prop[2]);
+			// husky_robot.Move(map_1.block_x*std::round(x_prop[0]),map_1.block_y*(map_1.height-std::round(x_prop[1])),x_prop[2]);
 
-			// //Rendering
+			// // //Rendering
 
-			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			// glLoadIdentity();
+			// glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			// // glLoadIdentity();
 
-			map_1.renderMap();
+			// map_1.renderMap();
 
-			start_pos.Draw_object();
-			start_pos.Draw_coords();
+			// start_pos.Draw_object();
+			// start_pos.Draw_coords();
 			
-			goal_pos.Draw_object();
-			goal_pos.Draw_coords();
+			// goal_pos.Draw_object();
+			// goal_pos.Draw_coords();
 
-			husky_robot.Draw_object_Angle();
 			// husky_robot.Draw_object_Angle();
 
-			FsSwapBuffers();
-			FsSleep(250);
+			// FsSwapBuffers();
+			// FsSleep(250);
+
+			for(int i = 0; i < t_prop ; ++i)
+			{
+
+				if(FSKEY_ESC==FsInkey())
+				{
+					break;
+				}
+				x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+				x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+				x_prop[2] = x_k[2] + u_k[1]*h;
+				x_prop[3] = 0;
+
+				x_k = x_prop;
+
+				double coords[2] ={0,0};
+				// map2block(coords,map_1);
+				husky_robot.Move(map_1.block_x*x_prop[0],map_1.block_y*(map_1.height-x_prop[1]),x_prop[2]);
+
+				//Rendering
+				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+				glLoadIdentity();
+				map_1.renderMap();
+
+				start_pos.Draw_object();
+				start_pos.Draw_coords();
+				
+				goal_pos.Draw_object();
+				goal_pos.Draw_coords();
+
+				husky_robot.Draw_object_Angle();
+
+				printf("%f,%f \n",x_prop[0],x_prop[1]);
+
+				FsSwapBuffers();
+				// FsSleep(1);
+			}
+			printf("Step: %d",idx);
 			++idx; 
 		}
 
