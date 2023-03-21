@@ -6,6 +6,8 @@
  * Create threshold for vicinity 
  * Create all the implicit planning thing 
 */
+
+#define PI 3.141592654
 int sec2msec(double sec)
 {
   return sec*100;
@@ -151,6 +153,29 @@ class Xstate : public state<double,4>
       }
       return false;
     }
+
+    void sum(Xstate inc_x)
+    {
+      state_elem[0] = state_elem[0] + inc_x[0];
+      state_elem[1] = state_elem[1] + inc_x[1];
+      state_elem[2] = state_elem[2] + inc_x[2];
+      state_elem[3] = state_elem[3] + inc_x[3];
+    }     
+
+    void subs(Xstate inc_x)
+    {
+      state_elem[0] = state_elem[0] - inc_x[0];
+      state_elem[1] = state_elem[1] - inc_x[1];
+      state_elem[2] = state_elem[2] - inc_x[2];
+      state_elem[3] = state_elem[3] - inc_x[3];
+    }    
+    void const_multiply(double k)
+    {
+      state_elem[0] = k*state_elem[0];
+      state_elem[1] = k*state_elem[1];
+      state_elem[2] = k*state_elem[2];
+      state_elem[3] = k*state_elem[3];
+    }
 };
 
 Xstate::Xstate()
@@ -193,10 +218,10 @@ std::ostream& operator<<(std::ostream& os, const Xstate& x)
 
 bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size) 
 {
-  int c_x = std::round(x_prop.map_coords[0]);
-  int c_y = std::round(x_prop.map_coords[1]);
+  auto c_x = std::round(x_prop[0]);
+  auto c_y = std::round(x_prop[1]);
   // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
-  if(c_x> 0 && c_y < x_size && c_y > 0 && c_y < y_size)
+  if(c_x> 0.0 && c_x < x_size && c_y > 0.0 && c_y < y_size)
   {
     int map_idx = (y_size-c_y-1)*x_size + c_x;
     if(map[map_idx] == 1.0 )
@@ -214,7 +239,7 @@ bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size)
   }
 }
 
-Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
+Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
 {
   /*
     The present function propagate the dynamics based on a specific input. In addition,
@@ -226,59 +251,40 @@ Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
   */
       Xstate x_prop(i_x_k); 
       Xstate x_k(i_x_k);
+      double h = 0.01; // Step_time 
       double prop_time = u_k.get_tprop();
+      // if(x_k[2] < 0)
+      // {
+      //   x_k[2] = 2*PI - x_k[2];
+      // }
       for(int i = 0; i < sec2msec(prop_time) ; ++i)
       {
-        x_prop[0] = x_k[0] + 0.007592*x_k[1] + 0.001579*u_k[0]; 
-        x_prop[1] = 0.5606*x_k[1] + 0.2882*u_k[0];
-        x_prop[2] = x_k[2] + 0.001705*x_k[3] + 0.008201*u_k[1];
-        x_prop[3] = 0.002881*x_k[3] + 0.9858*u_k[1];
+        x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+        x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+        x_prop[2] = x_k[2] + u_k[1]*h;
+        x_prop[3] = 0;
 
-        double diff_x = x_prop[0]-x_k[0];
-        double diff_angle = x_prop[3]-x_k[3];
-        x_prop.map_coords[0] = diff_x*cos(x_prop[2]) + x_k.map_coords[0]; //Relative displacement + absolute
-        x_prop.map_coords[1] = diff_x*sin(x_prop[2]) + x_k.map_coords[1]; //Relative displacement + aboslute
-        // std::cout<< x_prop.map_coords[0] << " , " << x_prop.map_coords[1] << std::endl;
+        // double diff_x = x_prop[0]-x_k[0];
+        // double diff_angle = x_prop[3]-x_k[3];
+        // x_prop.map_coords[0] = diff_x*cos(x_prop[2]) + x_k.map_coords[0]; //Relative displacement + absolute
+        // x_prop.map_coords[1] = diff_x*sin(x_prop[2]) + x_k.map_coords[1]; //Relative displacement + aboslute
+        // std::cout<< x_prop[0] << " , " << x_prop[1] << ", " << x_prop[2] << std::endl;
         // x_k  = x_prop;
         if(check_collision(x_prop,map,x_size,y_size))
         {
           x_k = x_prop;
-          x_k.map_coords[0] = x_prop.map_coords[0];
-          x_k.map_coords[1] = x_prop.map_coords[1];
         }
         else
         {
+          u_k.set_tprop(i/100.0);
           return x_k;
         }
       }
       return x_prop; 
 }
 
-
-Xstate gc2gs(double x, double y , double angle,double x_s, double y_s, double angle_s) // Converts goal coordinate, to a goal state based on the Start state
-{
-  /*
-  There are a couple of questions when designing this function:
-  -The idea is that, by giving (x,y,angle) coordinates on the map, you can create a state[x,xdot,angle,angledot] for the 
-  algorithm to reach
-  -However, based on my logic, the linear displacement (x) can be both positive and negative
-    -The question then is, how can I design such a state with a negative linear displacement?
-    -My first method just involves calculating the euclidean distance between (x_g,y_g) and (x_s,y_s) however, this only 
-    encodes a "forward" distance or movement. 
-    -Should I just limit my algorithm to move forward? 
-  -The difference in angles is fine. And the velocities at the goal are assumed to be 0. 
-  NOTES: For now, we are just considering, "forward" goals. 
-  */
-  double goal_x = sqrt(pow(x-x_s,2) + pow(y-y_s,2)); //Euclidean distance from start to goal 
-  // double diff_x = x-x_s; 
-  // double diff_y = y-y_s; 
-  double goal_angle = angle - angle_s;
-  if(goal_angle < 0)
-  {
-    goal_angle = 3.141592654 + goal_angle; 
-  }
-  Xstate x_goal(goal_x,0,goal_angle,0);
-
-  return x_goal;
-}
+// Xstate f_x(Xstate inc_x , Ustate inc_u)
+// {
+//   double h = 0.01;
+// }
 
