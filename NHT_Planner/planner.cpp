@@ -441,9 +441,9 @@ static void planner(map& map_1,
 	Ustate u_k;
 	bool reached = false;
 	double prop_time=0;
-
-	tree.push_back(new node(0,euclidean(x_goal,x_0),nullptr,u_0,x_0));
-	std::cout<< "Number of samples: "<< K << std::endl;   
+	double t_passed = 0;
+	tree.push_back(new node(t_passed,euclidean(x_goal,x_0),nullptr,u_0,x_0));
+	std::cout<< "Number of samples: "<< K << std::endl;  
 	for(int i = 0; i < K; ++i)
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
@@ -503,7 +503,7 @@ static void planner(map& map_1,
 			// printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
 			if(euclidean(x_min,tree.back()->getXstate()) > 0.001) //Avoid repetition of node
 			{
-				tree.push_back(new node(1,euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
+				tree.push_back(new node(tree[nn_idx]->g + u_min.get_tprop(),euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
 				double dist2goal = euclidean(x_goal,x_min);
 			// double dist2goal = euclidean(x_goal,tree.back()->getXstate());
 				if(dist2goal < 1)
@@ -632,6 +632,8 @@ int main(int argc, char ** argv)
 	
 	std::cout<<"--------------- RESULTS---------------"<<std::endl;
 	std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	std::cout<<"Tree size:" << tree.size() << std::endl;
+	std::cout<<"Time to complete trajectory: " << plan.back()->g << " seconds" << std::endl; 
 	
 	int plan_size = plan.size();
 
@@ -657,6 +659,8 @@ int main(int argc, char ** argv)
 
 	Xstate x_k(plan[0]->getXstate());
 	double h = 0.01;
+
+	std::cout << "Rendering planner" << std::endl;
 	FsOpenWindow(0,0,w_width,w_height,1);
 
 

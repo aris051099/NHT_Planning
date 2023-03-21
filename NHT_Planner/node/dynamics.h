@@ -216,14 +216,37 @@ std::ostream& operator<<(std::ostream& os, const Xstate& x)
     return os;
 }
 
+// bool check_collision(double* x_prop, double *map, int x_size,int y_size) 
+// {
+//   auto c_x = x_prop[0];
+//   auto c_y = x_prop[1];
+//   // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
+//   if(c_x> 0.0 && c_x < 1.0*x_size && c_y > 0.0 && c_y < 1.0*y_size)
+//   {
+//     int map_idx = (y_size-c_y-1)*x_size + c_x;
+//     if(map[map_idx] == 1.0 )
+//     {
+//       return false;
+//     }
+//     else
+//     {
+//       return true;
+//     }
+//   }
+//   else
+//   {
+//     return false;
+//   }
+// }
+
 bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size) 
 {
-  auto c_x = std::round(x_prop[0]);
-  auto c_y = std::round(x_prop[1]);
+  auto c_x = x_prop[0];
+  auto c_y = x_prop[1];
   // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
-  if(c_x> 0.0 && c_x < x_size && c_y > 0.0 && c_y < y_size)
+  if(c_x> 0.0 && c_x < 1.0*x_size && c_y > 0.0 && c_y < 1.0*y_size)
   {
-    int map_idx = (y_size-c_y-1)*x_size + c_x;
+    int map_idx = (y_size-std::round(c_y)-1)*x_size + std::round(c_x);
     if(map[map_idx] == 1.0 )
     {
       return false;
@@ -239,6 +262,48 @@ bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size)
   }
 }
 
+// bool check_collision_footprint(Xstate& x_prop, double *map, int x_size,int y_size)
+// {
+//   auto c_x = x_prop[0];
+//   auto c_y = x_prop[1];
+//   double r_width = 0.990; 
+//   double r_height = 0.670; 
+//   double left_front_corner[2] = {c_x-r_width/2.0,c_y+r_height/2.0};
+//   double left_rear_corner[2] = {c_x-r_width/2.0,c_y-r_height/2.0};
+//   double right_front_corner[2] = {c_x+r_width/2.0,c_y+r_height/2.0};
+//   double right_rear_corner[2] = {c_x+r_width/2.0,c_y-r_height/2.0};
+//   if(check_collision(left_front_corner,map,x_size,y_size))
+//   {
+//     if(check_collision(right_front_corner,map,x_size,y_size))
+//     {
+//       if(check_collision(left_rear_corner,map,x_size,y_size))
+//       {
+//         if(check_collision(right_front_corner,map,x_size,y_size))
+//           {
+//             return true;
+//           }
+//         else
+//         {
+//           return false;
+//         }
+//       }
+//       else
+//       {
+//         return false;
+//       }
+//     }
+//     else
+//     {
+//       return false;
+//     }
+//   }
+//   else
+//   {
+//     return false;
+//   }
+// }
+
+
 Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
 {
   /*
@@ -248,6 +313,7 @@ Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
     
     After propagating one step, we calculate the (x,y) coordinate and make sure the cell is not 1;
     NOTES: This will also depend on the resolution of the map and the resolution for rendering. Be aware
+    Husky width = 990 mm = 0.990 m; Huksy height = 670 mm = 0.67 m
   */
       Xstate x_prop(i_x_k); 
       Xstate x_k(i_x_k);
