@@ -177,10 +177,10 @@ void object::Draw_in_center()
 void object::Draw_object_Angle()
 {
 	
-	if(this->angle < 0)
-	{
-		this->angle = 2*PI-this->angle;
-	}
+	// if(this->angle < 0)
+	// {
+	// 	this->angle = 2*PI-this->angle;
+	// }
 	this->angle = (this->angle/PI) * 180;
 
 	// glLoadIdentity();
@@ -448,7 +448,7 @@ static void planner(map& map_1,
 	{
 		// std::cout<< "Number of samples: "<< i << std::endl; 
 		double prob = dist_prob(gen); //Creating random number representing probability 
-		if(prob > 0.75) //Goal biasing by 5% 
+		if(prob > 0.95) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
 		}
@@ -473,7 +473,7 @@ static void planner(map& map_1,
 			Ustate u_min;
 			int count = 0;
 			double min_dist = std::numeric_limits<double>::infinity(); 			
-			for(int i = 0; i < 20000; ++i)
+			for(int i = 0; i < 20; ++i)
 			{
 				u_k[0] = (double) rand_u_vel(gen)/100.0;
 				u_k[1] = rand_u_ang_vel(gen);
@@ -556,7 +556,6 @@ int main(int argc, char ** argv)
 	std::vector<node*> tree;
 
 	Ustate u_start(0,0);
-	Xstate x_prop;
 	Xstate x_start(coords_start[0],coords_start[1],PI/2,0);
 	Xstate x_goal(coords_goal[0],coords_goal[1],PI/2,0);
 
@@ -613,7 +612,6 @@ int main(int argc, char ** argv)
 		Xstate x_prop_test2;
 		Xstate x_prop_test3;
 		x_prop_test.propagate(x_start,u_test);
-
 		printf("Test:\n");
 		std::cout << x_prop_test << std::endl;
 		printf("Test 2:\n");
@@ -676,8 +674,10 @@ int main(int argc, char ** argv)
 				husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 			}	 
 			Ustate u_k(plan[idx]->getUstate());
-			// Xstate x_prop(plan[idx]->getXstate());
 			int t_prop = sec2msec(u_k.get_tprop());
+			// Xstate x_prop(plan[idx]->getXstate());
+			Xstate x_planned(plan[idx]->getXstate());
+			Xstate x_prop;
 
 			// husky_robot.Move(map_1.block_x*std::round(x_prop[0]),map_1.block_y*(map_1.height-std::round(x_prop[1])),x_prop[2]);
 
@@ -713,9 +713,7 @@ int main(int argc, char ** argv)
 
 				x_k = x_prop;
 
-				double coords[2] ={0,0};
-				// map2block(coords,map_1);
-				husky_robot.Move(map_1.block_x*x_prop[0],map_1.block_y*(map_1.height-x_prop[1]),x_prop[2]);
+				husky_robot.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
 
 				//Rendering
 				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -731,12 +729,12 @@ int main(int argc, char ** argv)
 
 				husky_robot.Draw_object_Angle();
 
-				printf("%f,%f \n",x_prop[0],x_prop[1]);
+				// printf("%f,%f \n",x_prop[0],x_prop[1]);
 
 				FsSwapBuffers();
 				// FsSleep(1);
 			}
-			printf("Step: %d",idx);
+			printf("Step: %d : Actual(x,y,theta) = %f,%f,%f ; Planned(x,y,theta) = %f,%f,%f \n ",idx,x_k[0],x_k[1],x_k[2],x_planned[0],x_planned[1],x_planned[2]);
 			++idx; 
 		}
 

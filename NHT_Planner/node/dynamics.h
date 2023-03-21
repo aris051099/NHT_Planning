@@ -239,7 +239,7 @@ bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size)
   }
 }
 
-Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
+Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
 {
   /*
     The present function propagate the dynamics based on a specific input. In addition,
@@ -253,10 +253,10 @@ Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
       Xstate x_k(i_x_k);
       double h = 0.01; // Step_time 
       double prop_time = u_k.get_tprop();
-      if(x_k[2] < 0)
-      {
-        x_k[2] = 2*PI - x_k[2];
-      }
+      // if(x_k[2] < 0)
+      // {
+      //   x_k[2] = 2*PI - x_k[2];
+      // }
       for(int i = 0; i < sec2msec(prop_time) ; ++i)
       {
         x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
@@ -276,6 +276,7 @@ Xstate propagate(Xstate i_x_k, Ustate u_k,double *map, int x_size, int y_size)
         }
         else
         {
+          u_k.set_tprop(i/100.0);
           return x_k;
         }
       }
