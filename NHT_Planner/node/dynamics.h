@@ -95,6 +95,7 @@ class Xstate : public state<double,4>
   public:
 
     double map_coords[2] = {0,0};
+    int state=-1; 
 
     Xstate();
 
@@ -129,6 +130,7 @@ class Xstate : public state<double,4>
       state_elem[3] = incoming[3];
       this-> map_coords[0] = incoming.map_coords[0];
       this-> map_coords[1] = incoming.map_coords[1];
+      this->state = incoming.state;
       return *this;
     }
     bool operator==(const Xstate& incoming)
@@ -203,6 +205,8 @@ Xstate::Xstate(const Xstate& inc)
 
   map_coords[0] = inc.map_coords[0];
   map_coords[1] = inc.map_coords[1];
+
+  this->state = inc.state;
 }
 
 std::ostream& operator<<(std::ostream& os, const Xstate& x)
@@ -342,10 +346,12 @@ Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
         }
         else
         {
+          x_k.state = 2; //Trapped 
           u_k.set_tprop(i/100.0);
           return x_k;
         }
       }
+      x_prop.state = 1;
       return x_prop; 
 }
 

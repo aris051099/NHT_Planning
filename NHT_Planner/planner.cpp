@@ -426,6 +426,16 @@ void map2block(double *map_coords,map map_1)
 	map_coords[1] = map_1.block_y*(map_1.height - std::round(map_coords[1]));
 }
 
+double L2_norm(Xstate& x_s)
+{
+	double sum = 0;
+	for(int i = 0; i < x_s.size(); ++i )
+	{
+		sum+=sqrt(pow(x_s[i],2));
+	}
+	return sum;
+}
+
 //-------------------------Below Added by AF----------------------------------------------------
 //-------------------------BELOW RRT Functions & Code ------------------------------------------------
 static void planner(map& map_1,
@@ -481,10 +491,10 @@ static void planner(map& map_1,
  
 				x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
 				// x_prop.propagate(x_near,u_k);
-
 				double dist = euclidean(x_rand,x_prop);
 				if(dist < 0.1)
 				{	
+					x_prop.state = 0; //Reached
 					u_min = u_k;
 					min_dist = dist;
 					x_min = x_prop;
@@ -493,32 +503,47 @@ static void planner(map& map_1,
 				}
 				else if(dist < min_dist)
 				{
+					// x_prop.state = 1; //Steered 
 					u_min = u_k;
 					min_dist = dist;
 					x_min = x_prop;
 				}
 			};
+
+
 			// std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
 			// std::cout << x_min[0] << std::endl;
 			// printf("Xrand_lin_x: %f ; Xnear_lin_x: %f ; Xprop_min_lin_x:%f \n",x_rand[0],x_near[0],x_min[0]);
-			if(euclidean(x_min,tree.back()->getXstate()) > 0.001) //Avoid repetition of node
+
+			if(x_min.state != 2)
 			{
-				tree.push_back(new node(tree[nn_idx]->g + u_min.get_tprop(),euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
-				double dist2goal = euclidean(x_goal,x_min);
-			// double dist2goal = euclidean(x_goal,tree.back()->getXstate());
-				if(dist2goal < 1)
+				if(euclidean(x_min,tree.back()->getXstate()) > 0.001) //Avoid repetition of node
 				{
-					printf("Goal found at K: %d\n", i);
-					printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
-					printf("Initial State: \n");
-					std::cout << x_0 << std::endl;
-					printf("Final state: \n");
-					std::cout << x_min << std::endl;
-					printf("Goal state:\n");
-					std::cout<<x_goal<< std::endl;
-					getPlan(plan,tree);
-					// CleanUp(tree);
-					return;
+					tree.push_back(new node(tree[nn_idx]->g + u_min.get_tprop(),euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
+					double g_cost = tree[nn_idx]->g + euclidean(tree[nn_idx]->getXstate(),x_min);
+					tree.back()->g = g_cost;
+					double r = L2_norm(tree.back()->getXstate());
+
+
+
+
+
+					double dist2goal = euclidean(x_goal,x_min);
+				// double dist2goal = euclidean(x_goal,tree.back()->getXstate());
+					if(dist2goal < 1)
+					{
+						printf("Goal found at K: %d\n", i);
+						printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
+						printf("Initial State: \n");
+						std::cout << x_0 << std::endl;
+						printf("Final state: \n");
+						std::cout << x_min << std::endl;
+						printf("Goal state:\n");
+						std::cout<<x_goal<< std::endl;
+						getPlan(plan,tree);
+						// CleanUp(tree);
+						return;
+					}
 				}
 			}
 		}
