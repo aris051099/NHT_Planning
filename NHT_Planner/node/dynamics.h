@@ -334,12 +334,6 @@ Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
         x_prop[2] = x_k[2] + u_k[1]*h;
         x_prop[3] = 0;
 
-        // double diff_x = x_prop[0]-x_k[0];
-        // double diff_angle = x_prop[3]-x_k[3];
-        // x_prop.map_coords[0] = diff_x*cos(x_prop[2]) + x_k.map_coords[0]; //Relative displacement + absolute
-        // x_prop.map_coords[1] = diff_x*sin(x_prop[2]) + x_k.map_coords[1]; //Relative displacement + aboslute
-        // std::cout<< x_prop[0] << " , " << x_prop[1] << ", " << x_prop[2] << std::endl;
-        // x_k  = x_prop;
         if(check_collision(x_prop,map,x_size,y_size))
         {
           x_k = x_prop;
