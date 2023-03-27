@@ -97,6 +97,7 @@ class object
 	public:
 		GLfloat x=0,y=0,angle=0,w=0,h=0;
 		GLubyte r=0,g=0,b=0;
+		std::vector<double> pos_idx; 
 		double coords[2] = {0,0};
 		object(void);
 		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
@@ -107,6 +108,7 @@ class object
 		void Draw_in_center(void);
 		void Draw_object_Angle(void);
 		void Draw_coords(void);
+		void Draw_Path(void);
 };
 
 object::object(){};
@@ -130,6 +132,8 @@ void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
 	this->x = i_x;
 	this->y = i_y;
 	this->angle = i_angle; 
+	pos_idx.push_back(i_x);
+	pos_idx.push_back(i_y);
 }
 
 void object::Draw_object()
@@ -210,13 +214,11 @@ void object::Draw_object_Angle()
 
 	
 	glColor3ub(0,0,0);
-
+	glLineWidth(1);
 	glBegin(GL_LINES);
 	glVertex2i(x+w/2,y+h/2);
 	glVertex2i(x+w/2+20,y+h/2);
 	glEnd();
-
-
 
 	glPopMatrix();
 }
@@ -230,6 +232,26 @@ void object::Draw_coords()
 	int i_y = y;
 	sprintf(str,"%d,%d",coords[0],coords[1]);
 	YsGlDrawFontBitmap12x16(str);
+}
+
+void object::Draw_Path()
+{
+	if(pos_idx.size() > 4)
+	{
+		for(int j = 0; j < pos_idx.size()/2; j+=2)
+		{
+			glColor3ub(0,100,255);
+			glLineWidth(3);
+			double prevx = pos_idx[j];
+			double prevy = pos_idx[j+1];
+			double x = pos_idx[j+2];
+			double y = pos_idx[j+3];
+			glBegin(GL_LINES);
+				glVertex2d(prevx,prevy);
+				glVertex2d(x,y);
+			glEnd();
+		}
+	}
 }
 
 double euclidean(Xstate& x_goal,Xstate& x_near)
@@ -290,12 +312,12 @@ double LQR_Cost(Xstate& x_k, Ustate& u_k)
  	return sum;
 }
 
-double calc_radius()
+double calc_radius(std::vector<node*>& tree)
 {
-	double d = 4; 
-	double gamma = 20;
+	double d = 3; 
+	double gamma = 150;
 	double delta = (PI*PI)/2;
-	double V = 2;
+	double V = tree.size();
 	return (gamma/delta)*pow((log(V)/V),1/d);
 }
 
@@ -327,6 +349,7 @@ int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
 
 void nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs)
 {
+	nn_idxs.clear();
 	double min = std::numeric_limits<double>::infinity();
 	// double r = calc_radius();
 	// double r = 9;
@@ -442,6 +465,60 @@ void map2block(double *map_coords,map map_1)
 	map_coords[1] = map_1.block_y*(map_1.height - std::round(map_coords[1]));
 }
 
+void steer(Xstate x_near,Xstate x_rand,map map_1,Xstate& x_best,Ustate& u_best)
+{
+	// Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
+	Xstate x_prop;
+	Ustate u_k;
+	double min_dist = std::numeric_limits<double>::infinity(); 			
+	for(int i = 0; i < 20; ++i)
+	{
+		u_k[0] = (double) rand_u_vel(gen)/100.0;
+		u_k[1] = rand_u_ang_vel(gen);
+		u_k.set_tprop(rand_t_prop(gen));
+
+		x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
+
+		double dist = euclidean(x_rand,x_prop);
+		if(dist < min_dist)
+		{
+			// x_prop.state = 1; //Steered 
+			u_best = u_k;
+			min_dist = dist;
+			x_best = x_prop;
+		}
+	};
+}
+
+bool ObstacleFree(Xstate x_near,Xstate x_rand,map map_1,Xstate& x_best,Ustate& u_best)
+{
+	steer(x_near,x_rand,map_1,x_best,u_best);
+	if(x_best.state!=2)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void Add_Edge(node *q_min,node *q_near)
+{
+	q_min->childs.emplace_back(q_near);
+	q_near->childs.emplace_back(q_min);
+}
+
+void Update_parent(node* q_new,node* q_near)
+{
+	for(auto q_n:q_near->childs)
+	{
+		if(q_n->getParent() == q_near)
+		{
+			q_n->setParent(q_new);
+		}
+	}
+}
 
 
 //-------------------------Below Added by AF----------------------------------------------------
@@ -458,16 +535,22 @@ static void planner(map& map_1,
 	Xstate x_rand;
 	Xstate x_prop;
 	Xstate x_rewire;
+	Xstate x_best;
+	Xstate x_min;
 
 	Ustate u_rewire;
 	Ustate u_k; 
-	
+	Ustate u_best;
+	Ustate u_min;
 
 	bool reached = false;
 	bool rewire = false;
 
 	double prop_time=0;
 	double t_passed = 0;
+
+	std::vector<int> neighbors_idx;
+
 	tree.push_back(new node(t_passed,euclidean(x_goal,x_0),nullptr,u_0,x_0));
 	std::cout<< "Number of samples: "<< K << std::endl;  
 	for(int i = 0; i < K; ++i)
@@ -493,197 +576,124 @@ static void planner(map& map_1,
 		if(nn_idx >= 0)
 		{
 			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
-			Xstate x_min;
-			Ustate u_min;
-			int count = 0;
-			double min_dist = std::numeric_limits<double>::infinity(); 			
-			for(int i = 0; i < 20; ++i)
+
+			steer(x_near,x_rand,map_1,x_best,u_best);
+
+			node *q_new = new node(tree[nn_idx]->g + LQR_Cost(x_best,u_best),euclidean(x_goal,x_best),tree[nn_idx],u_best,x_best);
+
+			if(x_min.state !=2)
 			{
-				u_k[0] = (double) rand_u_vel(gen)/100.0;
-				u_k[1] = rand_u_ang_vel(gen);
-				u_k.set_tprop(rand_t_prop(gen));
- 
-				x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
-				// x_prop.propagate(x_near,u_k);
-				double dist = euclidean(x_rand,x_prop);
-				if(dist < 0.1)
-				{	
-					x_prop.state = 0; //Reached
-					u_min = u_k;
-					min_dist = dist;
-					x_min = x_prop;
-					break;
-					// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
-				}
-				else if(dist < min_dist)
-				{
-					// x_prop.state = 1; //Steered 
-					u_min = u_k;
-					min_dist = dist;
-					x_min = x_prop;
-				}
-			};
+				tree.push_back(q_new);
 
+				double min_cost = 0;
+				double r = std::min(10.0,calc_radius(tree));
 
-			// std::cout << x_min.map_coords[0] << ", " << x_min.map_coords[1] << std::endl;
-			// std::cout << x_min[0] << std::endl;
-			
-			if(euclidean(x_min,tree.back()->getXstate()) > 0.001) //Avoid repetition of node
+				int best_nn_idx = -1;
+
+				nearest_nn_idx(q_new->getXstate(),r,tree,neighbors_idx);
+
+				#if DEBUG 
+					printf("----------------------------------------\n");
+					printf("Radius is r = %f\n",r);
+					printf("Adding q_new with g_val = %f.2\n",q_new->g);
+					printf("Standard propagation:\n");
+					printf("X_near = [%.2f, %.2f,%.2f,%.2f]\n", x_near[0],x_near[1],x_near[2],x_near[3]);
+					printf("X_rand = [%.2f, %.2f,%.2f,%.2f]\n",x_rand[0],x_rand[1],x_rand[2],x_rand[3]);
+					printf("X_min  = [%.2f, %.2f,%.2f,%.2f]; U_min = [%.2f, %.2f,%.2f]\n",x_best[0],x_best[1],x_best[2],x_best[3],u_best[0],u_best[1],u_best.get_tprop());
+				#endif
+
+				for(auto n:neighbors_idx)
 				{
-					tree.push_back(new node(tree[nn_idx]->g + LQR_Cost(x_min,u_min),euclidean(x_goal,x_min),tree[nn_idx],u_min,x_min)) ;
-					double min_cost = 0;
-					double r = 10;
-					// double r = L2_norm(tree.back()->getXstate())/2;
-					std::vector<int> neighbors_idx;
-					int best_nn_idx = -1;
-					nearest_nn_idx(x_min,r,tree,neighbors_idx);
-					node* q_new = tree.back(); //Grabs that qnear
-					#if DEBUG 
-						printf("----------------------------------------\n");
-						printf("Adding q_new with g_val = %f.2\n",q_new->g);
-						printf("Standard propagation:\n");
-						printf("X_near = [%.2f, %.2f,%.2f,%.2f]\n", x_near[0],x_near[1],x_near[2],x_near[3]);
-						printf("X_rand = [%.2f, %.2f,%.2f,%.2f]\n",x_rand[0],x_rand[1],x_rand[2],x_rand[3]);
-						printf("X_min  = [%.2f, %.2f,%.2f,%.2f]; U_min = [%.2f, %.2f,%.2f]\n",x_min[0],x_min[1],x_min[2],x_min[3],u_min[0],u_min[1],u_min.get_tprop());
-					#endif
-					for(auto n:neighbors_idx)
+					node* q_near = tree[n];
+					if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best))
 					{
-						node* q_near = tree[n];
-						Xstate x_best;
-						Ustate u_best;
-						double min_dist = std::numeric_limits<double>::infinity(); 	
-						for(int i = 0; i < 20; ++i)
+						#if DEBUG
+							printf("Neighbor #%d:\n",n);
+							printf("X_near = [%.2f, %.2f,%.2f,%.2f]\n", q_near->getXstate()[0],q_near->getXstate()[1],q_near->getXstate()[2],q_near->getXstate()[3]);
+							printf("X_new = [%.2f, %.2f,%.2f,%.2f]\n",q_new->getXstate()[0],q_new->getXstate()[1],q_new->getXstate()[2],q_new->getXstate()[3]);
+							printf("X_min  = [%.2f, %.2f,%.2f,%.2f]; U_min = [%.2f, %.2f,%.2f]\n",x_best[0],x_best[1],x_best[2],x_best[3],u_best[0],u_best[1],u_best.get_tprop());
+						#endif
+
+						double new_cost = q_near->g + LQR_Cost(x_best,u_best);
+						if(new_cost < q_new->g)
 						{
-							u_k[0] = (double) rand_u_vel(gen)/100.0;
-							u_k[1] = rand_u_ang_vel(gen);
-							u_k.set_tprop(rand_t_prop(gen));
-			
-							x_prop = propagate(q_near->getXstate(),u_k,map_1.map_ptr,map_1.width,map_1.height);
-							double dist = euclidean(x_rand,x_prop);
-							if(dist < 0.1)
-							{	
-								x_prop.state = 0; //Reached
-								u_best = u_k;
-								min_dist = dist;
-								x_best = x_prop;
-								break;
-								// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
-							}
-							else if(dist < min_dist)
-							{
-								// x_prop.state = 1; //Steered 
-								u_best = u_k;
-								min_dist = dist;
-								x_best = x_prop;
-							}
-						};
-						if(x_best.state!=2)
+							best_nn_idx = n; 
+							rewire = true; 
+							min_cost = new_cost; 
+							x_min = x_best;
+							u_min = u_best;
+						}
+					}
+				}
+
+				if(rewire)
+				{
+					q_new->update(tree[best_nn_idx],x_rewire,u_rewire,min_cost);
+
+					Add_Edge(q_new,tree[best_nn_idx]);
+
+					rewire = false;
+
+					nearest_nn_idx(q_new->getXstate(),r,tree,neighbors_idx);
+
+					#if DEBUG 	
+						printf("Rewiring...");
+						printf("Comes from neighbor:#%d with lower g_val = %.2f\n",best_nn_idx,min_cost);
+						printf("Now q_new->Xstate & Ustate is:");
+						printf("X_new = [%.2f, %.2f,%.2f,%.2f], ",q_new->getXstate()[0],q_new->getXstate()[1],q_new->getXstate()[2],q_new->getXstate()[3]);
+						printf("U_min = [%.2f, %.2f,%.2f]\n",q_new->getUstate()[0],q_new->getUstate()[1],q_new->getUstate().get_tprop());
+					#endif
+				}
+				else
+				{
+					Add_Edge(q_new,tree[nn_idx]);
+				}
+
+				for(auto n:neighbors_idx)
+				{
+					if(n == best_nn_idx)
+						continue;
+
+					node* q_near = tree[n];
+					if(ObstacleFree(q_new->getXstate(),q_near->getXstate(),map_1,x_best,u_best))
+					{
+						double new_cost = q_new->g + LQR_Cost(x_best,u_best);
+
+						if(q_near->g > new_cost)
 						{
 							#if DEBUG
-								printf("Neighbor #%d:\n",n);
-								printf("X_near = [%.2f, %.2f,%.2f,%.2f]\n", q_near->getXstate()[0],q_near->getXstate()[1],q_near->getXstate()[2],q_near->getXstate()[3]);
-								printf("X_new = [%.2f, %.2f,%.2f,%.2f]\n",q_new->getXstate()[0],q_new->getXstate()[1],q_new->getXstate()[2],q_new->getXstate()[3]);
-								printf("X_min  = [%.2f, %.2f,%.2f,%.2f] ; U_min = [%.2f, %.2f,%.2f]\n",x_best[0],x_min[1],x_best[2],x_best[3],u_best[0],u_best[1],u_best.get_tprop()); 
+							printf("Size of neighbor list: %d \n",neighbors_idx.size());
+							printf("Rewiring path through q_new...");
+							printf("To neighbor:#%d with prev g_val = %.2f -> new g_val = %.2f\n",n,q_near->g,min_cost);
+							#endif 
+
+							q_near->update(q_new,x_best,u_best,new_cost);
+
+							Update_parent(q_new,q_near);
+
+							#if DEBUG 
+							printf("Now q_near->Xstate & Ustate is: ");
+							printf("X_near = [%.2f, %.2f,%.2f,%.2f], ",q_near->getXstate()[0],q_near->getXstate()[1],q_near->getXstate()[2],q_near->getXstate()[3]);
+							printf("U_near= [%.2f, %.2f,%.2f]\n",q_near->getUstate()[0],q_near->getUstate()[1],q_near->getUstate().get_tprop());
 							#endif
-							double new_cost = q_near->g + LQR_Cost(x_best,u_best);
-							if(new_cost < q_new->g)
-							{
-								best_nn_idx = n; 
-								rewire = true; 
-								min_cost = new_cost; 
-								x_rewire = x_best;
-								u_rewire = u_best;
-							}
 						}
-					}
-					if(rewire)
-					{
-						q_new->setParent(tree[best_nn_idx]);
-						q_new->setXstate(x_rewire);
-						q_new->setUstate(u_rewire);
-						q_new->g = min_cost;
-						rewire = false;
-						neighbors_idx.clear();
-						nearest_nn_idx(q_new->getXstate(),r,tree,neighbors_idx);
-						#if DEBUG 	
-							printf("Rewiring...");
-							printf("Comes from neighbor:#%d with lower g_val = %.2f\n",best_nn_idx,min_cost);
-							printf("Now q_new->Xstate & Ustate is:");
-							printf("X_new = [%.2f, %.2f,%.2f,%.2f], ",q_new->getXstate()[0],q_new->getXstate()[1],q_new->getXstate()[2],q_new->getXstate()[3]);
-							printf("U_min = [%.2f, %.2f,%.2f]\n",q_new->getUstate()[0],q_new->getUstate()[1],q_new->getUstate().get_tprop());
-						#endif
-					}
-					for(auto n:neighbors_idx)
-					{
-						node* q_near = tree[n];
-						Xstate x_best;
-						Ustate u_best;
-						int count = 0;
-						double min_dist = std::numeric_limits<double>::infinity(); 			
-						for(int i = 0; i < 20; ++i)
-						{
-							u_k[0] = (double) rand_u_vel(gen)/100.0;
-							u_k[1] = rand_u_ang_vel(gen);
-							u_k.set_tprop(rand_t_prop(gen));
-			
-							x_prop = propagate(q_new->getXstate(),u_k,map_1.map_ptr,map_1.width,map_1.height);
-							// x_prop.propagate(x_near,u_k);
-							double dist = euclidean(q_near->getXstate(),x_prop);
-							if(dist < 0.1)
-							{	
-								x_prop.state = 0; //Reached
-								u_best = u_k;
-								min_dist = dist;
-								x_best = x_prop;
-								break;
-								// printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_k.get_tprop(),u_k[0],u_k[1],min_dist);
-							}
-							else if(dist < min_dist)
-							{
-								// x_prop.state = 1; //Steered 
-								u_best = u_k;
-								min_dist = dist;
-								x_best = x_prop;
-							}
-						};
-						if(x_min.state!=2)
-						{
-							double new_cost = q_new->g + LQR_Cost(x_best,u_best);
-							if(q_near->g > new_cost)
-							{
-								#if DEBUG
-								printf("Rewiring path through q_new...");
-								printf("To neighbor:#%d with prev g_val = %.2f -> new g_val = %.2f\n",best_nn_idx,q_near->g,min_cost);
-								#endif DEBUG 
-								q_near->setParent(q_new);
-								q_near->setUstate(u_best);
-								q_near->setXstate(x_best);
-								q_near->g = new_cost;
-								#if DEBUG 
-								printf("Now q_near->Xstate & Ustate is: ");
-								printf("X_near = [%.2f, %.2f,%.2f,%.2f], ",q_near->getXstate()[0],q_near->getXstate()[1],q_near->getXstate()[2],q_near->getXstate()[3]);
-								printf("U_near= [%.2f, %.2f,%.2f]\n",q_near->getUstate()[0],q_near->getUstate()[1],q_near->getUstate().get_tprop());
-								#endif
-							}
-						}
-					}
-					double dist2goal = euclidean(x_goal,q_new->getXstate());
-					if(dist2goal < 1)
-					{
-						printf("Goal found at K: %d\n", i);
-						printf("T_prop: %.2f seconds; u_vel : %.6f m/s ; u_ang_vel : %.6f rad/s ; error : %.6f \n",u_min.get_tprop(),u_min[0],u_min[1],min_dist);
-						printf("Initial State: \n");
-						std::cout << x_0 << std::endl;
-						printf("Final state: \n");
-						std::cout << x_min << std::endl;
-						printf("Goal state:\n");
-						std::cout<<x_goal<< std::endl;
-						getPlan(plan,tree);
-						// CleanUp(tree);
-						return;
 					}
 				}
-			
+				double dist2goal = euclidean(x_goal,q_new->getXstate());
+				if(dist2goal < 1)
+				{
+					printf("Goal found at K: %d\n", i);
+					printf("Initial State: \n");
+					std::cout << x_0 << std::endl;
+					printf("Final state: \n");
+					std::cout << x_min << std::endl;
+					printf("Goal state:\n");
+					std::cout<<x_goal<< std::endl;
+					getPlan(plan,tree);
+					// CleanUp(tree);
+					return;
+				}
+			}	
 		}
 	}
 
@@ -742,15 +752,6 @@ int main(int argc, char ** argv)
 		printf("Invalid Goal location \n");
 		return 0;
 	}
-
-	printf("Initial condition in X,Y:\n");
-	print_pos(x_start);
-	printf("Goal condition in X,Y: \n");
-	print_pos(x_goal);
-	u_start.set_tprop(0);
-	printf("radius to test near neighbors:\n");
-	std::cout << calc_radius() << std::endl;
-
 	
 	// polar2meter(coords_start,x_start[0],x_start[2]);
 	x_start.map_coords[0] = coords_start[0];
@@ -820,13 +821,12 @@ int main(int argc, char ** argv)
 	int idx = 0;
 	int w_width = 750;
 	int w_height = 800;
+	// bool end_path = false; 
 	double h = 0.01;
 	Xstate x_k(x_start);
 	Xstate x_prop;
 	std::cout << "Rendering planner" << std::endl;
 	FsOpenWindow(0,0,w_width,w_height,1);
-
-
 		for(;;)
 		{
 			FsPollDevice();
@@ -870,6 +870,7 @@ int main(int argc, char ** argv)
 
 			// FsSwapBuffers();
 			// FsSleep(250);
+			printf("------------------------------------------------------\n");
 			printf("State before propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
 			printf("Control input to apply u_k = %f,%f,%f\n",u_k[0],u_k[1],u_k.get_tprop());
 			for(int i = 0; i < sec2msec(prop_time) ; ++i)
@@ -884,9 +885,10 @@ int main(int argc, char ** argv)
 				husky_robot.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
 
 				//Rendering
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-				glLoadIdentity();
+				
+				// glViewport(0,0,wid,hei);
+				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 				map_1.renderMap();
 
 				start_pos.Draw_object();
@@ -897,11 +899,13 @@ int main(int argc, char ** argv)
 
 				husky_robot.Draw_object_Angle();
 
+				// husky_robot.Draw_Path();
+				
 				FsSwapBuffers();
 				// FsSleep(1);
 			}
-			printf("State after propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
-			printf("Step: %d : Actual(x,y,theta) = %f,%f,%f ; Planned(x,y,theta) = %f,%f,%f\n",idx,x_k[0],x_k[1],x_k[2],x_planned[0],x_planned[1],x_planned[2]);
+			// printf("State after propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
+			printf("Step: %d : Actual(x,y,theta) = %f,%f,%f\n Planned(x,y,theta) = %f,%f,%f\n",idx,x_k[0],x_k[1],x_k[2],x_planned[0],x_planned[1],x_planned[2]);
 			++idx; 
 		}
 
