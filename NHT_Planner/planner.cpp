@@ -790,7 +790,7 @@ int main(int argc, char ** argv)
 		std::cout << x_prop_test3 << std::endl; 
 	}
 	auto start_time = std::chrono::system_clock::now();
-	// planner(map_1,x_start,u_start,x_goal,plan,tree);
+	planner(map_1,x_start,u_start,x_goal,plan,tree);
 	auto end_time = std::chrono::system_clock::now();
 	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
 	auto time_passed = time_delay.count()*1e-9;
@@ -798,12 +798,9 @@ int main(int argc, char ** argv)
 	std::cout<<"--------------- RESULTS---------------"<<std::endl;
 	std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
 	std::cout<<"Tree size:" << tree.size() << std::endl;
-	// std::cout<<"Time to complete trajectory: " << plan.back()->g << " seconds" << std::endl; 
+	std::cout<<"Cost of the plan: " << plan.back()->g << " seconds" << std::endl; 
 	
-	if(!plan.empty())
-		auto plan_size = plan.size();
-	else
-		auto plan_size = 0;
+	auto plan_size = plan.size();
 
 	start_pos.setDim(20,20);
 	start_pos.setColor(255,0,0);
@@ -837,79 +834,79 @@ int main(int argc, char ** argv)
 			{
 				break;
 			}
-			// if(idx >= plan_size)
- 			// {	
-			// 	idx = 0;
-			// 	x_k = plan[0]->getXstate(); 
-			// 	husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
-			// }	
+			if(idx >= plan_size)
+ 			{	
+				idx = 0;
+				x_k = plan[0]->getXstate(); 
+				husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
+			}	
 
-			// Ustate u_k = plan[idx]->getUstate();
+			Ustate u_k = plan[idx]->getUstate();
 
-			// double prop_time = u_k.get_tprop();
+			double prop_time = u_k.get_tprop();
 			// if(idx != 0)
 			// {
 			// 	x_k = plan[idx-1]->getXstate();
 			// }
 			// Xstate x_prop(plan[idx]->getXstate());
-			// Xstate x_planned(plan[idx]->getXstate());
-
+			Xstate x_planned(plan[idx]->getXstate());
+			Xstate x_prop;
 			// husky_robot.Move(map_1.block_x*std::round(x_prop[0]),map_1.block_y*(map_1.height-std::round(x_prop[1])),x_prop[2]);
 
 			// //Rendering
 
-			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			// glLoadIdentity();
+			// glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+			// // glLoadIdentity();
 
-			map_1.renderMap();
+			// map_1.renderMap();
 
-			start_pos.Draw_object();
-			start_pos.Draw_coords();
+			// start_pos.Draw_object();
+			// start_pos.Draw_coords();
 			
-			goal_pos.Draw_object();
-			goal_pos.Draw_coords();
+			// goal_pos.Draw_object();
+			// goal_pos.Draw_coords();
 
-			// husky_robot.Draw_object_Angle();
+			// // husky_robot.Draw_object_Angle();
 
-			FsSwapBuffers();
-			FsSleep(250);
-			// printf("------------------------------------------------------\n");
-			// printf("State before propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
-			// printf("Control input to apply u_k = %f,%f,%f\n",u_k[0],u_k[1],u_k.get_tprop());
-			// for(int i = 0; i < sec2msec(prop_time) ; ++i)
-			// {
-			// 	x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-			// 	x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-			// 	x_prop[2] = x_k[2] + u_k[1]*h;
-			// 	x_prop[3] = 0;
+			// FsSwapBuffers();
+			// FsSleep(250);
+			printf("------------------------------------------------------\n");
+			printf("State before propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
+			printf("Control input to apply u_k = %f,%f,%f\n",u_k[0],u_k[1],u_k.get_tprop());
+			for(int i = 0; i < sec2msec(prop_time) ; ++i)
+			{
+				x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+				x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+				x_prop[2] = x_k[2] + u_k[1]*h;
+				x_prop[3] = 0;
 
-			// 	x_k = x_prop;
+				x_k = x_prop;
 
-			// 	husky_robot.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
+				husky_robot.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
 
-			// 	//Rendering
+				//Rendering
 
 				
-			// 	// glViewport(0,0,wid,hei);
-			// 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			// 	map_1.renderMap();
+				// glViewport(0,0,wid,hei);
+				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+				map_1.renderMap();
 
-			// 	start_pos.Draw_object();
-			// 	start_pos.Draw_coords();
+				start_pos.Draw_object();
+				start_pos.Draw_coords();
 				
-			// 	goal_pos.Draw_object();
-			// 	goal_pos.Draw_coords();
+				goal_pos.Draw_object();
+				goal_pos.Draw_coords();
 
-			// 	husky_robot.Draw_object_Angle();
+				husky_robot.Draw_object_Angle();
 
-			// 	// husky_robot.Draw_Path();
+				// husky_robot.Draw_Path();
 				
-			// 	FsSwapBuffers();
-			// 	// FsSleep(1);
-			// }
-			// // printf("State after propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
-			// printf("Step: %d : Actual(x,y,theta) = %f,%f,%f\n Planned(x,y,theta) = %f,%f,%f\n",idx,x_k[0],x_k[1],x_k[2],x_planned[0],x_planned[1],x_planned[2]);
-			// ++idx; 
+				FsSwapBuffers();
+				// FsSleep(1);
+			}
+			// printf("State after propagation X_k(x,y,theta):%f,%f,%f\n",x_k[0],x_k[1],x_k[2]);
+			printf("Step: %d : Actual(x,y,theta) = %f,%f,%f\n Planned(x,y,theta) = %f,%f,%f\n",idx,x_k[0],x_k[1],x_k[2],x_planned[0],x_planned[1],x_planned[2]);
+			++idx; 
 		}
 
 	// CleanUp(tree);
