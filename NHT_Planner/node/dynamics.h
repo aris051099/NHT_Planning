@@ -95,6 +95,7 @@ class Xstate : public state<double,4>
   public:
 
     double map_coords[2] = {0,0};
+    int state=-1; 
 
     Xstate();
 
@@ -129,6 +130,7 @@ class Xstate : public state<double,4>
       state_elem[3] = incoming[3];
       this-> map_coords[0] = incoming.map_coords[0];
       this-> map_coords[1] = incoming.map_coords[1];
+      this->state = incoming.state;
       return *this;
     }
     bool operator==(const Xstate& incoming)
@@ -203,6 +205,8 @@ Xstate::Xstate(const Xstate& inc)
 
   map_coords[0] = inc.map_coords[0];
   map_coords[1] = inc.map_coords[1];
+
+  this->state = inc.state;
 }
 
 std::ostream& operator<<(std::ostream& os, const Xstate& x)
@@ -216,36 +220,15 @@ std::ostream& operator<<(std::ostream& os, const Xstate& x)
     return os;
 }
 
-// bool check_collision(double* x_prop, double *map, int x_size,int y_size) 
-// {
-//   auto c_x = x_prop[0];
-//   auto c_y = x_prop[1];
-//   // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
-//   if(c_x> 0.0 && c_x < 1.0*x_size && c_y > 0.0 && c_y < 1.0*y_size)
-//   {
-//     int map_idx = (y_size-c_y-1)*x_size + c_x;
-//     if(map[map_idx] == 1.0 )
-//     {
-//       return false;
-//     }
-//     else
-//     {
-//       return true;
-//     }
-//   }
-//   else
-//   {
-//     return false;
-//   }
-// }
-
-bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size) 
+bool check_collision(Xstate x_prop, double *map, int x_size,int y_size) 
 {
   auto c_x = x_prop[0];
   auto c_y = x_prop[1];
   // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
   if(c_x> 0.0 && c_x < 1.0*x_size && c_y > 0.0 && c_y < 1.0*y_size)
   {
+    // c_y = 50.0 - c_y;
+    // int map_idx = (50.0-std::round(c_y))*x_size + std::round(c_x);
     int map_idx = (y_size-std::round(c_y)-1)*x_size + std::round(c_x);
     if(map[map_idx] == 1.0 )
     {
@@ -262,49 +245,36 @@ bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size)
   }
 }
 
-// bool check_collision_footprint(Xstate& x_prop, double *map, int x_size,int y_size)
+// bool check_collision(Xstate& x_prop, double *map, int x_size,int y_size) 
 // {
 //   auto c_x = x_prop[0];
 //   auto c_y = x_prop[1];
-//   double r_width = 0.990; 
-//   double r_height = 0.670; 
-//   double left_front_corner[2] = {c_x-r_width/2.0,c_y+r_height/2.0};
-//   double left_rear_corner[2] = {c_x-r_width/2.0,c_y-r_height/2.0};
-//   double right_front_corner[2] = {c_x+r_width/2.0,c_y+r_height/2.0};
-//   double right_rear_corner[2] = {c_x+r_width/2.0,c_y-r_height/2.0};
-//   if(check_collision(left_front_corner,map,x_size,y_size))
-//   {
-//     if(check_collision(right_front_corner,map,x_size,y_size))
+//   double theta = x_prop[2];
+
+//   for(double p_x = c_x-0.990/2.0; p_x < c_x+0.990/2.0;p_x+=0.1)
 //     {
-//       if(check_collision(left_rear_corner,map,x_size,y_size))
+//       for(double p_y = c_y-0.67/2.0; p_y < c_y+0.67/2.0;p_y+=0.1)
 //       {
-//         if(check_collision(right_front_corner,map,x_size,y_size))
+//         double r_x = c_x + p_x*cos(theta) + p_y*sin(theta);
+//         double r_y = c_y + p_x*sin(theta) + p_y*cos(theta);
+//         if(r_x> 0.0 && r_x < 1.0*x_size && r_y > 0.0 && r_y < 1.0*y_size)
+//         {
+//           int map_idx = (y_size-std::round(r_y)-1)*x_size + std::round(r_x);
+//           if(map[map_idx] == 1.0 )
 //           {
-//             return true;
+//             return false;
 //           }
+//         }
 //         else
 //         {
 //           return false;
 //         }
 //       }
-//       else
-//       {
-//         return false;
-//       }
 //     }
-//     else
-//     {
-//       return false;
-//     }
-//   }
-//   else
-//   {
-//     return false;
-//   }
+//     return true;
 // }
 
-
-Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
+Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
 {
   /*
     The present function propagate the dynamics based on a specific input. In addition,
@@ -330,22 +300,18 @@ Xstate propagate(Xstate i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
         x_prop[2] = x_k[2] + u_k[1]*h;
         x_prop[3] = 0;
 
-        // double diff_x = x_prop[0]-x_k[0];
-        // double diff_angle = x_prop[3]-x_k[3];
-        // x_prop.map_coords[0] = diff_x*cos(x_prop[2]) + x_k.map_coords[0]; //Relative displacement + absolute
-        // x_prop.map_coords[1] = diff_x*sin(x_prop[2]) + x_k.map_coords[1]; //Relative displacement + aboslute
-        // std::cout<< x_prop[0] << " , " << x_prop[1] << ", " << x_prop[2] << std::endl;
-        // x_k  = x_prop;
         if(check_collision(x_prop,map,x_size,y_size))
         {
           x_k = x_prop;
         }
         else
         {
+          x_k.state = 2; //Trapped 
           u_k.set_tprop(i/100.0);
           return x_k;
         }
       }
+      x_prop.state = 1;
       return x_prop; 
 }
 
