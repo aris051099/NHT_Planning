@@ -97,11 +97,11 @@ void map::loadMap(std::string filepath) {
 			if (!(c == '0')) 
 			{
 				// printf("x:%d,y:%d\n",x,y); 
-				map_ptr[y+x*width] = 1; // Note transposed from visual
+				map_ptr[y*width+x] = 1; // Note transposed from visual
 			} 
 			else 
 			{
-				map_ptr[y+x*width] = 0;
+				map_ptr[y*width+x] = 0;
 			}
 		}
 	}

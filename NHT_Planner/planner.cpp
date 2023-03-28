@@ -719,7 +719,7 @@ int main(int argc, char ** argv)
 {
 	double* map_t = nullptr;
 	int coords[2] ={0,0};
-	int coords_start[2]={30.0,15.0}; //20,25 ; 30,15 (x,y)
+	int coords_start[2]={30.0,20.0}; //20,25 ; 30,15 (x,y)
 	int coords_goal[2]={7.0,46.0}; // 7, 46 (x,y)
 
 	int x_size=0, y_size=0;
@@ -761,15 +761,15 @@ int main(int argc, char ** argv)
 	x_goal.map_coords[1] = coords_goal[1];
 
 	// std::cout << x_start.map_coords[1] << std::endl;
-	for(int i = 0; i < map_1.width*map_1.height ; ++i)
-	{
-		if(i%50 == 0)
-		{
-			std::cout << std::endl;
-		}
-		std::cout << map_1.map_ptr[i] << " ";
+	// for(int i = 0; i < map_1.width*map_1.height ; ++i)
+	// {
+	// 	if(i%50 == 0)
+	// 	{
+	// 		std::cout << std::endl;
+	// 	}
+	// 	std::cout << map_1.map_ptr[i] << " ";
 
-	}
+	// }
 	{
 		Ustate u_test(1,0);
 		u_test.set_tprop(1);
