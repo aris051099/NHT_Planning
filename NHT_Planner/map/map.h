@@ -17,8 +17,8 @@ class map
     public: 
         double *map_ptr = nullptr;
         int height = 0,width = 0; 
-        int block_x = 15;
-        int block_y = 15; 
+        int block_x = 20;
+        int block_y = 20; 
         GLubyte r=0,g=0,b=0;
         void loadMap(std::string filepath);
         void setWhite()
@@ -110,10 +110,10 @@ void map::loadMap(std::string filepath) {
 
 void map::renderMap()
 {
-    int i_x =0;
-    int i_y =20;
-    int i_w = this->width;
-    int i_h = this->height;
+    float i_x =0;
+    float i_y =20;
+    float i_w = this->width;
+    float i_h = this->height;
     for(int i = 0; i < this->width*this->height ; ++i)
     {
         if(this->map_ptr[i] == 1.0)
@@ -129,9 +129,9 @@ void map::renderMap()
         glBegin(GL_QUADS);
 
         glTexCoord3f(0.0,0.0,0.0);
-        glVertex3f(i_x,i_y,0); //0,0
+        glVertex3i(i_x,i_y,0); //0,0
 
-        glTexCoord3f(1.0,0.0,0.0);
+        glTexCoord3i(1.0,0.0,0.0);
         glVertex3f(i_x+i_w,i_y,0); //1,0
 
         glTexCoord3f(1.0,1.0,0);
