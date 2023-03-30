@@ -17,8 +17,8 @@ class map
     public: 
         double *map_ptr = nullptr;
         int height = 0,width = 0; 
-        int block_x = 20;
-        int block_y = 20; 
+        int block_x = 15;
+        int block_y = 15; 
         GLubyte r=0,g=0,b=0;
         void loadMap(std::string filepath);
         void setWhite()
