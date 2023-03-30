@@ -7,6 +7,7 @@
 #include <iostream> // cout, endl
 #include <fstream> // For reading/writing files
 #include <fssimplewindow.h>
+#include <unordered_map>
 
 #define GETMAPINDEX_LL0(X, Y, XSIZE, YSIZE) ((YSIZE-Y-1)*XSIZE + X)
 #define GETMAPINDEX_UL1(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
@@ -20,22 +21,15 @@ class map
         int block_x = 15;
         int block_y = 15; 
         GLubyte r=0,g=0,b=0;
-        void loadMap(std::string filepath);
-        void setWhite()
-        {
-            this->r = 255;
-            this->g = 255;
-            this->b = 255;
-        }
-        void setBlack()
-        {
-            this->r = 0;
-            this->g = 0;
-            this->b = 0;          
-        }
+        std::unordered_map<int,double*> obstacle_set;
         map(void);
         map(double *map_i_ptr);
+        void loadMap(std::string filepath);
+        void setWhite();
+        void setBlack();
         void renderMap();
+        void printMap();
+        void calc_collision_set();
     private:
     void Draw_block(int i_x, int i_y, int i_w, int i_h, int idx)
     {
@@ -69,6 +63,19 @@ map::map(void) {};
 map::map(double *map_i_ptr)
 {
     this->map_ptr = map_i_ptr;
+}
+
+void map::setWhite()
+{
+    this->r = 255;
+    this->g = 255;
+    this->b = 255;
+}
+void map::setBlack()
+{
+    this->r = 0;
+    this->g = 0;
+    this->b = 0;          
 }
 
 void map::loadMap(std::string filepath) {
@@ -149,4 +156,37 @@ void map::renderMap()
             i_y +=this->block_y;
         }
     }        
+}
+
+void map::printMap()
+{
+	for(int i = 0; i < width*height ; ++i)
+	{
+		if(i%height == 0)
+		{
+			std::cout << std::endl;
+		}
+		std::cout << map_ptr[i] << " ";
+    }
+}
+
+void map::calc_collision_set()
+{
+    int x_e = 0;
+    int y_e = 0;
+    double coord[2] = {0,0};
+    for(int i = 0; i < width*height ; ++i)
+	{
+        if(map_ptr[i] == 1.0)
+        {
+            coord[0] = x_e;
+            coord[1] = y_e;
+            obstacle_set.insert({i,coord});
+        }
+        ++x_e;
+		if(i%height == 0)
+		{
+            y_e++;
+        }
+    }
 }

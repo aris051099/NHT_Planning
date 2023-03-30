@@ -24,6 +24,7 @@
 #include <fssimplewindow.h>
 #include <map.h>
 #include <ysglfontdata.h>
+#include <object.h>
 /* Input Arguments */
 #define	MAP_IN      prhs[0]
 #define	ARMSTART_IN	prhs[1]
@@ -92,186 +93,6 @@ std::uniform_real_distribution<double> dist_prob(0.0,1);
 // #include "Vertice.h"
 
 //Added by AF
-
-class object 
-{
-	public:
-		GLfloat x=0,y=0,angle=0,w=0,h=0;
-		GLubyte r=0,g=0,b=0;
-		std::vector<double> pos_idx; 
-		int coords[2] = {0,0};
-		object(void);
-		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
-		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
-		void setDim(GLfloat i_w, GLfloat i_h);
-		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle);
-		void Draw_object(void);
-		void Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
-		void Draw_in_center(void);
-		void Draw_object_Angle(void);
-		void Draw_coords(void);
-		void Draw_Path(void);
-};
-
-object::object(){};
-object::object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h):
-x{i_x},y{i_y},w{i_w},h{i_h}{};
-
-void object::setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b)
-{
-	this->r = i_r;
-	this->g = i_g;
-	this->b = i_b;
-}
-void object::setDim(GLfloat i_w, GLfloat i_h)
-{
-	this->h = i_h;
-	this->w = i_w;
-}
-
-void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
-{
-	this->x = i_x;
-	this->y = i_y;
-	this->angle = i_angle; 
-	pos_idx.push_back(i_x);
-	pos_idx.push_back(i_y);
-}
-
-void object::Draw_object()
-{
-	glColor3ub(this->r,this->g,this->b);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x,y,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w,y,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w,y+h,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x,y+h,0); // 0,1
-
-	glEnd(); 
-
-}
-
-void object::Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h)
-{
-
-	float w_husky = 20; 
-	float h_husky = 15;
-	glColor3ub(this->r,this->g,this->b);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(i_x+w_husky/2.0,i_y+h_husky/2.0,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(i_x+i_w+w_husky/2.0,i_y+h_husky/2.0,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(i_x+i_w+w_husky/2.0,i_y+i_h+h_husky/2.0,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(i_x+w_husky/2.0,i_y+i_h+h_husky/2.0,0); // 0,1
-
-	glEnd(); 	
-}
-
-
-void object::Draw_in_center()
-{
-	glColor3ub(this->r,this->g,this->b);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x-w/2 ,y-h/2,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w-w/2,y-h/2,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
-
-	glEnd(); 
-}
-
-void object::Draw_object_Angle()
-{
-	
-	// if(this->angle < 0)
-	// {
-	// 	this->angle = 2*PI-this->angle;
-	// }
-	this->angle = (this->angle/PI) * 180;
-
-	// glLoadIdentity();
-	glPushMatrix();
-
-	glTranslatef(x+w/2,y+h/2, 0);      
-	glRotatef(angle, 0.0f, 0.0f, -1.0f);
-	glTranslatef(-x-w/2, -y-h/2, 0);
-
-	glColor3ub(this->r,this->g,this->b);
-
-	glBegin(GL_QUADS);
-
-	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x ,y,0); //0,0
-
-	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w,y,0); //1,0
-
-	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w,y+h,0); // 1,1
-
-	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x,y+h,0); // 0,1
-	glEnd(); 
-
-	
-	glColor3ub(0,0,0);
-	glLineWidth(1);
-	glBegin(GL_LINES);
-	glVertex2i(x+w/2,y+h/2);
-	glVertex2i(x+w/2+20,y+h/2);
-	glEnd();
-
-	glPopMatrix();
-}
-
-void object::Draw_coords()
-{
-	glColor3ub(0,0,0);
-	glRasterPos2i(x+w,y+2*h);
-	char str[256];
-	int i_x = x;
-	int i_y = y;
-	sprintf(str,"%d,%d",coords[0],coords[1]);
-	YsGlDrawFontBitmap12x16(str);
-}
-
-void object::Draw_Path()
-{
-	if(pos_idx.size() > 4)
-	{
-		for(int j = 0; j < pos_idx.size(); j+=2)
-		{
-			Draw_object_coords(pos_idx[j],pos_idx[j+1],this->w,this->h);
-		}
-	}
-}
-
 double euclidean(Xstate& x_goal,Xstate& x_near)
 {
 	// auto x_goal = x_sgoal.getPointer();
@@ -283,31 +104,14 @@ double euclidean(Xstate& x_goal,Xstate& x_near)
 	}
 	return sqrt(dist);
 }
-
 double euclidean(double xf,double yf,double xi,double yi)
 {
 	return sqrt(pow(xf-xi,2)+pow(yf-yi,2));
 }
-
 double euclidean(double *coord_f,double *coord_b)
 {
 	return sqrt(pow(coord_f[0]-coord_b[0],2)+pow(coord_f[1]-coord_b[0],2));
 }
-
-
-
-// double euclidean(Xstate& x_goal,Xstate& x_near)
-// {
-// 	// auto x_goal = x_sgoal.getPointer();
-// 	// auto x_near = x_snear.getPointer();
-// 	double dist = 0; 
-// 	for(int i = 0; i < x_goal.size(); ++i)
-// 	{
-// 		dist+= pow(x_goal[i]-x_near[i],2);
-// 	}
-// 	return sqrt(dist);
-// }
-
 double L2_norm(Xstate& x_s)
 {
 	double sum = 0;
@@ -317,7 +121,6 @@ double L2_norm(Xstate& x_s)
 	}
 	return sqrt(sum);
 }
-
 double LQR_Cost(Xstate& x_k, Ustate& u_k)
 {
 	double t_prop = sec2msec(u_k.get_tprop());
@@ -329,7 +132,6 @@ double LQR_Cost(Xstate& x_k, Ustate& u_k)
 	sum += u_k.get_tprop()*0.1*u_k.get_tprop();
  	return sum;
 }
-
 double calc_radius(std::vector<node*>& tree)
 {
 	double d = 3; 
@@ -606,10 +408,6 @@ static void planner(map& map_1,
 		}
 		else
 		{
-			// auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-			// std::default_random_engine gen(seed);
-			// srand(time(NULL));
-			// Xstate x_r(rand()%50,rand()%50,rand_theta(gen),0);
 			Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
 			x_rand = x_r;
 		}
@@ -640,7 +438,6 @@ static void planner(map& map_1,
 				// printf("Goal state:\n");
 				// std::cout<<x_goal<< std::endl;
 				getPlan(plan,tree);
-				// CleanUp(tree);
 				return;
 			}
 			else if(dist2goal < 3)
@@ -687,8 +484,8 @@ int main(int argc, char ** argv)
 {
 	double* map_t = nullptr;
 	int coords[2] ={0,0};
-	int coords_start[2]={40,46}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-	int coords_goal[2]={45,10}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
+	int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
+	int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
 
 	int start_x_coord_array[5] = {30,10,5,5,40};
 	int start_y_coord_array[5] = {20,20,35,35,46};
@@ -710,8 +507,11 @@ int main(int argc, char ** argv)
 	object start_pos;
  	object goal_pos;
 	object path; 
+	tether t; 
 
 	map_1.loadMap(argv[1]);
+	map_1.calc_collision_set();
+
 	int start_idx = GETMAPINDEX_LL0(coords_start[0],coords_start[1],map_1.width,map_1.height);
 	int goal_idx = GETMAPINDEX_LL0(coords_goal[0],coords_goal[1],map_1.width,map_1.height);
 
@@ -726,22 +526,6 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 	
-	// polar2meter(coords_start,x_start[0],x_start[2]);
-	x_start.map_coords[0] = coords_start[0];
-	x_start.map_coords[1] = coords_start[1];
-	// polar2meter(coords_goal,x_goal[0],x_goal[2]);
-	x_goal.map_coords[0] = coords_goal[0];
-	x_goal.map_coords[1] = coords_goal[1];
-
-	// std::cout << x_start.map_coords[1] << std::endl;
-	// for(int i = 0; i < map_1.width*map_1.height ; ++i)
-	// {
-	// 	if(i%50 == 0)
-	// 	{
-	// 		std::cout << std::endl;
-	// 	}
-	// 	std::cout << map_1.map_ptr[i] << " ";
-
 	// }
 	{
 		Ustate u_test(1,0);
@@ -765,107 +549,123 @@ int main(int argc, char ** argv)
 
 
 	
-	for(int trials = 0; trials < 5; trials++)
+	// for(int trials = 0; trials < 5; trials++)
+	// {
+	// 	results res[10];
+	// 	bool too_long = false;
+	// 	bool reset_planner = false; 
+	// 	int n_tries = 0;
+	// 	int succ_trial = 0;
+	// 	int s_x_c = start_x_coord_array[trials];
+	// 	int s_y_c = start_y_coord_array[trials];
+	// 	coords_start[0] = s_x_c;
+	// 	coords_start[1] = s_y_c; //30,20 ; 10,20; 5,35; 40,46;(x,y)
+	// 	int g_x_c = goal_x_coord_array[trials];
+	// 	int g_y_c = goal_y_coord_array[trials];
+	// 	coords_goal[0] = g_x_c;
+	// 	coords_goal[1] = g_y_c;
+	// 	x_start[0] = s_x_c;
+	// 	x_start[1] = s_y_c;
+	// 	x_start[2] = calc_angle(coords_goal,coords_start);
+	// 	x_goal[0] = g_x_c;
+	// 	x_goal[1] = g_y_c;
+	// 	printf("Start Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_start[0],x_start[1],x_start[2]);
+	// 	printf("Goal Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_goal[0],x_goal[1],x_goal[2]);
+	// 	while(succ_trial < 10)
+	// 	{
+	// 		auto start_time = std::chrono::system_clock::now();
+	// 		while(!too_long)
+	// 		{
+	// 			planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
+	// 			if(reset_planner)
+	// 			{
+	// 				n_tries++;
+	// 				printf("Number of tries: %d \n", n_tries);
+	// 			}
+	// 			else
+	// 			{
+	// 				too_long = true;
+	// 			}
+	// 			if(n_tries >=15)
+	// 			{
+	// 				too_long = true;
+	// 			}
+	// 		}	
+	// 		n_tries = 0;
+	// 		too_long = false;
+	// 		auto end_time = std::chrono::system_clock::now();
+	// 		auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	// 		auto time_passed = time_delay.count()*1e-9;
+	// 		res[succ_trial].time = time_passed;
+	// 		res[succ_trial].cost = plan.back()->g;
+	// 		res[succ_trial].node_expansions = tree.size();
+	// 		++succ_trial;
+	// 		// std::cout<<"--------------- RESULTS---------------"<<std::endl;
+	// 		// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	// 		// std::cout<<"Tree size:" << tree.size() << std::endl;
+	// 		// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+	// 		// std::cout<<"--------------------------------------"<<std::endl;
+	// 	}
+	// 	for(int i = 0; i < succ_trial; ++i)
+	// 	{
+	// 		printf("%.4f s,",res[i].time);
+	// 	}
+	// 	printf("\n");
+	// 	for(int i = 0; i < succ_trial; ++i)
+	// 	{
+	// 		printf("%.4f ,",res[i].node_expansions);
+	// 	}
+	// 	printf("\n");
+	// 	for(int i = 0; i < succ_trial; ++i)
+	// 	{
+	// 		printf("%.4f m,",res[i].cost);
+	// 	}
+	// 	printf("\n");
+	// }
+
+	bool too_long = false; 
+	bool reset_planner = false;  	
+	int n_tries = 0;
+	auto start_time = std::chrono::system_clock::now();
+	while(!too_long)
 	{
-		results res[10];
-		bool too_long = false;
-		bool reset_planner = false; 
-		int n_tries = 0;
-		int succ_trial = 0;
-		int s_x_c = start_x_coord_array[trials];
-		int s_y_c = start_y_coord_array[trials];
-		coords_start[0] = s_x_c;
-		coords_start[1] = s_y_c; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-		int g_x_c = goal_x_coord_array[trials];
-		int g_y_c = goal_y_coord_array[trials];
-		coords_goal[0] = g_x_c;
-		coords_goal[1] = g_y_c;
-		x_start[0] = s_x_c;
-		x_start[1] = s_y_c;
-		x_start[2] = calc_angle(coords_goal,coords_start);
-		x_goal[0] = g_x_c;
-		x_goal[1] = g_y_c;
-		printf("Start Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_start[0],x_start[1],x_start[2]);
-		printf("Goal Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_goal[0],x_goal[1],x_goal[2]);
-		while(succ_trial < 10)
+		planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
+		if(reset_planner)
 		{
-			auto start_time = std::chrono::system_clock::now();
-			while(!too_long)
-			{
-				planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
-				if(reset_planner)
-				{
-					n_tries++;
-					printf("Number of tries: %d \n", n_tries);
-				}
-				else
-				{
-					too_long = true;
-				}
-				if(n_tries >=15)
-				{
-					too_long = true;
-				}
-			}	
-			n_tries = 0;
-			too_long = false;
-			auto end_time = std::chrono::system_clock::now();
-			auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-			auto time_passed = time_delay.count()*1e-9;
-			res[succ_trial].time = time_passed;
-			res[succ_trial].cost = plan.back()->g;
-			res[succ_trial].node_expansions = tree.size();
-			++succ_trial;
-			// std::cout<<"--------------- RESULTS---------------"<<std::endl;
-			// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-			// std::cout<<"Tree size:" << tree.size() << std::endl;
-			// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-			// std::cout<<"--------------------------------------"<<std::endl;
+			n_tries++;
+			printf("Number of tries: %d \n", n_tries);
 		}
-		for(int i = 0; i < succ_trial; ++i)
+		else
 		{
-			printf("%.4f s,",res[i].time);
+			too_long = true;
 		}
-		printf("\n");
-		for(int i = 0; i < succ_trial; ++i)
+		if(n_tries >=15)
 		{
-			printf("%.4f ,",res[i].node_expansions);
+			too_long = true;
 		}
-		printf("\n");
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f m,",res[i].cost);
-		}
-		printf("\n");
-	}
-
-	// auto end_time = std::chrono::system_clock::now();
-	// auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-	// auto time_passed = time_delay.count()*1e-9;
-
-
-
-
-	// bool too_long = false;  
-	// auto start_time = std::chrono::system_clock::now();
-	// planner(map_1,x_start,u_start,x_goal,plan,tree);
-	// auto end_time = std::chrono::system_clock::now();
-	// auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-	// auto time_passed = time_delay.count()*1e-9;
-	
-	
-	auto plan_size = plan.size();
+	}	
+	too_long = false;
+	auto end_time = std::chrono::system_clock::now();
+	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	auto time_passed = time_delay.count()*1e-9;
+	std::cout<<"--------------- RESULTS---------------"<<std::endl;
+	std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	std::cout<<"Tree size:" << tree.size() << std::endl;
+	std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+	std::cout<<"--------------------------------------"<<std::endl;
+ 	auto plan_size = plan.size();
 	if(plan_size <= 1)
 	{
 		return 1;
 	}
-	start_pos.setDim(20,20);
+
+	start_pos.setDim(15,15);
 	start_pos.setColor(255,0,0);
 	start_pos.coords[0] = coords_start[0];
 	start_pos.coords[1] = coords_start[1];
 	start_pos.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 
-	goal_pos.setDim(20,20);
+	goal_pos.setDim(15,15);
 	goal_pos.setColor(255,0,0);
 	goal_pos.coords[0] = coords_goal[0];
 	goal_pos.coords[1] = coords_goal[1];
@@ -879,6 +679,10 @@ int main(int argc, char ** argv)
 	path.setColor(0,140,255);
 	path.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
 
+	t.set_anchor(map_1.block_x*(coords_start[0] + 5),map_1.block_y*(map_1.height-coords_start[1]));
+	t.setDim(15,15);
+	t.setColor(0,0,0);
+	
 	int idx = 0;
 	int w_width = 1000;
 	int w_height =1000;
@@ -905,10 +709,6 @@ int main(int argc, char ** argv)
 			Ustate u_k = plan[idx]->getUstate();
 
 			double prop_time = u_k.get_tprop();
-			// // if(idx != 0)
-			// // {
-			// // 	x_k = plan[idx-1]->getXstate();
-			// // }
 			// // Xstate x_prop(plan[idx]->getXstate());
 			Xstate x_planned(plan[idx]->getXstate());
 			Xstate x_prop;
@@ -943,10 +743,9 @@ int main(int argc, char ** argv)
 
 				husky_robot.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
 				path.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
-
+				t.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
 				//Rendering
 
-				
 				// glViewport(0,0,wid,hei);
 				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 				map_1.renderMap();
@@ -960,7 +759,8 @@ int main(int argc, char ** argv)
 				husky_robot.Draw_object_Angle();
 
 				path.Draw_Path();
-				
+				t.Draw_tether();
+
 				FsSwapBuffers();
 				// FsSleep(1);
 			}
