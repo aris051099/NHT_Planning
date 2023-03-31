@@ -25,6 +25,7 @@
 #include <map.h>
 #include <ysglfontdata.h>
 #include <object.h>
+#include <KDtree.h>
 /* Input Arguments */
 #define	MAP_IN      prhs[0]
 #define	ARMSTART_IN	prhs[1]
@@ -480,8 +481,24 @@ struct results
  * make sure it can run with the original 6 commands.
  * Programs that do not will automatically get a 0.
  * */
+
 int main(int argc, char ** argv) 
 {
+
+	std::vector<Point> points = {
+        {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16},
+        {17, 18, 19, 20}, {21, 22, 23, 24}, {25, 26, 27, 28}, {29, 30, 31, 32}
+    };
+
+    KDTree Ktree;
+    Ktree.build(points);
+
+    Point target(20, 21, 22, 23);
+    Point nearest = Ktree.nearest_neighbor(target);
+
+    std::cout << "Nearest point to (" << target.x << ", " << target.y << ", " << target.z << ", " << target.w << "): ("
+              << nearest.x << ", " << nearest.y << ", " << nearest.z << ", " << nearest.w << ")\n";
+
 	double* map_t = nullptr;
 	int coords[2] ={0,0};
 	int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)

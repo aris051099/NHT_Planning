@@ -283,6 +283,7 @@ bool tether::contact_point(std::unordered_map<int,double*>& obs_set)
             }
         }
     }
+    return true;
 }
 void tether::Draw_tether()
 {
