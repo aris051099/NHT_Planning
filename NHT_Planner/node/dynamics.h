@@ -320,3 +320,139 @@ Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
 //   double h = 0.01;
 // }
 
+#include <cmath>
+#include <iostream>
+#include <vector>
+#include <utility>
+
+const double kEpsilon = 1e-6;
+
+double fresnel_integral(double x, double k) {
+    int num_intervals = 1000;
+    double delta = x / num_intervals;
+    double sum = 0;
+
+    for (int i = 0; i < num_intervals; ++i) {
+        double xi = i * delta;
+        double xi_plus_1 = (i + 1) * delta;
+        double fi = std::cos(0.5 * k * xi * xi);
+        double fi_plus_1 = std::cos(0.5 * k * xi_plus_1 * xi_plus_1);
+
+        sum += (fi + fi_plus_1) / 2 * delta;
+    }
+
+    return sum;
+}
+
+std::pair<double, double> clothoid(double s, double k) {
+    double x = fresnel_integral(s, k);
+    double y = fresnel_integral(s, -k);
+    return {x, y};
+}
+
+std::vector<std::pair<double, double>> generate_clothoid_path(double s0, double s1, double k, int num_points) {
+    std::vector<std::pair<double, double>> path;
+    double delta_s = (s1 - s0) / (num_points - 1);
+
+    for (int i = 0; i < num_points; ++i) {
+        double s = s0 + i * delta_s;
+        path.push_back(clothoid(s, k));
+    }
+
+    return path;
+}
+
+std::vector<std::pair<double, double>> compute_control_inputs(const std::vector<std::pair<double, double>>& path, double dt) {
+    std::vector<std::pair<double, double>> control_inputs;
+
+    for (size_t i = 1; i < path.size(); ++i) {
+        double dx = path[i].first - path[i - 1].first;
+        double dy = path[i].second - path[i - 1].second;
+        double distance = std::sqrt(dx * dx + dy * dy);
+        double linear_velocity = distance / dt;
+
+        double delta_theta = std::atan2(dy, dx) - std::atan2(path[i - 1].second, path[i - 1].first);
+        double angular_velocity = delta_theta / dt;
+
+        control_inputs.push_back({linear_velocity, angular_velocity});
+    }
+
+    return control_inputs;
+}
+
+std::vector<std::pair<double, double>> compute_control_inputs(const std::vector<std::pair<double, double>>& path, double dt, double max_linear_velocity, double max_angular_velocity) {
+    std::vector<std::pair<double, double>> control_inputs;
+
+    for (size_t i = 1; i < path.size(); ++i) {
+        double dx = path[i].first - path[i - 1].first;
+        double dy = path[i].second - path[i - 1].second;
+        double distance = std::sqrt(dx * dx + dy * dy);
+        double linear_velocity = distance / dt;
+        double delta_theta = std::atan2(dy, dx) - std::atan2(path[i - 1].second, path[i - 1].first);
+        double angular_velocity = delta_theta / dt;
+
+        // Clamp linear and angular velocities to their respective limits
+        linear_velocity = std::min(linear_velocity, max_linear_velocity);
+        angular_velocity = std::min(std::max(angular_velocity, -max_angular_velocity), max_angular_velocity);
+
+        control_inputs.push_back({linear_velocity, angular_velocity});
+    }
+
+    return control_inputs;
+}
+
+class Clothoid {
+public:
+    Clothoid(double k0, double k, double s0, double s1) : k0_(k0), k_(k), s0_(s0), s1_(s1) {}
+
+    std::vector<std::pair<double, double>> sample_points(double ds) {
+        std::vector<std::pair<double, double>> points;
+
+        for (double s = s0_; s <= s1_; s += ds) {
+            double x = fresnel_integral(s * std::sqrt(0.5 * k_));
+            double y = fresnel_integral((s + k0_) * std::sqrt(0.5 * k_));
+            points.push_back({x, y});
+        }
+
+        return points;
+    }
+
+private:
+    double fresnel_integral(double t) {
+        // This function computes the Fresnel integral, which is used to calculate the x and y coordinates of the clothoid.
+        // You can replace this function with a more accurate or efficient implementation, if desired.
+        const int num_terms = 10;
+        double sum = 0;
+        double coef = 1;
+
+        for (int n = 0; n < num_terms; ++n) {
+            sum += coef * std::pow(t, 4 * n + 1) / (4 * n + 1);
+            coef = -coef / (2 * n + 1) / (2 * n + 2);
+        }
+
+        return sum;
+    }
+
+    double k0_; // initial curvature
+    double k_;  // curvature rate
+    double s0_; // initial arc length
+    double s1_; // final arc length
+};
+
+
+// int main() 
+// {
+//     double s0 = 0;
+//     double s1 = 10;
+//     double k = 1;
+//     int num_points = 100;
+//     double dt = 0.1;  // Time step between path points
+
+//     std::vector<std::pair<double, double>> path = generate_clothoid_path(s0, s1, k, num_points);
+//     std::vector<std::pair<double, double>> control_inputs = compute_control_inputs(path, dt);
+
+//     for (const auto& control_input : control_inputs) {
+//         std::cout << "Linear velocity: " << control_input.first << ", Angular velocity: " << control_input.second << std::endl;
+//     }
+// }
+//     return 
