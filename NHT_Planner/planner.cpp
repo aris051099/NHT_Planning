@@ -485,21 +485,22 @@ struct results
 int main(int argc, char ** argv) 
 {
 
-	std::vector<Point> points = {
-        {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16},
-        {17, 18, 19, 20}, {21, 22, 23, 24}, {25, 26, 27, 28}, {29, 30, 31, 32}
-    };
+	// std::vector<Point> points = {
+    //     {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16},
+    //     {17, 18, 19, 20}, {21, 22, 23, 24}, {25, 26, 27, 28}, {29, 30, 31, 32}
+    // };
 
-    KDTree Ktree;
-    Ktree.build(points);
+    // KDTree Ktree;
+    // Ktree.build(points);
 
-    Point target(20, 21, 22, 23);
-    Point nearest = Ktree.nearest_neighbor(target);
+    // Point target(20, 21, 22, 23);
+    // Point nearest = Ktree.nearest_neighbor(target);
 
-    std::cout << "Nearest point to (" << target.x << ", " << target.y << ", " << target.z << ", " << target.w << "): ("
-              << nearest.x << ", " << nearest.y << ", " << nearest.z << ", " << nearest.w << ")\n";
+    // std::cout << "Nearest point to (" << target.x << ", " << target.y << ", " << target.z << ", " << target.w << "): ("
+    //           << nearest.x << ", " << nearest.y << ", " << nearest.z << ", " << nearest.w << ")\n";
 
 	double* map_t = nullptr;
+	int block_width[2] = {15,15};
 	int coords[2] ={0,0};
 	int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
 	int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
@@ -542,29 +543,6 @@ int main(int argc, char ** argv)
 		printf("Invalid Goal location \n");
 		return 0;
 	}
-	
-	// }
-	{
-		Ustate u_test(1,0);
-		u_test.set_tprop(1);
-		Xstate x_prop_test;
-		Xstate x_prop_test2;
-		Xstate x_prop_test3;
-		x_prop_test.propagate(x_start,u_test);
-		printf("Test:\n");
-		std::cout << x_prop_test << std::endl;
-		printf("Test 2:\n");
-		x_prop_test2 = propagate(x_start,u_test,map_1.map_ptr,map_1.width,map_1.height);
-		std::cout << x_prop_test2 << std::endl;
-		printf("Test 3:\n");
-		x_prop_test3 = propagate(x_prop_test2,u_test,map_1.map_ptr,map_1.width,map_1.height);
-		std::cout << x_prop_test3 << std::endl;
-		printf("Test 4: \n");
-		x_prop_test3 = propagate(x_prop_test3,u_test,map_1.map_ptr,map_1.width,map_1.height);
-		std::cout << x_prop_test3 << std::endl; 
-	}
-
-
 	
 	// for(int trials = 0; trials < 5; trials++)
 	// {
@@ -676,28 +654,24 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	start_pos.setDim(15,15);
+	start_pos.setDim(block_width[0],block_width[1]);
 	start_pos.setColor(255,0,0);
-	start_pos.coords[0] = coords_start[0];
-	start_pos.coords[1] = coords_start[1];
-	start_pos.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
+	start_pos.Move(coords_start[0],coords_start[1],0);
 
-	goal_pos.setDim(15,15);
+	goal_pos.setDim(block_width[0],block_width[1]);
 	goal_pos.setColor(255,0,0);
-	goal_pos.coords[0] = coords_goal[0];
-	goal_pos.coords[1] = coords_goal[1];
-	goal_pos.Move(map_1.block_x*coords_goal[0],map_1.block_y*(map_1.height-coords_goal[1]),0);
+	goal_pos.Move(coords_goal[0],coords_goal[1],0);
 
 	husky_robot.setDim(20,15);
 	husky_robot.setColor(255,240,10);
-	husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
+	husky_robot.Move(coords_start[0],coords_start[1],0);
 
 	path.setDim(1,1);
 	path.setColor(0,140,255);
-	path.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
+	path.Move(coords_start[0],coords_start[1],0);
 
-	t.set_anchor(map_1.block_x*(coords_start[0] + 5),map_1.block_y*(map_1.height-coords_start[1]));
-	t.setDim(15,15);
+	t.set_anchor(coords_start[0] + 5,coords_start[1]);
+	t.setDim(block_width[0],block_width[1]);
 	t.setColor(0,0,0);
 	
 	int idx = 0;
@@ -720,7 +694,7 @@ int main(int argc, char ** argv)
  			{	
 				idx = 0;
 				x_k = plan[0]->getXstate(); 
-				husky_robot.Move(map_1.block_x*coords_start[0],map_1.block_y*(map_1.height-coords_start[1]),0);
+				husky_robot.Move(coords_start[0],coords_start[1],0);
 			}	
 
 			Ustate u_k = plan[idx]->getUstate();
@@ -758,9 +732,9 @@ int main(int argc, char ** argv)
 
 				x_k = x_prop;
 
-				husky_robot.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
-				path.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
-				t.Move(map_1.block_x*x_k[0],map_1.block_y*(map_1.height-x_k[1]),x_k[2]);
+				husky_robot.Move(x_k[0],x_k[1],x_k[2]);
+				path.Move(x_k[0],x_k[1],x_k[2]);
+				t.Move(x_k[0],x_k[1],x_k[2]);
 				//Rendering
 
 				// glViewport(0,0,wid,hei);

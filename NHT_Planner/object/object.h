@@ -12,14 +12,16 @@
 #include <unordered_map>
 #define PI 3.141592654
 
+#define GETMAPINDEX_UL0(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
 
 class object 
 {
 	public:
-		GLfloat x=0,y=0,angle=0,w=0,h=0;
+		GLfloat x=0,y=0,angle=0,w=0,h=0,x_w=0,y_w=0;
 		GLubyte r=0,g=0,b=0;
+		float block_side = 15.0;
+		float ofs_y = 50;
 		std::vector<double> pos_idx; 
-		int coords[2] = {0,0};
 		object(void);
 		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
 		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
@@ -53,6 +55,8 @@ void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
 {
 	this->x = i_x;
 	this->y = i_y;
+	x_w = i_x*block_side;
+	y_w = (ofs_y-i_y)*block_side;
 	this->angle = i_angle; 
 	pos_idx.push_back(i_x);
 	pos_idx.push_back(i_y);
@@ -60,21 +64,22 @@ void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
 
 void object::Draw_object()
 {
+	// Draw_in_center();
 	glColor3ub(this->r,this->g,this->b);
 
 	glBegin(GL_QUADS);
 
 	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x,y,0); //0,0
+	glVertex3f(x_w,y_w,0); //0,0
 
 	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w,y,0); //1,0
+	glVertex3f(x_w+w,y_w,0); //1,0
 
 	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w,y+h,0); // 1,1
+	glVertex3f(x_w+w,y_w+h,0); // 1,1
 
 	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x,y+h,0); // 0,1
+ 	glVertex3f(x_w,y_w+h,0); // 0,1
 
 	glEnd(); 
 
@@ -82,24 +87,25 @@ void object::Draw_object()
 
 void object::Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h)
 {
-
-	float w_husky = 20; 
-	float h_husky = 15;
+	float w_husky = 0; 
+	float h_husky = 0;
+	i_x =i_x*block_side;
+	i_y =(ofs_y-i_y)*block_side;
 	glColor3ub(this->r,this->g,this->b);
 
 	glBegin(GL_QUADS);
 
 	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(i_x+w_husky/2.0,i_y+h_husky/2.0,0); //0,0
+	glVertex3f(i_x,i_y,0); //0,0
 
 	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(i_x+i_w+w_husky/2.0,i_y+h_husky/2.0,0); //1,0
+	glVertex3f(i_x+w,i_y,0); //1,0
 
 	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(i_x+i_w+w_husky/2.0,i_y+i_h+h_husky/2.0,0); // 1,1
+	glVertex3f(i_x+w,i_y+h,0); // 1,1
 
 	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(i_x+w_husky/2.0,i_y+i_h+h_husky/2.0,0); // 0,1
+ 	glVertex3f(i_x,i_y+h,0); // 0,1
 
 	glEnd(); 	
 }
@@ -112,19 +118,47 @@ void object::Draw_in_center()
 	glBegin(GL_QUADS);
 
 	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x-w/2 ,y-h/2,0); //0,0
+	glVertex3f(x_w-w/2 ,y_w-h/2,0); //0,0
 
 	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w-w/2,y-h/2,0); //1,0
+	glVertex3f(x_w+w-w/2,y_w-h/2,0); //1,0
 
 	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w-w/2,y+h-h/2,0); // 1,1
+	glVertex3f(x_w+w-w/2,y_w+h-h/2,0); // 1,1
 
 	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x-w/2,y+h-h/2,0); // 0,1
+ 	glVertex3f(x_w-w/2,y_w+h-h/2,0); // 0,1
 
 	glEnd(); 
 }
+
+// void object::Draw_object_Angle()
+// {
+	
+// 	// if(this->angle < 0)
+// 	// {
+// 	// 	this->angle = 2*PI-this->angle;
+// 	// }
+// 	this->angle = (this->angle/PI) * 180;
+
+// 	// glLoadIdentity();
+// 	glPushMatrix();
+
+// 	glTranslatef(x_w,y_w, 0);      
+// 	glRotatef(angle, 0.0f, 0.0f, -1.0f);
+// 	glTranslatef(-x_w, -y_w, 0);
+
+// 	Draw_in_center();
+
+// 	glColor3ub(0,0,0);
+// 	glLineWidth(1);
+// 	glBegin(GL_LINES);
+// 	glVertex2f(x_w,y_w);
+// 	glVertex2f(x_w+20,y_w);
+// 	glEnd();
+
+// 	glPopMatrix();
+// }
 
 void object::Draw_object_Angle()
 {
@@ -138,33 +172,33 @@ void object::Draw_object_Angle()
 	// glLoadIdentity();
 	glPushMatrix();
 
-	glTranslatef(x+w/2,y+h/2, 0);      
+	glTranslatef(x_w+w/2,y_w+h/2, 0);      
 	glRotatef(angle, 0.0f, 0.0f, -1.0f);
-	glTranslatef(-x-w/2, -y-h/2, 0);
+	glTranslatef(-x_w-w/2, -y_w-h/2, 0);
 
 	glColor3ub(this->r,this->g,this->b);
 
 	glBegin(GL_QUADS);
 
 	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x ,y,0); //0,0
+	glVertex3f(x_w ,y_w,0); //0,0
 
 	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w,y,0); //1,0
+	glVertex3f(x_w+w,y_w,0); //1,0
 
 	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w,y+h,0); // 1,1
+	glVertex3f(x_w+w,y_w+h,0); // 1,1
 
 	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x,y+h,0); // 0,1
+ 	glVertex3f(x_w,y_w+h,0); // 0,1
 	glEnd(); 
 
 	
 	glColor3ub(0,0,0);
 	glLineWidth(1);
 	glBegin(GL_LINES);
-	glVertex2i(x+w/2,y+h/2);
-	glVertex2i(x+w/2+20,y+h/2);
+	glVertex2i(x_w+w/2,y_w+h/2);
+	glVertex2i(x_w+w/2+20,y_w+h/2);
 	glEnd();
 
 	glPopMatrix();
@@ -173,11 +207,9 @@ void object::Draw_object_Angle()
 void object::Draw_coords()
 {
 	glColor3ub(0,0,0);
-	glRasterPos2i(x+w,y+2*h);
+	glRasterPos2f(x_w+w,y_w+2*h);
 	char str[256];
-	int i_x = x;
-	int i_y = y;
-	sprintf(str,"%d,%d",coords[0],coords[1]);
+	sprintf(str,"%.f,%.f",x,y);
 	YsGlDrawFontBitmap12x16(str);
 }
 
@@ -187,7 +219,7 @@ void object::Draw_Path()
 	{
 		for(int j = 0; j < pos_idx.size(); j+=2)
 		{
-			Draw_object_coords(pos_idx[j],pos_idx[j+1],this->w,this->h);
+			Draw_object_coords(pos_idx[j],pos_idx[j+1],15,15);
 		}
 	}
 }
@@ -196,10 +228,12 @@ class tether: public object
 {
     public: 
         float anchor_point[2] = {0,0};
+		float a_x =0, a_y = 0;
+		std::vector<float> ct_points;
         void set_anchor(float x,float y);
         void Draw_anchor();
-        bool point_in_line(float o_x,float o_y,int& AorB);
-        bool contact_point(std::unordered_map<int,double*>& obs_set);
+        bool point_in_line(float o_x,float o_y,float a_x,float a_y,int& AorB);
+        bool contact_point(std::unordered_map<int,std::tuple<double,double>>& obs_set);
         void draw_line(float xf,float yf,float xi,float yi);
         void Draw_tether();
 };
@@ -207,37 +241,35 @@ void tether::set_anchor(float i_x, float i_y)
 {
     anchor_point[0] = i_x;
     anchor_point[1] = i_y;
+	a_x = i_x*block_side;
+    a_y = (ofs_y-i_y)*block_side;
 }
 void tether::Draw_anchor()
 {
-
-    auto x = anchor_point[0];
-    auto y = anchor_point[1];
-
 	glColor3ub(this->r,this->g,this->b);
 
 	glBegin(GL_QUADS);
 
 	glTexCoord3f(0.0,0.0,0.0);
-	glVertex3f(x,y,0); //0,0
+	glVertex3f(a_x,a_y,0); //0,0
 
 	glTexCoord3f(1.0,0.0,0.0);
-	glVertex3f(x+w,y,0); //1,0
+	glVertex3f(a_x+w,a_y,0); //1,0
 
 	glTexCoord3f(1.0,1.0,0);
-	glVertex3f(x+w,y+h,0); // 1,1
+	glVertex3f(a_x+w,a_y+h,0); // 1,1
 
 	glTexCoord3f(0.0,1.0,0.0);
- 	glVertex3f(x,y+h,0); // 0,1
+ 	glVertex3f(a_x,a_y+h,0); // 0,1
 
 	glEnd(); 
 }
-bool tether::point_in_line(float o_x,float o_y, int& AorB)
+bool tether::point_in_line(float o_x,float o_y,float a_x,float a_y,int& AorB)
 {
     double x2 = x+20/2;
     double y2 = y+15/2;
-    double x1 = anchor_point[0]+w/2;
-    double y1 = anchor_point[1]+h/2;
+    double x1 = a_x+w/2;
+    double y1 = a_y+h/2;
 
     double AB = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
     double AP = sqrt((o_x-x1)*(o_x-x1)+(o_y-y1)*(o_y-y1));
@@ -264,22 +296,23 @@ void tether::draw_line(float xf,float yf,float xi,float yi)
     glColor3ub(255,0,0);
     glLineWidth(1);
     glBegin(GL_LINES);
-    glVertex2i(anchor_point[0]+w/2,anchor_point[1]+h/2);
-    glVertex2i(x+20/2,y+15/2);
+    glVertex2i(xi+w/2,yi+h/2);
+    glVertex2i(xf+20/2,yf+15/2);
     glEnd();
 }
-bool tether::contact_point(std::unordered_map<int,double*>& obs_set)
+bool tether::contact_point(std::unordered_map<int,std::tuple<double,double>>& obs_set)
 {
     int AorB = 0;
-    for(auto iter = obs_set.begin(); iter != obs_set.end();++iter)
-    {
-        double* obs_coord = iter->second;
-        if(point_in_line(obs_coord[0],obs_coord[1],AorB))
+	double obs_coord[2] = {0,0};
+	for(auto iter = obs_set.begin();iter != obs_set.end();++iter)
+	{
+		auto cur = iter->second; 
+        if(point_in_line(block_side*std::get<0>(cur),block_side*(50-std::get<1>(cur)),anchor_point[0],anchor_point[1],AorB))
         {
             if(AorB == 1)
             {
-                pos_idx.push_back(obs_coord[0]);
-                pos_idx.push_back(obs_coord[1]);
+                ct_points.push_back(obs_coord[0]);
+                ct_points.push_back(obs_coord[1]);
             }
         }
     }
@@ -288,10 +321,5 @@ bool tether::contact_point(std::unordered_map<int,double*>& obs_set)
 void tether::Draw_tether()
 {
     Draw_anchor();
-    glColor3ub(255,0,0);
-    glLineWidth(1);
-    glBegin(GL_LINES);
-    glVertex2i(anchor_point[0]+w/2,anchor_point[1]+h/2);
-    glVertex2i(x+20/2,y+15/2);
-    glEnd();
+	draw_line(x_w,y_w,a_x,a_y);
 }

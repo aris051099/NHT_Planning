@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <vector>
+#include <tuple>
 #include <random>
 #include <algorithm>
 #include <string>
@@ -21,7 +23,7 @@ class map
         int block_x = 15;
         int block_y = 15; 
         GLubyte r=0,g=0,b=0;
-        std::unordered_map<int,double*> obstacle_set;
+        std::unordered_map<int,std::tuple<double,double>> obstacle_set;
         map(void);
         map(double *map_i_ptr);
         void loadMap(std::string filepath);
@@ -179,14 +181,16 @@ void map::calc_collision_set()
 	{
         if(map_ptr[i] == 1.0)
         {
-            coord[0] = x_e;
-            coord[1] = y_e;
-            obstacle_set.insert({i,coord});
+            obstacle_set.insert({i,std::make_tuple(x_e,y_e)});
         }
         ++x_e;
-		if(i%height == 0)
-		{
-            y_e++;
+        if(x_e>width)
+        {
+            x_e = 0;
+        }
+        if(i>0 && i%height == 0)
+        {
+            ++y_e;
         }
     }
 }
