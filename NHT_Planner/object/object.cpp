@@ -1,1 +1,4 @@
-#include "object.h"
+#ifndef OBJECT    
+    #define OBJECT
+    #include "object.h"
+#endif 

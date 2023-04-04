@@ -87,10 +87,12 @@ void object::Draw_object()
 
 void object::Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h)
 {
-	float w_husky = 0; 
-	float h_husky = 0;
+	float w_husky = 20; 
+	float h_husky = 15;
 	i_x =i_x*block_side;
 	i_y =(ofs_y-i_y)*block_side;
+	i_x = i_x + w_husky/2;
+	i_y = i_y + h_husky/2;
 	glColor3ub(this->r,this->g,this->b);
 
 	glBegin(GL_QUADS);

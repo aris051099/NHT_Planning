@@ -1,3 +1,4 @@
+#pragma once
 template <class ComponentType,int NumComponent>
 class state
 {

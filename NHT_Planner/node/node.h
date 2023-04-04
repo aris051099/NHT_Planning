@@ -1,11 +1,11 @@
 #include <iostream> 
-#include "state_template.h"
-#include "dynamics.h"
 #include <math.h>
 #include <algorithm>
 #include <chrono>
 #include <stdlib.h>
 #include <vector>
+#include <Xstate.h>
+
 class node 
 {
 	protected:

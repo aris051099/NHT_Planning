@@ -6,8 +6,16 @@
  * Create threshold for vicinity 
  * Create all the implicit planning thing 
 */
-
+#pragma once
+#include <iostream> 
+#include <math.h>
+#include <algorithm>
+#include <chrono>
+#include <stdlib.h>
+#include <vector>
+#include "state_template.h"
 #define PI 3.141592654
+
 int sec2msec(double sec)
 {
   return sec*100;

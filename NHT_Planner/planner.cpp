@@ -20,6 +20,7 @@
 #include <limits>
 #include <queue>
 #include <unordered_set>
+#include <Xstate.h>
 #include <node.h>
 #include <fssimplewindow.h>
 #include <map.h>
@@ -374,6 +375,16 @@ static void planner(map& map_1,
 	Ustate u_best;
 	Ustate u_min;
 
+
+    Xstate target(20, 21, 22, 23);
+
+	KDTree Ktree;
+
+	std::vector<Xstate> K_points;
+	
+    // std::cout << "Nearest point to (" << target.x << ", " << target.y << ", " << target.z << ", " << target.w << "): ("
+    //           << nearest.x << ", " << nearest.y << ", " << nearest.z << ", " << nearest.w << ")\n";
+
 	bool reached = false;
 	bool rewire = false;
 	bool near_goal = false;
@@ -394,6 +405,10 @@ static void planner(map& map_1,
 		plan.clear();
 	}
 	tree.push_back(new node(t_passed,euclidean(x_goal,x_0),nullptr,u_0,x_0));
+
+	K_points.push_back(x_0);
+	Ktree.build(K_points);
+	
 	std::cout<< "Number of samples: "<< K << std::endl; 
 
 	double accum_time = 0;
@@ -484,21 +499,6 @@ struct results
 
 int main(int argc, char ** argv) 
 {
-
-	// std::vector<Point> points = {
-    //     {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16},
-    //     {17, 18, 19, 20}, {21, 22, 23, 24}, {25, 26, 27, 28}, {29, 30, 31, 32}
-    // };
-
-    // KDTree Ktree;
-    // Ktree.build(points);
-
-    // Point target(20, 21, 22, 23);
-    // Point nearest = Ktree.nearest_neighbor(target);
-
-    // std::cout << "Nearest point to (" << target.x << ", " << target.y << ", " << target.z << ", " << target.w << "): ("
-    //           << nearest.x << ", " << nearest.y << ", " << nearest.z << ", " << nearest.w << ")\n";
-
 	double* map_t = nullptr;
 	int block_width[2] = {15,15};
 	int coords[2] ={0,0};
