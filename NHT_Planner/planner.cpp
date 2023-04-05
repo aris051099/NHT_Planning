@@ -393,6 +393,12 @@ static void planner(map& map_1,
 	double prop_time=0;
 	double t_passed = 0;
 
+	
+	int quad = 5;
+	std::uniform_int_distribution<int> n_rand_map_coordsx(x_goal[0]-quad,x_goal[0]+quad);
+	std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
+
+
 	std::vector<int> neighbors_idx;
 
 	if(!tree.empty())
@@ -421,19 +427,22 @@ static void planner(map& map_1,
 		if(prob > 0.95) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
+		} else if(prob > 0.90)
+		{
+			Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+			x_rand = x_r;
 		}
 		else
 		{
 			Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
 			x_rand = x_r;
 		}
+		if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
+		{
+			continue;
+		}
 
-		auto q_start_time = std::chrono::system_clock::now();
 		int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
-		auto q_end_time = std::chrono::system_clock::now();
-		auto q_time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (q_end_time-q_start_time);
-		auto q_time_passed = q_time_delay.count()*1e-9;
-		printf("Loop time: %f\n",q_time_passed);
 		if(nn_idx >= 0)
 		{
 			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
@@ -503,7 +512,7 @@ struct results
 
 int main(int argc, char ** argv) 
 {
-	double* map_t = nullptr;
+double* map_t = nullptr;
 	int block_width[2] = {15,15};
 	int coords[2] ={0,0};
 	int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
@@ -513,17 +522,20 @@ int main(int argc, char ** argv)
 	int start_y_coord_array[5] = {20,20,35,35,46};
 	int goal_x_coord_array[5] = {7,30,40,48,45};
 	int goal_y_coord_array[5] = {46,46,15,50,10};
-
 	int x_size=0, y_size=0;
 
-	map map_1; 
+	map map_1;
+
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
+
+	KDTree Ktree;
+
+	std::ofstream myFile("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
 
 	Ustate u_start(0,0);
 	Xstate x_start(coords_start[0],coords_start[1],calc_angle(coords_goal,coords_start),0);
 	Xstate x_goal(coords_goal[0],coords_goal[1],PI/2,0);
-
 
 	object husky_robot;
 	object start_pos;
@@ -575,6 +587,16 @@ int main(int argc, char ** argv)
 			auto start_time = std::chrono::system_clock::now();
 			while(!too_long)
 			{
+
+				if(!tree.empty())
+				{
+					CleanUp(tree);
+				}
+				
+				if(!plan.empty())
+				{
+					plan.clear();
+				}
 				planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
 				if(reset_planner)
 				{
@@ -605,22 +627,31 @@ int main(int argc, char ** argv)
 			// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
 			// std::cout<<"--------------------------------------"<<std::endl;
 		}
+
+		myFile << "Configuration , #" << trials << "\n";
 		for(int i = 0; i < succ_trial; ++i)
 		{
-			printf("%.4f s,",res[i].time);
+			printf("%.4f,",res[i].time);
+			myFile << res[i].time << ",";
 		}
+		printf("\n");
+		myFile << "\n";
+		for(int i = 0; i < succ_trial; ++i)
+		{
+			printf("%.4f,",res[i].node_expansions);
+			myFile << res[i].node_expansions << ",";
+		}
+		myFile <<"\n";
 		printf("\n");
 		for(int i = 0; i < succ_trial; ++i)
 		{
-			printf("%.4f ,",res[i].node_expansions);
+			printf("%.4f,",res[i].cost);
+			myFile << res[i].cost << ",";
 		}
 		printf("\n");
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f m,",res[i].cost);
-		}
-		printf("\n");
+		myFile <<"\n";
 	}
+	myFile.close();
 
 	// bool too_long = false; 
 	// bool reset_planner = false;  	
