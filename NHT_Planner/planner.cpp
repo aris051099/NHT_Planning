@@ -399,6 +399,10 @@ static void planner(map& map_1,
 	double prop_time=0;
 	double t_passed = 0;
 
+	int quad = 5;
+	std::uniform_int_distribution<int> n_rand_map_coordsx(x_goal[0]-quad,x_goal[0]+quad);
+	std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
+
 	std::vector<int> neighbors_idx;
 
 	tree.push_back(new node(t_passed,euclidean(x_goal,x_0),nullptr,u_0,x_0));
@@ -420,23 +424,35 @@ static void planner(map& map_1,
 		if(prob > 0.95) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
+		} else if(prob > 0.90)
+		{
+			Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+			x_rand = x_r;
 		}
 		else
 		{
 			Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
 			x_rand = x_r;
 		}
-
+		if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
+		{
+			continue;
+		}
+		double r = L2_norm(x_rand);
+		// if(tree.size() > 1)
+		// {
+		// 	r = std::min(L2_norm(x_rand),calc_radius(tree));
+		// }
 		// int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
-		auto q_start_time = std::chrono::system_clock::now();
+		// auto q_start_time = std::chrono::system_clock::now();
 
-		node* q_near = Ktree.nearest_neighbor(x_rand); //Grabs that qnear
+		node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
 
-		auto q_end_time = std::chrono::system_clock::now();
-		auto q_time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (q_end_time-q_start_time);
-		auto q_time_passed = q_time_delay.count()*1e-9;
+		// auto q_end_time = std::chrono::system_clock::now();
+		// auto q_time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (q_end_time-q_start_time);
+		// auto q_time_passed = q_time_delay.count()*1e-9;
 
-		printf("Ktree time: %f\n",q_time_passed);
+		// printf("Ktree time: %f\n",q_time_passed);
 		if(q_near == nullptr)
 			continue;
 
@@ -479,7 +495,7 @@ static void planner(map& map_1,
 			return;
 		}
 	}
-
+	reset_planner = true;
 	printf("No plan found \n");
 	// CleanUp(tree);
 	//no plan by default
@@ -516,7 +532,6 @@ int main(int argc, char ** argv)
 	int start_y_coord_array[5] = {20,20,35,35,46};
 	int goal_x_coord_array[5] = {7,30,40,48,45};
 	int goal_y_coord_array[5] = {46,46,15,50,10};
-
 	int x_size=0, y_size=0;
 
 	map map_1; 
@@ -527,7 +542,6 @@ int main(int argc, char ** argv)
 	Ustate u_start(0,0);
 	Xstate x_start(coords_start[0],coords_start[1],calc_angle(coords_goal,coords_start),0);
 	Xstate x_goal(coords_goal[0],coords_goal[1],PI/2,0);
-
 
 	object husky_robot;
 	object start_pos;

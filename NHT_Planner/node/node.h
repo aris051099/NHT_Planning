@@ -14,7 +14,7 @@ class node
 		Ustate u_control; 
 		Xstate reached_state;
 		double f=0,g=0,h=0; 
-		int axis;
+		int axis = -1;
 		node* left = nullptr;
 		node* right = nullptr;
 		std::vector<node*> childs;

@@ -39,11 +39,11 @@ class KDTree
 public:
     KDTree() : root(nullptr) {}
 
-    node* nearest_neighbor(const Xstate& target) const 
+    node* nearest_neighbor(const Xstate& target,double r) const 
     {
         double min_distance = std::numeric_limits<double>::max();
-        node* nearest_Xstate;
-        nearest_neighbor(root, target, min_distance, nearest_Xstate);
+        node* nearest_Xstate = nullptr;
+        nearest_neighbor(root, target, min_distance, nearest_Xstate,r);
         return nearest_Xstate;
     }
     void Insert(node* q_new)
@@ -103,18 +103,19 @@ private:
         return dx * dx + dy * dy + dz * dz + dw * dw;
     }
 
-    void nearest_neighbor(node* Knode,const Xstate& target, double& min_distance, node*& nearest_Xstate) const 
+    void nearest_neighbor(node* Knode,const Xstate& target, double& min_distance, node*& nearest_Xstate,double r) const 
     {
 
         if(Knode == nullptr) return;
 
         double distance = squared_distance(Knode->getXstate(), target);
 
-        if (distance < min_distance) 
+        if (distance <= r && distance < min_distance)
         {
-            min_distance = distance;
-            nearest_Xstate = Knode;
+                min_distance = distance;
+                nearest_Xstate = Knode;
         }
+        
 
         double axis_diff = 0;
         int axis = Knode->axis;
@@ -136,10 +137,10 @@ private:
         node* first_child = axis_diff <= 0 ? Knode->left : Knode->right;
         node* second_child = axis_diff <= 0 ? Knode->right : Knode->left;
 
-        nearest_neighbor(first_child, target, min_distance, nearest_Xstate);
+        nearest_neighbor(first_child, target, min_distance, nearest_Xstate,r);
 
         if (axis_diff * axis_diff < min_distance) {
-            nearest_neighbor(second_child, target, min_distance, nearest_Xstate);
+            nearest_neighbor(second_child, target, min_distance, nearest_Xstate,r);
         }
     }
 
@@ -148,6 +149,7 @@ private:
         if (Knode == nullptr) 
         {
             Knode = q_new;
+            Knode->axis = depth;
             return;
         }
 
