@@ -428,8 +428,12 @@ static void planner(map& map_1,
 			x_rand = x_r;
 		}
 
+		auto q_start_time = std::chrono::system_clock::now();
 		int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
-
+		auto q_end_time = std::chrono::system_clock::now();
+		auto q_time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (q_end_time-q_start_time);
+		auto q_time_passed = q_time_delay.count()*1e-9;
+		printf("Loop time: %f\n",q_time_passed);
 		if(nn_idx >= 0)
 		{
 			Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
@@ -544,110 +548,110 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 	
-	// for(int trials = 0; trials < 5; trials++)
-	// {
-	// 	results res[10];
-	// 	bool too_long = false;
-	// 	bool reset_planner = false; 
-	// 	int n_tries = 0;
-	// 	int succ_trial = 0;
-	// 	int s_x_c = start_x_coord_array[trials];
-	// 	int s_y_c = start_y_coord_array[trials];
-	// 	coords_start[0] = s_x_c;
-	// 	coords_start[1] = s_y_c; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-	// 	int g_x_c = goal_x_coord_array[trials];
-	// 	int g_y_c = goal_y_coord_array[trials];
-	// 	coords_goal[0] = g_x_c;
-	// 	coords_goal[1] = g_y_c;
-	// 	x_start[0] = s_x_c;
-	// 	x_start[1] = s_y_c;
-	// 	x_start[2] = calc_angle(coords_goal,coords_start);
-	// 	x_goal[0] = g_x_c;
-	// 	x_goal[1] = g_y_c;
-	// 	printf("Start Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_start[0],x_start[1],x_start[2]);
-	// 	printf("Goal Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_goal[0],x_goal[1],x_goal[2]);
-	// 	while(succ_trial < 10)
-	// 	{
-	// 		auto start_time = std::chrono::system_clock::now();
-	// 		while(!too_long)
-	// 		{
-	// 			planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
-	// 			if(reset_planner)
-	// 			{
-	// 				n_tries++;
-	// 				printf("Number of tries: %d \n", n_tries);
-	// 			}
-	// 			else
-	// 			{
-	// 				too_long = true;
-	// 			}
-	// 			if(n_tries >=15)
-	// 			{
-	// 				too_long = true;
-	// 			}
-	// 		}	
-	// 		n_tries = 0;
-	// 		too_long = false;
-	// 		auto end_time = std::chrono::system_clock::now();
-	// 		auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-	// 		auto time_passed = time_delay.count()*1e-9;
-	// 		res[succ_trial].time = time_passed;
-	// 		res[succ_trial].cost = plan.back()->g;
-	// 		res[succ_trial].node_expansions = tree.size();
-	// 		++succ_trial;
-	// 		// std::cout<<"--------------- RESULTS---------------"<<std::endl;
-	// 		// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-	// 		// std::cout<<"Tree size:" << tree.size() << std::endl;
-	// 		// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-	// 		// std::cout<<"--------------------------------------"<<std::endl;
-	// 	}
-	// 	for(int i = 0; i < succ_trial; ++i)
-	// 	{
-	// 		printf("%.4f s,",res[i].time);
-	// 	}
-	// 	printf("\n");
-	// 	for(int i = 0; i < succ_trial; ++i)
-	// 	{
-	// 		printf("%.4f ,",res[i].node_expansions);
-	// 	}
-	// 	printf("\n");
-	// 	for(int i = 0; i < succ_trial; ++i)
-	// 	{
-	// 		printf("%.4f m,",res[i].cost);
-	// 	}
-	// 	printf("\n");
-	// }
-
-	bool too_long = false; 
-	bool reset_planner = false;  	
-	int n_tries = 0;
-	auto start_time = std::chrono::system_clock::now();
-	while(!too_long)
+	for(int trials = 0; trials < 5; trials++)
 	{
-		planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
-		if(reset_planner)
+		results res[10];
+		bool too_long = false;
+		bool reset_planner = false; 
+		int n_tries = 0;
+		int succ_trial = 0;
+		int s_x_c = start_x_coord_array[trials];
+		int s_y_c = start_y_coord_array[trials];
+		coords_start[0] = s_x_c;
+		coords_start[1] = s_y_c; //30,20 ; 10,20; 5,35; 40,46;(x,y)
+		int g_x_c = goal_x_coord_array[trials];
+		int g_y_c = goal_y_coord_array[trials];
+		coords_goal[0] = g_x_c;
+		coords_goal[1] = g_y_c;
+		x_start[0] = s_x_c;
+		x_start[1] = s_y_c;
+		x_start[2] = calc_angle(coords_goal,coords_start);
+		x_goal[0] = g_x_c;
+		x_goal[1] = g_y_c;
+		printf("Start Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_start[0],x_start[1],x_start[2]);
+		printf("Goal Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_goal[0],x_goal[1],x_goal[2]);
+		while(succ_trial < 10)
 		{
-			n_tries++;
-			printf("Number of tries: %d \n", n_tries);
+			auto start_time = std::chrono::system_clock::now();
+			while(!too_long)
+			{
+				planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
+				if(reset_planner)
+				{
+					n_tries++;
+					printf("Number of tries: %d \n", n_tries);
+				}
+				else
+				{
+					too_long = true;
+				}
+				if(n_tries >=15)
+				{
+					too_long = true;
+				}
+			}	
+			n_tries = 0;
+			too_long = false;
+			auto end_time = std::chrono::system_clock::now();
+			auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+			auto time_passed = time_delay.count()*1e-9;
+			res[succ_trial].time = time_passed;
+			res[succ_trial].cost = plan.back()->g;
+			res[succ_trial].node_expansions = tree.size();
+			++succ_trial;
+			// std::cout<<"--------------- RESULTS---------------"<<std::endl;
+			// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+			// std::cout<<"Tree size:" << tree.size() << std::endl;
+			// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+			// std::cout<<"--------------------------------------"<<std::endl;
 		}
-		else
+		for(int i = 0; i < succ_trial; ++i)
 		{
-			too_long = true;
+			printf("%.4f s,",res[i].time);
 		}
-		if(n_tries >=15)
+		printf("\n");
+		for(int i = 0; i < succ_trial; ++i)
 		{
-			too_long = true;
+			printf("%.4f ,",res[i].node_expansions);
 		}
-	}	
-	too_long = false;
-	auto end_time = std::chrono::system_clock::now();
-	auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-	auto time_passed = time_delay.count()*1e-9;
-	std::cout<<"--------------- RESULTS---------------"<<std::endl;
-	std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-	std::cout<<"Tree size:" << tree.size() << std::endl;
-	std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-	std::cout<<"--------------------------------------"<<std::endl;
+		printf("\n");
+		for(int i = 0; i < succ_trial; ++i)
+		{
+			printf("%.4f m,",res[i].cost);
+		}
+		printf("\n");
+	}
+
+	// bool too_long = false; 
+	// bool reset_planner = false;  	
+	// int n_tries = 0;
+	// auto start_time = std::chrono::system_clock::now();
+	// while(!too_long)
+	// {
+	// 	planner(map_1,x_start,u_start,x_goal,plan,tree,reset_planner);
+	// 	if(reset_planner)
+	// 	{
+	// 		n_tries++;
+	// 		printf("Number of tries: %d \n", n_tries);
+	// 	}
+	// 	else
+	// 	{
+	// 		too_long = true;
+	// 	}
+	// 	if(n_tries >=15)
+	// 	{
+	// 		too_long = true;
+	// 	}
+	// }	
+	// too_long = false;
+	// auto end_time = std::chrono::system_clock::now();
+	// auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	// auto time_passed = time_delay.count()*1e-9;
+	// std::cout<<"--------------- RESULTS---------------"<<std::endl;
+	// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	// std::cout<<"Tree size:" << tree.size() << std::endl;
+	// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+	// std::cout<<"--------------------------------------"<<std::endl;
  	auto plan_size = plan.size();
 	if(plan_size <= 1)
 	{
