@@ -534,10 +534,14 @@ int main(int argc, char ** argv)
 	int goal_y_coord_array[5] = {46,46,15,50,10};
 	int x_size=0, y_size=0;
 
-	map map_1; 
+	map map_1;
+
 	std::vector<node*> plan; 
 	std::vector<node*> tree;
+
 	KDTree Ktree;
+
+	std::ofstream myFile("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
 
 	Ustate u_start(0,0);
 	Xstate x_start(coords_start[0],coords_start[1],calc_angle(coords_goal,coords_start),0);
@@ -638,23 +642,31 @@ int main(int argc, char ** argv)
 			// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
 			// std::cout<<"--------------------------------------"<<std::endl;
 		}
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f s,",res[i].time);
-		}
-		printf("\n");
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f ,",res[i].node_expansions);
-		}
-		printf("\n");
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f m,",res[i].cost);
-		}
-		printf("\n");
-	}
 
+		myFile << "Configuration#" << trials << "\n";
+		for(int i = 0; i < succ_trial; ++i)
+		{
+			printf("%.4f,",res[i].time);
+			myFile << res[i].time << ",";
+		}
+		printf("\n");
+		myFile << "\n";
+		for(int i = 0; i < succ_trial; ++i)
+		{
+			printf("%.4f,",res[i].node_expansions);
+			myFile << res[i].node_expansions << ",";
+		}
+		myFile <<"\n";
+		printf("\n");
+		for(int i = 0; i < succ_trial; ++i)
+		{
+			printf("%.4f,",res[i].cost);
+			myFile << res[i].cost << ",";
+		}
+		printf("\n");
+		myFile <<"\n";
+	}
+	myFile.close();
 	// bool too_long = false; 
 	// bool reset_planner = false;  	
 	// int n_tries = 0;
