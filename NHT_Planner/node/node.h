@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream> 
 #include <math.h>
 #include <algorithm>
@@ -8,15 +9,18 @@
 
 class node 
 {
-	protected:
+	public:
 		node* parent = nullptr;
 		Ustate u_control; 
 		Xstate reached_state;
-	public:
 		double f=0,g=0,h=0; 
+		int axis;
+		node* left = nullptr;
+		node* right = nullptr;
 		std::vector<node*> childs;
 		node(){};
-		node(double g,double h, node* inc_parent,Ustate inc_u_control, Xstate X_inc):g{g},h{h},parent{inc_parent},reached_state{X_inc}
+		node(const Xstate&p,int axis,node* parent): reached_state{p},axis{axis},parent{parent} {};
+		node(double g,double h, node* inc_parent,const Ustate& inc_u_control,const Xstate& X_inc):g{g},h{h},parent{inc_parent},reached_state{X_inc}
 		{
 			f = g+h;
 			reached_state = X_inc;
@@ -30,7 +34,7 @@ class node
 		{
 			return parent;
 		}
-		Xstate& getXstate()
+		const Xstate& getXstate() const
 		{
 			return reached_state;
 		}

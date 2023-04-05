@@ -3,30 +3,32 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
-#include <Xstate.h>
+// #include <Xstate.h>
+#include <node.h>
 // #include "node.h"
+node* q = new node();
 
-Xstate x(1.0,1.0,1.0,1.0);
-class KDnode 
-{
-public:
-    Xstate x_s;
-    KDnode* left;
-    KDnode* right;
-    int axis;
+// class node 
+// {
+// public:
+//     Xstate x_s;
+//     node* left;
+//     node* right;
+//     int axis;
 
-    KDnode(const Xstate& p, int axis) : x_s(p), left(nullptr), right(nullptr), axis(axis) {}
-};
+//     node(const Xstate& p, int axis) : x_s(p), left(nullptr), right(nullptr), axis(axis) {}
+// };
+
 
 struct AxisComparator 
 {
     explicit AxisComparator(int axis) : axis(axis) {}
 
-    bool operator()(const Xstate& a, const Xstate& b) const {
-        return (axis == 0) ? a[0] < b[0] :
-               (axis == 1) ? a[1] < b[1] :
-               (axis == 2) ? a[2] < b[2] :
-                            a[3] < b[3];
+    bool operator()(const node* a, const node* b) const {
+        return (axis == 0) ? a->reached_state[0] < b->reached_state[0] :
+               (axis == 1) ? a->reached_state[1] < b->reached_state[1] :
+               (axis == 2) ? a->reached_state[2] < b->reached_state[2] :
+                            a->reached_state[3] < b->reached_state[3];
     }
 
     int axis;
@@ -37,41 +39,61 @@ class KDTree
 public:
     KDTree() : root(nullptr) {}
 
-    void build(std::vector<Xstate>& Xstates) {
-        root = build(Xstates.begin(), Xstates.end(), 0);
-    }
-
-    Xstate nearest_neighbor(const Xstate& target) const {
+    node* nearest_neighbor(const Xstate& target) const 
+    {
         double min_distance = std::numeric_limits<double>::max();
-        Xstate nearest_Xstate = target;
+        node* nearest_Xstate;
         nearest_neighbor(root, target, min_distance, nearest_Xstate);
         return nearest_Xstate;
     }
-private:
-
-    KDnode* root;
-
-    using XstateIter = std::vector<Xstate>::iterator;
-
-    KDnode* build(XstateIter begin, XstateIter end, int depth) 
+    void Insert(node* q_new)
     {
-        if (begin == end) return nullptr;
-
-        size_t size = std::distance(begin, end);
-        int axis = depth % 4;
-
-        AxisComparator comp(axis);
-
-        std::nth_element(begin, begin + size / 2, end, comp);
-
-        auto mid = begin + size / 2;
-        KDnode* Knode = new KDnode(*mid, axis);
-        Knode->left = build(begin, mid, depth + 1);
-        Knode->right = build(mid + 1, end, depth + 1);
-
-        return Knode;
+        insert(root,q_new,0,nullptr);
     }
 
+    node* find(node* inc_q)
+    {
+        return find_recursive(root,inc_q,0);
+    }
+    ~KDTree()
+    {
+        // cleanup(root);
+        // root = nullptr;
+    }
+
+    bool is_empty() const 
+    {
+        return root == nullptr;
+    }
+    void Clear()
+    {
+
+        // cleanup(root);
+    }
+    void setNull()
+    {
+        root = nullptr;
+    }
+
+    node* getRoot()
+    {
+        return root;
+    }
+    
+    void removeRoot()
+    {
+        if(root != nullptr)
+        {
+            delete root;
+            root = nullptr;
+        }
+    }
+
+private:
+
+    node* root;
+
+    using XstateIter = std::vector<node*>::iterator;
 
     double squared_distance(const Xstate& a, const Xstate& b) const {
         double dx = a[0] - b[0];
@@ -81,34 +103,38 @@ private:
         return dx * dx + dy * dy + dz * dz + dw * dw;
     }
 
-    void nearest_neighbor(KDnode* Knode, const Xstate& target, double& min_distance, Xstate& nearest_Xstate) const 
+    void nearest_neighbor(node* Knode,const Xstate& target, double& min_distance, node*& nearest_Xstate) const 
     {
-        if (!Knode) return;
 
-        double distance = squared_distance(Knode->x_s, target);
-        if (distance < min_distance) {
+        if(Knode == nullptr) return;
+
+        double distance = squared_distance(Knode->getXstate(), target);
+
+        if (distance < min_distance) 
+        {
             min_distance = distance;
-            nearest_Xstate = Knode->x_s;
+            nearest_Xstate = Knode;
         }
 
         double axis_diff = 0;
         int axis = Knode->axis;
-        switch (axis) {
+        switch (axis) 
+        {
             case 0:
-                axis_diff = target[0] - Knode->x_s[0];
+                axis_diff = target[0] - Knode->reached_state[0];
                 break;
             case 1:
-                axis_diff = target[1] - Knode->x_s[1];
+                axis_diff = target[1] - Knode->reached_state[1];
                 break;
             case 2:
-                axis_diff = target[2] - Knode->x_s[2];
+                axis_diff = target[2] - Knode->reached_state[2];
                 break;
             case 3:
-                axis_diff = target[3] - Knode->x_s[3];
+                axis_diff = target[3] - Knode->reached_state[3];
                 break;
         }
-        KDnode* first_child = axis_diff <= 0 ? Knode->left : Knode->right;
-        KDnode* second_child = axis_diff <= 0 ? Knode->right : Knode->left;
+        node* first_child = axis_diff <= 0 ? Knode->left : Knode->right;
+        node* second_child = axis_diff <= 0 ? Knode->right : Knode->left;
 
         nearest_neighbor(first_child, target, min_distance, nearest_Xstate);
 
@@ -116,39 +142,72 @@ private:
             nearest_neighbor(second_child, target, min_distance, nearest_Xstate);
         }
     }
-};
 
-void insert(KDnode* Knode, const Xstate& Xstate, int depth) 
-{
-    if(Knode == nullptr)
+    void insert(node*& Knode, node* q_new, int depth,node* parent) const
     {
-        std::cout<<"Root is null" << std::endl;
-        return;
-    }
-    if (!Knode) {
-        return;
+        if (Knode == nullptr) 
+        {
+            Knode = q_new;
+            return;
+        }
+
+        int axis = depth % 4;
+        bool goLeft = false;
+        Xstate point = q_new->getXstate();
+
+        if (axis == 0) {
+            goLeft = point[0] < Knode->reached_state[0];
+        } else if (axis == 1) {
+            goLeft = point[1] < Knode->reached_state[1];
+        } else if (axis == 2) {
+            goLeft = point[2] < Knode->reached_state[2];
+        } else {
+            goLeft = point[3] < Knode->reached_state[3];
+        }
+
+        if (goLeft) {
+            insert(Knode->left, q_new, depth + 1,Knode);
+        } else {
+            insert(Knode->right, q_new, depth + 1,Knode);
+        }
     }
 
-    int axis = depth % 4;
-    bool goLeft = false;
+    void cleanup(node* node) 
+    {
+        if (node == nullptr) 
+        {
+            return;
+        }
 
-    if (axis == 0) {
-        goLeft = Xstate[0] < Knode->x_s[0];
-    } else if (axis == 1) {
-        goLeft = Xstate[1] < Knode->x_s[1];
-    } else if (axis == 2) {
-        goLeft = Xstate[2] < Knode->x_s[2];
-    } else {
-        goLeft = Xstate[3] < Knode->x_s[3];
+        // Recursively visit and delete left and right children
+        cleanup(node->left);
+        cleanup(node->right);
+
+        // Delete the current node
+        delete node;
     }
+    node* find_recursive(node* Knode,const node*inc_q, int depth) 
+    {
+        
+        if (Knode == nullptr) 
+        {
+            return nullptr;
+        }
 
-    KDnode*& nextKnode = goLeft ? Knode->left : Knode->right;
+        if (Knode == inc_q ) 
+        {
+            return Knode;
+        }
 
-    if (!nextKnode) {
-        nextKnode = new KDnode(Xstate, (depth + 1) % 4);
-    } else {
-        insert(nextKnode, Xstate, depth + 1);
+        int axis = depth % 4;
+        Xstate point = inc_q->getXstate();
+        printf("%d",axis);
+        bool goLeft = point[axis] < Knode->reached_state[axis];
+        node* nextNode = goLeft ? Knode->left: Knode->right;
+        node* foundNode = find_recursive(nextNode,inc_q,depth+1);
+
+        return foundNode;
     }
-}
+};
 
        

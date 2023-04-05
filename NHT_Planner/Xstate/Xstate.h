@@ -141,7 +141,7 @@ class Xstate : public state<double,4>
       this->state = incoming.state;
       return *this;
     }
-    bool operator==(const Xstate& incoming)
+    bool operator==(const Xstate& incoming) const
     {
       for(int i = 0 ; i < arr_size; ++i)
       {
