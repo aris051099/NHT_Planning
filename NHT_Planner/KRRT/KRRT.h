@@ -12,6 +12,24 @@
 #include <object.h>
 #include <KDtree.h>
 
+std::uniform_real_distribution<double> rand_t_prop(0.0,8);
+
+std::uniform_int_distribution<int> rand_u_vel(50,100);
+std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
+
+std::uniform_int_distribution<int> near_rand_u_vel(10,50);
+std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
+
+std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
+std::uniform_real_distribution<double> rand_x(0,70.0);
+std::uniform_real_distribution<double> rand_theta(-PI,PI);
+std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
+
+std::uniform_int_distribution<int> rand_map_coordsx(0,999);
+std::uniform_int_distribution<int> rand_map_coordsy(0,999);
+
+std::uniform_real_distribution<double> dist_prob(0.0,1);
+
 struct results
 {
 	double time; 
@@ -32,7 +50,7 @@ class KRRT
         int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
         int K = 100000;
         int n_scenarios = 5;
-        int n_trials = 10;
+        static const int n_trials = 10;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
         int start_y_coord_array[5] = {20,20,35,35,46};
@@ -66,6 +84,11 @@ class KRRT
         object path; 
         tether t; 
 
+        std::chrono::system_clock::rep seed;
+        std::default_random_engine gen;
+        
+        std::fstream myfile;
+
         inline int get_map_idx(double x,double y,int mode)
         {
             if(mode == 1)
@@ -76,6 +99,8 @@ class KRRT
             {
                 return  y*map_1.height + x;
             }
+
+            return 0;
         }
 
         double euclidean(Xstate& x_goal,const Xstate& x_near);
@@ -106,7 +131,12 @@ class KRRT
         bool one_shot_plan();
 
         void Render();
-        KRRT(){Initialize();};
+        KRRT()
+        {
+            Initialize();
+            seed = std::chrono::system_clock::now().time_since_epoch().count();
+            gen.seed(seed);  
+        };
         ~KRRT()
         {
             CleanUp(tree,Ktree);
@@ -123,6 +153,5 @@ class KRRT
         };
         bool def_start_pos(Xstate& inc_x);
         bool def_goal_pos(Xstate& inc_x);
-        bool save_Results(char* file_path);
 };
 

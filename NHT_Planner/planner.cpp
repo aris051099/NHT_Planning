@@ -27,18 +27,9 @@
 #include <ysglfontdata.h>
 #include <object.h>
 #include <KDtree.h>
+
 #include <KRTT.h>
 /* Input Arguments */
-#define	MAP_IN      prhs[0]
-#define	ARMSTART_IN	prhs[1]
-#define	ARMGOAL_IN     prhs[2]
-#define	PLANNER_ID_IN     prhs[3]
-
-/* Planner Ids */
-#define RRT         0
-#define RRTCONNECT  1
-#define RRTSTAR     2
-#define PRM         3
 
 /* Output Arguments */
 #define	PLAN_OUT	plhs[0]
@@ -64,8 +55,6 @@
 
 
 
-// auto seed = 12;
-//1234 12345 123456 1234567 12345678
 auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::default_random_engine gen(seed);
 
@@ -726,6 +715,8 @@ int main(int argc, char ** argv)
 
 	// CleanUp(tree,Ktree);
 	// plan.clear();
+
 	KRTT RTT;
+
 	return 0;
 }

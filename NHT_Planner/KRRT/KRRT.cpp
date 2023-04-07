@@ -54,7 +54,7 @@
     {
         return sqrt(pow(coord_f[0]-coord_b[0],2)+pow(coord_f[1]-coord_b[0],2));
     }
-    double KRRT::L2_norm(Xstate& x_s)
+    double KRRT::L2_norm(const Xstate& x_s)
     {
         double sum = 0;
         for(int i = 0; i < x_s.size(); ++i )
@@ -410,22 +410,32 @@
                 // std::cout<<"--------------------------------------"<<std::endl;
             }
 
+            myfile.open("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
+            myfile << "Configuration#" << trials << "\n";
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].time);
+                myfile << res[i].time << ",";
             }
             printf("\n");
+            myfile << "\n";
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].node_expansions);
+                myfile << res[i].node_expansions << ",";
             }
+            myfile <<"\n";
             printf("\n");
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].cost);
+                myfile << res[i].cost << ",";
             }
             printf("\n");
+            myfile <<"\n";
         }
+        myfile.close();
+        return true;
     }
     bool KRRT::one_shot_plan()
     {
@@ -459,8 +469,9 @@
         std::cout<<"Tree size:" << tree.size() << std::endl;
         std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
         std::cout<<"--------------------------------------"<<std::endl;
+        return true;
     }
-    void updte_pos_obj(const Xstate& inc_x);
+    void KRRT::updte_pos_obj(const Xstate& inc_x)
     {
         husky_robot.Move(inc_x[0],inc_x[1],inc_x[2]);
         path.Move(inc_x[0],inc_x[1],inc_x[2]);
@@ -506,6 +517,8 @@
 
         int idx = 0;
         double h = 0.01;
+        auto plan_size = plan.size();
+
         // bool end_path = false; 
         Xstate x_k(x_start);
         std::cout << "Rendering planner" << std::endl;
@@ -552,37 +565,5 @@
             ++idx; 
         }
     }
-    bool KRRT::save_results(char* file_path)
-    {
-        //Create Loop
-
-        // std::fstream myFile(file_path);
-        // myFile << "Configuration#" << trials << "\n";
-        // for(int i = 0; i < succ_trial; ++i)
-        // {
-        //     printf("%.4f,",res[i].time);
-        //     myFile << res[i].time << ",";
-        // }
-        // printf("\n");
-        // myFile << "\n";
-        // for(int i = 0; i < succ_trial; ++i)
-        // {
-        //     printf("%.4f,",res[i].node_expansions);
-        //     myFile << res[i].node_expansions << ",";
-        // }
-        // myFile <<"\n";
-        // printf("\n");
-        // for(int i = 0; i < succ_trial; ++i)
-        // {
-        //     printf("%.4f,",res[i].cost);
-        //     myFile << res[i].cost << ",";
-        // }
-        // printf("\n");
-        // myFile <<"\n";
-
-        myFile.close();
-    }
-
-
 
 #endif 
