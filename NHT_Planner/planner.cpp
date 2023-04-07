@@ -27,6 +27,7 @@
 #include <ysglfontdata.h>
 #include <object.h>
 #include <KDtree.h>
+#include <KRTT.h>
 /* Input Arguments */
 #define	MAP_IN      prhs[0]
 #define	ARMSTART_IN	prhs[1]
@@ -62,9 +63,10 @@
 #define LINKLENGTH_CELLS 10
 
 
-auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+
 // auto seed = 12;
 //1234 12345 123456 1234567 12345678
+auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::default_random_engine gen(seed);
 
 std::uniform_real_distribution<double> rand_t_prop(0.0,8);
@@ -137,7 +139,7 @@ double LQR_Cost(Xstate& x_k, Ustate& u_k)
 double calc_radius(std::vector<node*>& tree)
 {
 	double d = 3; 
-	double gamma = 150;
+	double gamma = 500;
 	double delta = (PI*PI)/2;
 	double V = tree.size();
 	return (gamma/delta)*pow((log(V)/V),1/d);
@@ -222,62 +224,7 @@ void getPlan(std::vector<node*>& plan,std::vector<node*>& tree)
 		plan.push_back(p);
 	}
 	reverse(plan.begin(),plan.end());
-	};
-
-bool small_uvel(double num)
-{
-	if(num > -0.1 && num < 0.1 )
-		return true;
-	else
-		return false;
-}
-
-bool small_uangvel(double num)
-{
-	if(num > -0.17 && num < 0.17 ) // 
-		return true;
-	else
-		return false;
-}
-
-bool small_control(Ustate& u)
-{
-	if(u[0] > -0.1 && u[0] < 0.1 )
-		if(u[1] > -0.17 && u[1] < 0.17)
-			if(u.get_tprop() > 2)
-				return true;
-			else
-				return false;
-		else
-			return false;
-	else
-		return false;
-
-}
-
-void polar2coord(double* coords,Xstate x)
-{
-	coords[0] = x[0]*cos(x[2]);
-	coords[1] = x[0]*sin(x[2]);
-}
-
-void meter2pixel(double* coords_meters)
-{
-	coords_meters[0] = std::round(coords_meters[0]/0.01);
-	coords_meters[1] = std::round(coords_meters[1]/0.01);
-}
-void print_pos(Xstate& x)
-{
-	double coords[2]={0,0};
-	polar2coord(coords,x); 
-	std::cout<< std::round(coords[0]/0.01) << "," << std::round(coords[1]/0.01) << std::endl;
-}
-
-void polar2meter(double* coords,double x,double theta)
-{
-	coords[0] = std::round((x*cos(theta))/0.01);
-	coords[1] = std::round((x*sin(theta))/0.01);
-}
+};
 
 double calc_angle(double xf,double yf,double xi,double yi)
 {	
@@ -354,19 +301,6 @@ void Add_Edge(node *q_min,node *q_near)
 	q_min->childs.emplace_back(q_near);
 	q_near->childs.emplace_back(q_min);
 }
-
-void Update_parent(node* q_new,node* q_near)
-{
-	for(auto q_n:q_near->childs)
-	{
-		if(q_n->getParent() == q_near)
-		{
-			q_n->setParent(q_new);
-		}
-	}
-}
-
-
 //-------------------------Below Added by AF----------------------------------------------------
 //-------------------------BELOW RRT Functions & Code ------------------------------------------------
 static void planner(map& map_1,
@@ -424,7 +358,7 @@ static void planner(map& map_1,
 		if(prob > 0.95) //Goal biasing by 5% 
 		{
 			x_rand = x_goal; //Assigning qrandom to be goal
-		} else if(prob > 0.90)
+		} else if(prob > 0.80)
 		{
 			Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
 			x_rand = x_r;
@@ -443,8 +377,8 @@ static void planner(map& map_1,
 		// {
 		// 	r = std::min(L2_norm(x_rand),calc_radius(tree));
 		// }
-		// int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
-		// auto q_start_time = std::chrono::system_clock::now();
+		int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
+		auto q_start_time = std::chrono::system_clock::now();
 
 		node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
 
@@ -522,293 +456,276 @@ struct results
 
 int main(int argc, char ** argv) 
 {
-	double* map_t = nullptr;
-	int block_width[2] = {15,15};
-	int coords[2] ={0,0};
-	int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-	int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
+	// double* map_t = nullptr;
+	// int block_width[2] = {15,15};
+	// int coords[2] ={0,0};
+	// int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
+	// int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
 
-	int start_x_coord_array[5] = {30,10,5,5,40};
-	int start_y_coord_array[5] = {20,20,35,35,46};
-	int goal_x_coord_array[5] = {7,30,40,48,45};
-	int goal_y_coord_array[5] = {46,46,15,50,10};
-	int x_size=0, y_size=0;
+	// int start_x_coord_array[5] = {30,10,5,5,40};
+	// int start_y_coord_array[5] = {20,20,35,35,46};
+	// int goal_x_coord_array[5] = {7,30,40,48,45};
+	// int goal_y_coord_array[5] = {46,46,15,50,10};
+	// int x_size=0, y_size=0;
 
-	map map_1;
+	// map map_1;
 
-	std::vector<node*> plan; 
-	std::vector<node*> tree;
+	// std::vector<node*> plan; 
+	// std::vector<node*> tree;
 
-	KDTree Ktree;
+	// KDTree Ktree;
 
-	std::ofstream myFile("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
+	// std::ofstream myFile("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
 
-	Ustate u_start(0,0);
-	Xstate x_start(coords_start[0],coords_start[1],calc_angle(coords_goal,coords_start),0);
-	Xstate x_goal(coords_goal[0],coords_goal[1],PI/2,0);
+	// Ustate u_start(0,0);
+	// Xstate x_start(coords_start[0],coords_start[1],calc_angle(coords_goal,coords_start),0);
+	// Xstate x_goal(coords_goal[0],coords_goal[1],PI/2,0);
 
-	object husky_robot;
-	object start_pos;
- 	object goal_pos;
-	object path; 
-	tether t; 
+	// object husky_robot;
+	// object start_pos;
+ 	// object goal_pos;
+	// object path; 
+	// tether t; 
 
-	map_1.loadMap(argv[1]);
-	map_1.calc_collision_set();
+	// map_1.loadMap(argv[1]);
+	// map_1.calc_collision_set();
 
-	int start_idx = GETMAPINDEX_LL0(coords_start[0],coords_start[1],map_1.width,map_1.height);
-	int goal_idx = GETMAPINDEX_LL0(coords_goal[0],coords_goal[1],map_1.width,map_1.height);
+	// int start_idx = GETMAPINDEX_LL0(coords_start[0],coords_start[1],map_1.width,map_1.height);
+	// int goal_idx = GETMAPINDEX_LL0(coords_goal[0],coords_goal[1],map_1.width,map_1.height);
 
-	if(map_1.map_ptr[start_idx] == 1)
-	{
-		printf("Invalid start location\n");
-		return 0;
-	}
-	else if(map_1.map_ptr[goal_idx] == 1)
-	{
-		printf("Invalid Goal location \n");
-		return 0;
-	}
-	
-	for(int trials = 0; trials < 5; trials++)
-	{
-		results res[10];
-		bool too_long = false;
-		bool reset_planner = false; 
-		int n_tries = 0;
-		int succ_trial = 0;
-		int s_x_c = start_x_coord_array[trials];
-		int s_y_c = start_y_coord_array[trials];
-		coords_start[0] = s_x_c;
-		coords_start[1] = s_y_c; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-		int g_x_c = goal_x_coord_array[trials];
-		int g_y_c = goal_y_coord_array[trials];
-		coords_goal[0] = g_x_c;
-		coords_goal[1] = g_y_c;
-		x_start[0] = s_x_c;
-		x_start[1] = s_y_c;
-		x_start[2] = calc_angle(coords_goal,coords_start);
-		x_goal[0] = g_x_c;
-		x_goal[1] = g_y_c;
-		printf("Start Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_start[0],x_start[1],x_start[2]);
-		printf("Goal Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_goal[0],x_goal[1],x_goal[2]);
-		while(succ_trial < 10)
-		{
-			auto start_time = std::chrono::system_clock::now();
-			while(!too_long)
-			{
-
-				if(!tree.empty())
-				{
-					CleanUp(tree,Ktree);
-				}
-				
-				if(!plan.empty())
-				{
-					plan.clear();
-				}
-				// if(!Ktree.is_empty())
-				// {
-				// 	// printf("KDTree empty\n");
-				// 	Ktree.Clear();
-				// }
-				planner(map_1,x_start,u_start,x_goal,plan,tree,Ktree,reset_planner);
-				if(reset_planner)
-				{
-					n_tries++;
-					printf("Number of tries: %d \n", n_tries);
-				}
-				else
-				{
-					too_long = true;
-				}
-				if(n_tries >=15)
-				{
-					too_long = true;
-				}
-			}	
-			n_tries = 0;
-			too_long = false;
-			auto end_time = std::chrono::system_clock::now();
-			auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-			auto time_passed = time_delay.count()*1e-9;
-			res[succ_trial].time = time_passed;
-			res[succ_trial].cost = plan.back()->g;
-			res[succ_trial].node_expansions = tree.size();
-			++succ_trial;
-			// std::cout<<"--------------- RESULTS---------------"<<std::endl;
-			// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-			// std::cout<<"Tree size:" << tree.size() << std::endl;
-			// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-			// std::cout<<"--------------------------------------"<<std::endl;
-		}
-
-		myFile << "Configuration#" << trials << "\n";
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f,",res[i].time);
-			myFile << res[i].time << ",";
-		}
-		printf("\n");
-		myFile << "\n";
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f,",res[i].node_expansions);
-			myFile << res[i].node_expansions << ",";
-		}
-		myFile <<"\n";
-		printf("\n");
-		for(int i = 0; i < succ_trial; ++i)
-		{
-			printf("%.4f,",res[i].cost);
-			myFile << res[i].cost << ",";
-		}
-		printf("\n");
-		myFile <<"\n";
-	}
-	myFile.close();
-	// bool too_long = false; 
-	// bool reset_planner = false;  	
-	// int n_tries = 0;
-	// auto start_time = std::chrono::system_clock::now();
-	// while(!too_long)
+	// if(map_1.map_ptr[start_idx] == 1)
 	// {
-	// 	planner(map_1,x_start,u_start,x_goal,plan,tree,Ktree,reset_planner);
-	// 	if(reset_planner)
-	// 	{
-	// 		n_tries++;
-	// 		printf("Number of tries: %d \n", n_tries);
-	// 	}
-	// 	else
-	// 	{
-	// 		too_long = true;
-	// 	}
-	// 	if(n_tries >=15)
-	// 	{
-	// 		too_long = true;
-	// 	}
-	// }	
-	// too_long = false;
-	// auto end_time = std::chrono::system_clock::now();
-	// auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-	// auto time_passed = time_delay.count()*1e-9;
-	// std::cout<<"--------------- RESULTS---------------"<<std::endl;
-	// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-	// std::cout<<"Tree size:" << tree.size() << std::endl;
-	// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-	// std::cout<<"--------------------------------------"<<std::endl;
-
- 	auto plan_size = plan.size();
-	if(plan_size <= 1)
-	{
-		return 1;
-	}
-
- 	start_pos.setDim(block_width[0],block_width[1]);
-	start_pos.setColor(255,0,0);
-	start_pos.Move(coords_start[0],coords_start[1],0);
-
-	goal_pos.setDim(block_width[0],block_width[1]);
-	goal_pos.setColor(255,0,0);
-	goal_pos.Move(coords_goal[0],coords_goal[1],0);
-
-	husky_robot.setDim(20,15);
-	husky_robot.setColor(255,240,10);
-	husky_robot.Move(coords_start[0],coords_start[1],0);
-
-	path.setDim(1,1);
-	path.setColor(0,140,255);
-	path.Move(coords_start[0],coords_start[1],0);
-
-	t.set_anchor(coords_start[0] + 5,coords_start[1]);
-	t.setDim(block_width[0],block_width[1]);
-	t.setColor(0,0,0);
+	// 	printf("Invalid start location\n");
+	// 	return 0;
+	// }
+	// else if(map_1.map_ptr[goal_idx] == 1)
+	// {
+	// 	printf("Invalid Goal location \n");
+	// 	return 0;
+	// }
 	
-	int idx = 0;
-	int w_width = 1000;
-	int w_height =1000;
-	// bool end_path = false; 
-	double h = 0.01;
-	Xstate x_k(x_start);
-	Xstate x_prop;
- 	std::cout << "Rendering planner" << std::endl;
-	FsOpenWindow(0,0,w_width,w_height,1);
-		for(;;)
-		{
-			FsPollDevice();
-			if(FSKEY_ESC==FsInkey())
-			{
-				break;
-			}
-			if(idx >= plan_size)
- 			{	
-				idx = 0;
-				x_k = plan[0]->getXstate(); 
-				husky_robot.Move(coords_start[0],coords_start[1],0);
-			}	
+	// for(int trials = 0; trials < 5; trials++)
+	// {
+	// 	results res[10];
+	// 	bool too_long = false;
+	// 	bool reset_planner = false; 
+	// 	int n_tries = 0;
+	// 	int succ_trial = 0;
+	// 	int s_x_c = start_x_coord_array[trials];
+	// 	int s_y_c = start_y_coord_array[trials];
+	// 	coords_start[0] = s_x_c;
+	// 	coords_start[1] = s_y_c; //30,20 ; 10,20; 5,35; 40,46;(x,y)
+	// 	int g_x_c = goal_x_coord_array[trials];
+	// 	int g_y_c = goal_y_coord_array[trials];
+	// 	coords_goal[0] = g_x_c;
+	// 	coords_goal[1] = g_y_c;
+	// 	x_start[0] = s_x_c;
+	// 	x_start[1] = s_y_c;
+	// 	x_start[2] = calc_angle(coords_goal,coords_start);
+	// 	x_goal[0] = g_x_c;
+	// 	x_goal[1] = g_y_c;
+	// 	printf("Start Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_start[0],x_start[1],x_start[2]);
+	// 	printf("Goal Coord(x,y,theta) = %.2f,%.2f,%.2f \n",x_goal[0],x_goal[1],x_goal[2]);
+	// 	while(succ_trial < 10)
+	// 	{
+	// 		auto start_time = std::chrono::system_clock::now();
+	// 		while(!too_long)
+	// 		{
 
-			Ustate u_k = plan[idx]->getUstate();
-
-			double prop_time = u_k.get_tprop();
-			// // Xstate x_prop(plan[idx]->getXstate());
-			Xstate x_planned(plan[idx]->getXstate());
-			Xstate x_prop;
-			// husky_robot.Move(map_1.block_x*std::round(x_prop[0]),map_1.block_y*(map_1.height-std::round(x_prop[1])),x_prop[2]);
-
-			// //Rendering
-
-			// glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			// glLoadIdentity();
-
-			// map_1.renderMap();
-
-			// start_pos.Draw_object();
-			// start_pos.Draw_coords();
-			
-			// goal_pos.Draw_object();
-			// goal_pos.Draw_coords();
-
-			// husky_robot.Draw_object_Angle();
-
-			// FsSwapBuffers();
-			// FsSleep(250);
-
-			for(int i = 0; i < sec2msec(prop_time) ; ++i)
-			{
-				x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-				x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-				x_prop[2] = x_k[2] + u_k[1]*h;
-				x_prop[3] = 0;
-
-				x_k = x_prop;
-
-				husky_robot.Move(x_k[0],x_k[1],x_k[2]);
-				path.Move(x_k[0],x_k[1],x_k[2]);
-				t.Move(x_k[0],x_k[1],x_k[2]);
-				//Rendering
-
-				// glViewport(0,0,wid,hei);
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-				map_1.renderMap();
-
-				start_pos.Draw_object();
-				start_pos.Draw_coords();
+	// 			if(!tree.empty())
+	// 			{
+	// 				CleanUp(tree,Ktree);
+	// 			}
 				
-				goal_pos.Draw_object();
-				goal_pos.Draw_coords();
+	// 			if(!plan.empty())
+	// 			{
+	// 				plan.clear();
+	// 			}
+	// 			// if(!Ktree.is_empty())
+	// 			// {
+	// 			// 	// printf("KDTree empty\n");
+	// 			// 	Ktree.Clear();
+	// 			// }
+	// 			planner(map_1,x_start,u_start,x_goal,plan,tree,Ktree,reset_planner);
+	// 			if(reset_planner)
+	// 			{
+	// 				n_tries++;
+	// 				printf("Number of tries: %d \n", n_tries);
+	// 			}
+	// 			else
+	// 			{
+	// 				too_long = true;
+	// 			}
+	// 			if(n_tries >=15)
+	// 			{
+	// 				too_long = true;
+	// 			}
+	// 		}	
+	// 		n_tries = 0;
+	// 		too_long = false;
+	// 		auto end_time = std::chrono::system_clock::now();
+	// 		auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	// 		auto time_passed = time_delay.count()*1e-9;
+	// 		res[succ_trial].time = time_passed;
+	// 		res[succ_trial].cost = plan.back()->g;
+	// 		res[succ_trial].node_expansions = tree.size();
+	// 		++succ_trial;
+	// 		// std::cout<<"--------------- RESULTS---------------"<<std::endl;
+	// 		// std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	// 		// std::cout<<"Tree size:" << tree.size() << std::endl;
+	// 		// std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+	// 		// std::cout<<"--------------------------------------"<<std::endl;
+	// 	}
 
-				husky_robot.Draw_object_Angle();
+	// 	myFile << "Configuration#" << trials << "\n";
+	// 	for(int i = 0; i < succ_trial; ++i)
+	// 	{
+	// 		printf("%.4f,",res[i].time);
+	// 		myFile << res[i].time << ",";
+	// 	}
+	// 	printf("\n");
+	// 	myFile << "\n";
+	// 	for(int i = 0; i < succ_trial; ++i)
+	// 	{
+	// 		printf("%.4f,",res[i].node_expansions);
+	// 		myFile << res[i].node_expansions << ",";
+	// 	}
+	// 	myFile <<"\n";
+	// 	printf("\n");
+	// 	for(int i = 0; i < succ_trial; ++i)
+	// 	{
+	// 		printf("%.4f,",res[i].cost);
+	// 		myFile << res[i].cost << ",";
+	// 	}
+	// 	printf("\n");
+	// 	myFile <<"\n";
+	// }
+	// myFile.close();
 
-				path.Draw_Path();
-				t.Draw_tether();
+	// // bool too_long = false; 
+	// // bool reset_planner = false;  	
+	// // int n_tries = 0;
+	// // auto start_time = std::chrono::system_clock::now();
+	// // while(!too_long)
+	// // {
+	// // 	planner(map_1,x_start,u_start,x_goal,plan,tree,Ktree,reset_planner);
+	// // 	if(reset_planner)
+	// // 	{
+	// // 		n_tries++;
+	// // 		printf("Number of tries: %d \n", n_tries);
+	// // 	}
+	// // 	else
+	// // 	{
+	// // 		too_long = true;
+	// // 	}
+	// // 	if(n_tries >=15)
+	// // 	{
+	// // 		too_long = true;
+	// // 	}
+	// // }	
+	// // too_long = false;
+	// // auto end_time = std::chrono::system_clock::now();
+	// // auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+	// // auto time_passed = time_delay.count()*1e-9;
+	// // std::cout<<"--------------- RESULTS---------------"<<std::endl;
+	// // std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+	// // std::cout<<"Tree size:" << tree.size() << std::endl;
+	// // std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+	// // std::cout<<"--------------------------------------"<<std::endl;
 
-				FsSwapBuffers();
-				// FsSleep(1);
-			}
-			++idx; 
-		}
 
-	CleanUp(tree,Ktree);
-	plan.clear();
+ 	// auto plan_size = plan.size();
+	// if(plan_size <= 1)
+	// {
+	// 	return 1;
+	// }
+
+ 	// start_pos.setDim(block_width[0],block_width[1]);
+	// start_pos.setColor(255,0,0);
+	// start_pos.Move(coords_start[0],coords_start[1],0);
+
+	// goal_pos.setDim(block_width[0],block_width[1]);
+	// goal_pos.setColor(255,0,0);
+	// goal_pos.Move(coords_goal[0],coords_goal[1],0);
+
+	// husky_robot.setDim(20,15);
+	// husky_robot.setColor(255,240,10);
+	// husky_robot.Move(coords_start[0],coords_start[1],0);
+
+	// path.setDim(1,1);
+	// path.setColor(0,140,255);
+	// path.Move(coords_start[0],coords_start[1],0);
+
+	// t.set_anchor(coords_start[0] + 5,coords_start[1]);
+	// t.setDim(block_width[0],block_width[1]);
+	// t.setColor(0,0,0);
+	
+	// int idx = 0;
+	// int w_width = 1000;
+	// int w_height =1000;
+	// double h = 0.01;
+	// // bool end_path = false; 
+	// Xstate x_k(x_start);
+	// Xstate x_prop;
+ 	// std::cout << "Rendering planner" << std::endl;
+	// FsOpenWindow(0,0,w_width,w_height,1);
+	// 	for(;;)
+	// 	{
+	// 		FsPollDevice();
+	// 		if(FSKEY_ESC==FsInkey())
+	// 		{
+	// 			break;
+	// 		}
+	// 		if(idx >= plan_size)
+ 	// 		{	
+	// 			idx = 0;
+	// 			x_k = plan[0]->getXstate(); 
+	// 			husky_robot.Move(coords_start[0],coords_start[1],0);
+	// 		}	
+
+	// 		Ustate u_k = plan[idx]->getUstate();
+
+	// 		double prop_time = u_k.get_tprop();
+	// 		// // Xstate x_prop(plan[idx]->getXstate());
+	// 		Xstate x_planned(plan[idx]->getXstate());
+	// 		Xstate x_prop;
+	// 		for(int i = 0; i < sec2msec(prop_time) ; ++i)
+	// 		{
+	// 			x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+	// 			x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+	// 			x_prop[2] = x_k[2] + u_k[1]*h;
+	// 			x_prop[3] = 0;
+
+	// 			x_k = x_prop;
+
+	// 			husky_robot.Move(x_k[0],x_k[1],x_k[2]);
+	// 			path.Move(x_k[0],x_k[1],x_k[2]);
+	// 			t.Move(x_k[0],x_k[1],x_k[2]);
+	// 			//Rendering
+
+	// 			// glViewport(0,0,wid,hei);
+	// 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	// 			map_1.renderMap();
+
+	// 			start_pos.Draw_object();
+	// 			start_pos.Draw_coords();
+				
+	// 			goal_pos.Draw_object();
+	// 			goal_pos.Draw_coords();
+
+	// 			husky_robot.Draw_object_Angle();
+
+	// 			path.Draw_Path();
+	// 			t.Draw_tether();
+
+	// 			FsSwapBuffers();
+	// 			// FsSleep(1);
+	// 		}
+	// 		++idx; 
+	// 	}
+
+	// CleanUp(tree,Ktree);
+	// plan.clear();
+	KRTT RTT;
 	return 0;
 }

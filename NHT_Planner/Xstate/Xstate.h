@@ -67,7 +67,12 @@ class Ustate : public state<double,2>
       }
       return false;
     }
-    
+    void setState(double u1, double u2, double inc_t)
+    {
+        state_elem[0] = u1;
+        state_elem[1] = u2;
+        this->t_prop = inc_t;
+    }
 };
 
 Ustate::Ustate()
@@ -185,6 +190,25 @@ class Xstate : public state<double,4>
       state_elem[1] = k*state_elem[1];
       state_elem[2] = k*state_elem[2];
       state_elem[3] = k*state_elem[3];
+    }
+    void setState(double x1, double x2, double x3, double x4)
+    {
+        state_elem[0] = x1;
+        state_elem[1] = x2;
+        state_elem[2] = x3;
+        state_elem[3] = x4;
+    }
+    void setState(const Xstate& inc)
+    {
+        state_elem[0] = inc[0];
+        state_elem[1] = inc[1];
+        state_elem[2] = inc[2];
+        state_elem[3] = inc[3];
+
+        map_coords[0] = inc.map_coords[0];
+        map_coords[1] = inc.map_coords[1];
+
+        this->state = inc.state;
     }
 };
 

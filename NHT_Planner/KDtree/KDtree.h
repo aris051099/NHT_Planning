@@ -110,7 +110,7 @@ private:
 
         double distance = squared_distance(Knode->getXstate(), target);
 
-        if (distance <= r && distance < min_distance)
+        if (distance < min_distance && distance <= r)
         {
                 min_distance = distance;
                 nearest_Xstate = Knode;
