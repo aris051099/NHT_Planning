@@ -51,11 +51,16 @@ Xstate propagate_one_step(const KRRT& RRT)
 }
 int main(int argc, char ** argv) 
 {
+    KRRT RRT;
+
+    RRT.LoadMap(argv[1]);
 	if(RRT.one_shot_plan())
 	{
         std::cout << "Rendering planner" << std::endl;
 
-        // FsOpenWindow(0,0,w_width,w_height,1);
+        RRT.set_objects();
+
+        FsOpenWindow(0,0,1000,1000,1);
         for(;;)
         {
             FsPollDevice();
