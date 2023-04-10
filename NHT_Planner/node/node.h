@@ -26,45 +26,13 @@ class node
 			reached_state = X_inc;
 			u_control = inc_u_control;
 		}
-		void setParent(node* incoming)
-		{
-			parent = incoming; 
-		}
-		node *getParent()
-		{
-			return parent;
-		}
-		const Xstate& getXstate() const
-		{
-			return reached_state;
-		}
-		Ustate& getUstate()
-		{
-			return u_control;
-		}
-		void setXstate(Xstate& x)
-		{
-			reached_state = x;
-		}
-		void setUstate(Ustate& u)
-		{
-			u_control = u;
-		}
-		void calc_f(double inc_g, double inc_h)
-		{
-			this->g = inc_g;
-			this->h = inc_h;
-			this->f = inc_g + inc_h;
-		}
-		void calc_f()
-		{
-			this->f = this->g + this-> h;
-		}
-		void update(node* parent,Xstate new_x,Ustate new_u,double new_g)
-		{
-			this->setParent(parent);
-			this->reached_state = new_x;
-			this->u_control = new_u;
-			this->g = new_g;
-		}
+		void setParent(node* incoming);
+		node *getParent();
+		const Xstate& getXstate() const;
+		Ustate& getUstate();
+		void setXstate(Xstate& x);
+		void setUstate(Ustate& u);
+		void calc_f(double inc_g, double inc_h);
+		void calc_f();
+		void update(node* parent,Xstate new_x,Ustate new_u,double new_g);
 };

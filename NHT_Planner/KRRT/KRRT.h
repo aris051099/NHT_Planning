@@ -12,24 +12,6 @@
 #include <object.h>
 #include <KDtree.h>
 
-std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-
-std::uniform_int_distribution<int> rand_u_vel(50,100);
-std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
-
-std::uniform_int_distribution<int> near_rand_u_vel(10,50);
-std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
-
-std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-std::uniform_real_distribution<double> rand_x(0,70.0);
-std::uniform_real_distribution<double> rand_theta(-PI,PI);
-std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
-
-std::uniform_int_distribution<int> rand_map_coordsx(0,999);
-std::uniform_int_distribution<int> rand_map_coordsy(0,999);
-
-std::uniform_real_distribution<double> dist_prob(0.0,1);
-
 struct results
 {
 	double time; 
@@ -51,11 +33,13 @@ class KRRT
         int K = 100000;
         int n_scenarios = 5;
         static const int n_trials = 10;
+        int idx = 0;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
         int start_y_coord_array[5] = {20,20,35,35,46};
         int goal_x_coord_array[5] = {7,30,40,48,45};
         int goal_y_coord_array[5] = {46,46,15,50,10};
+        int block_width[2] = {15,15};
 
         int x_size=0, y_size=0;
         int idx = 0;
@@ -75,6 +59,7 @@ class KRRT
         Xstate x_goal;
         Xstate x_planned;
         Xstate x_prop;
+        Xstate x_p;
 
         KDTree Ktree;
 
@@ -122,9 +107,9 @@ class KRRT
         void Add_Edge(node *q_min,node *q_near);
         void updte_pos_obj(const Xstate& inc_x);
         void draw_obj();
-
         bool planner();
         void Initialize();
+        int getPlanSize();
     public:
         
         bool plan_trials();
@@ -142,9 +127,9 @@ class KRRT
             CleanUp(tree,Ktree);
 	        plan.clear();
         }
-        void LoadMap(char* arg1)
+        void LoadMap(std::string filepath)
         {
-            map_1.loadMap(arg1);
+            map_1.loadMap(filepath);
             map_1.calc_collision_set();
         }
         inline void saveResults(char* file_path)
@@ -153,5 +138,7 @@ class KRRT
         };
         bool def_start_pos(Xstate& inc_x);
         bool def_goal_pos(Xstate& inc_x);
+        void set_objects();
+        bool ResetPos();
 };
 

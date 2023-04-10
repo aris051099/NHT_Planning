@@ -1,11 +1,99 @@
 #ifndef KiRTT    
     #define KiRTT
     #include "KRRT.h"
+
+    int sec2msec(double sec)
+    {
+    return sec*100;
+    }
+
+    bool check_collision(Xstate x_prop, double *map, int x_size,int y_size) 
+    {
+    auto c_x = x_prop[0];
+    auto c_y = x_prop[1];
+    // double coords[2] = {std::round((x_prop[0]*cos(x_prop[3]))/0.01),std::round((x_prop[0]*sin(x_prop[3]))/0.01)};
+    if(c_x> 0.0 && c_x < 1.0*x_size && c_y > 0.0 && c_y < 1.0*y_size)
+    {
+        // c_y = 50.0 - c_y;
+        // int map_idx = (50.0-std::round(c_y))*x_size + std::round(c_x);
+        int map_idx = (y_size-std::round(c_y)-1)*x_size + std::round(c_x);
+        if(map[map_idx] == 1.0 )
+        {
+        return false;
+        }
+        else
+        {
+        return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+    }
+
+    Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
+    {
+    /*
+        The present function propagate the dynamics based on a specific input. In addition,
+        a collision checking method is included. Based on a map, make sure it does not get out of bounds
+        However I need to include, the absolute displacement + relative displacement. 
+        
+        After propagating one step, we calculate the (x,y) coordinate and make sure the cell is not 1;
+        NOTES: This will also depend on the resolution of the map and the resolution for rendering. Be aware
+        Husky width = 990 mm = 0.990 m; Huksy height = 670 mm = 0.67 m
+    */
+        Xstate x_prop(i_x_k); 
+        Xstate x_k(i_x_k);
+        double h = 0.01; // Step_time 
+        double prop_time = u_k.get_tprop();
+        // if(x_k[2] < 0)
+        // {
+        //   x_k[2] = 2*PI - x_k[2];
+        // }
+        for(int i = 0; i < sec2msec(prop_time) ; ++i)
+        {
+            x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+            x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+            x_prop[2] = x_k[2] + u_k[1]*h;
+            x_prop[3] = 0;
+
+            if(check_collision(x_prop,map,x_size,y_size))
+            {
+            x_k = x_prop;
+            }
+            else
+            {
+            x_k.state = 2; //Trapped 
+            u_k.set_tprop(i/100.0);
+            return x_k;
+            }
+        }
+        x_prop.state = 1;
+        return x_prop; 
+    }
+    std::uniform_real_distribution<double> rand_t_prop(0.0,8);
+    std::uniform_int_distribution<int> rand_u_vel(50,100);
+    std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
+
+    std::uniform_int_distribution<int> near_rand_u_vel(10,50);
+    std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
+
+    std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
+    std::uniform_real_distribution<double> rand_x(0,70.0);
+    std::uniform_real_distribution<double> rand_theta(-PI,PI);
+    std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
+
+    std::uniform_int_distribution<int> rand_map_coordsx(0,999);
+    std::uniform_int_distribution<int> rand_map_coordsy(0,999);
+
+    std::uniform_real_distribution<double> dist_prob(0.0,1);
     void KRRT::Initialize()
     {
         u_start.setState(0,0,0);
         x_start.setState(coords_start[0],coords_start[1],calc_angle(coords_goal,coords_start),0);
         x_goal.setState(coords_goal[0],coords_goal[1],c_pi/2,0);
+        x_p = x_start;
     };
     bool KRRT::def_start_pos(Xstate& inc_x)
     {
@@ -492,37 +580,17 @@
         path.Draw_Path();
         t.Draw_tether();
     }
+    int KRRT::getPlanSize()
+    {
+        return plan.size();
+    }
     void KRRT::Render()
     {
-        int block_width[2] = {15,15};
-        start_pos.setDim(block_width[0],block_width[1]);
-        start_pos.setColor(255,0,0);
-        start_pos.Move(coords_start[0],coords_start[1],0);
-
-        goal_pos.setDim(block_width[0],block_width[1]);
-        goal_pos.setColor(255,0,0);
-        goal_pos.Move(coords_goal[0],coords_goal[1],0);
-
-        husky_robot.setDim(20,15);
-        husky_robot.setColor(255,240,10);
-        husky_robot.Move(coords_start[0],coords_start[1],0);
-
-        path.setDim(1,1);
-        path.setColor(0,140,255);
-        path.Move(coords_start[0],coords_start[1],0);
-
-        t.set_anchor(coords_start[0] + 5,coords_start[1]);
-        t.setDim(block_width[0],block_width[1]);
-        t.setColor(0,0,0);   
-
         int idx = 0;
-        double h = 0.01;
-        auto plan_size = plan.size();
-
         // bool end_path = false; 
         Xstate x_k(x_start);
         std::cout << "Rendering planner" << std::endl;
-        FsOpenWindow(0,0,w_width,w_height,1);
+        // FsOpenWindow(0,0,w_width,w_height,1);
         for(;;)
         {
             FsPollDevice();
@@ -530,7 +598,7 @@
             {
                 break;
             }
-            if(idx >= plan_size)
+            if(idx >= getPlanSize())
             {	
                 idx = 0;
                 x_k = plan[0]->getXstate(); 
@@ -553,9 +621,27 @@
                 x_k = x_prop;
 
                 //Rendering
-                updte_pos_obj(x_k);
 
-                draw_obj();
+                // updte_pos_obj(x_k);
+
+                husky_robot.Move(x_prop[0],x_prop[1],x_prop[2]);
+                path.Move(x_prop[0],x_prop[1],x_prop[2]);
+                t.Move(x_prop[0],x_prop[1],x_prop[2]);
+
+                // draw_obj();
+
+                map_1.renderMap();
+
+                start_pos.Draw_object();
+                start_pos.Draw_coords();
+                
+                goal_pos.Draw_object();
+                goal_pos.Draw_coords();
+
+                husky_robot.Draw_object_Angle();
+
+                path.Draw_Path();
+                t.Draw_tether();
                 
                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
                 
@@ -564,6 +650,38 @@
             }
             ++idx; 
         }
+    }
+    void KRRT::set_objects()
+    {
+        start_pos.setDim(block_width[0],block_width[1]);
+        start_pos.setColor(255,0,0);
+        start_pos.Move(coords_start[0],coords_start[1],0);
+
+        goal_pos.setDim(block_width[0],block_width[1]);
+        goal_pos.setColor(255,0,0);
+        goal_pos.Move(coords_goal[0],coords_goal[1],0);
+
+        husky_robot.setDim(20,15);
+        husky_robot.setColor(255,240,10);
+        husky_robot.Move(coords_start[0],coords_start[1],0);
+
+        path.setDim(1,1);
+        path.setColor(0,140,255);
+        path.Move(coords_start[0],coords_start[1],0);
+
+        t.set_anchor(coords_start[0] + 5,coords_start[1]);
+        t.setDim(block_width[0],block_width[1]);
+        t.setColor(0,0,0);   
+    }
+
+    bool KRRT::ResetPos()
+    {
+        if(idx >= getPlanSize())
+            {	
+                idx = 0;
+                x_p = plan[0]->getXstate(); 
+                husky_robot.Move(coords_start[0],coords_start[1],0);
+            }	
     }
 
 #endif 
