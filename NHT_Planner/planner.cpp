@@ -37,75 +37,67 @@
  * Programs that do not will automatically get a 0.
  * */
 
-// int main(int argc, char ** argv) 
-// {
-// 	KRRT RRT;
-// 	RRT.LoadMap(argv[1]);
+Xstate propagate_one_step(const KRRT& RRT)
+{
+	Xstate x_prop;
+	Xstate x_k(RRT.x_p);
+	Ustate u_k(RRT.u_k);
+	double h = RRT.h;
+	x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+	x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+	x_prop[2] = x_k[2] + u_k[1]*h;
+	x_prop[3] = 0;
+	return x_prop;
+}
+int main(int argc, char ** argv) 
+{
+	KRRT RRT;
+	RRT.LoadMap(argv[1]);
 
-// 	if(RRT.one_shot_plan())
-// 	{
-// 		RRT.set_objects();
+	if(RRT.one_shot_plan())
+	{
+		RRT.set_objects();
 
-// 		FsOpenWindow(0,0,1000,1000,1);
+		FsOpenWindow(0,0,1000,1000,1);
 
-//         std::cout << "Rendering planner" << std::endl;
+        std::cout << "Rendering planner" << std::endl;
 
-//         // FsOpenWindow(0,0,w_width,w_height,1);
-//         for(;;)
-//         {
-//             FsPollDevice();
-//             if(FSKEY_ESC==FsInkey())
-//             {
-//                 break;
-//             }
+        // FsOpenWindow(0,0,w_width,w_height,1);
+        for(;;)
+        {
+            FsPollDevice();
+            if(FSKEY_ESC==FsInkey())
+            {
+                break;
+            }
 
-// 			RRT.ResetPos();
+			RRT.ResetPos();
 			
-//             u_k = plan[idx]->getUstate();
+            RRT.u_k = RRT.plan[RRT.idx]->getUstate();
 
-//             double prop_time = u_k.get_tprop();
-//             // // Xstate x_prop(plan[idx]->getXstate());
-//             // x_planned = plan[idx]->getXstate();
-//             Xstate x_prop;
-//             for(int i = 0; i < sec2msec(prop_time) ; ++i)
-//             {
-//                 x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-//                 x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-//                 x_prop[2] = x_k[2] + u_k[1]*h;
-//                 x_prop[3] = 0;
+            double prop_time = RRT.u_k.get_tprop();
 
-//                 x_k = x_prop;
+            Xstate x_prop;
+            for(int i = 0; i < prop_time*100 ; ++i)
+            {
+               
+				x_prop = propagate_one_step(RRT);
 
-//                 //Rendering
+                RRT.x_p = x_prop;
 
-//                 // updte_pos_obj(x_k);
+                //Rendering
 
-//                 husky_robot.Move(x_prop[0],x_prop[1],x_prop[2]);
-//                 path.Move(x_prop[0],x_prop[1],x_prop[2]);
-//                 t.Move(x_prop[0],x_prop[1],x_prop[2]);
+                glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-//                 // draw_obj();
-
-//                 map_1.renderMap();
-
-//                 start_pos.Draw_object();
-//                 start_pos.Draw_coords();
+				RRT.updte_pos_obj(x_prop);
                 
-//                 goal_pos.Draw_object();
-//                 goal_pos.Draw_coords();
+                RRT.draw_obj();
 
-//                 husky_robot.Draw_object_Angle();
-
-//                 path.Draw_Path();
-//                 t.Draw_tether();
-                
-//                 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-                
-//                 FsSwapBuffers();
-//                 // FsSleep(1);
-//             }
-//             ++idx; 
-//         }
-// 	}
-// 	return 0;
-// }
+                FsSwapBuffers();
+                // FsSleep(1);
+            }
+            ++RRT.idx; 
+        }
+	}
+	return 0;
+}

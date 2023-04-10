@@ -681,7 +681,9 @@
                 idx = 0;
                 x_p = plan[0]->getXstate(); 
                 husky_robot.Move(coords_start[0],coords_start[1],0);
+                return true;
             }	
+        return false;
     }
 
 #endif 

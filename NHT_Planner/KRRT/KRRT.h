@@ -21,7 +21,7 @@ struct results
 
 class KRRT
 {
-    private:
+    public:
         bool render = false;
         double* map_t = nullptr;
         double h = 0.01;
@@ -33,7 +33,6 @@ class KRRT
         int K = 100000;
         int n_scenarios = 5;
         static const int n_trials = 10;
-        int idx = 0;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
         int start_y_coord_array[5] = {20,20,35,35,46};
@@ -107,6 +106,7 @@ class KRRT
         void Add_Edge(node *q_min,node *q_near);
         void updte_pos_obj(const Xstate& inc_x);
         void draw_obj();
+        void UpdateControl();
         bool planner();
         void Initialize();
         int getPlanSize();
