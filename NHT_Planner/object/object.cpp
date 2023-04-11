@@ -177,7 +177,7 @@
         glVertex2i(x_w-20,y_w+h/2+20*sin(beta));
         glEnd();
 
-        printf("Beta(degrees):%f ; sinBeta:%f\n",(beta/PI)*180,sin(beta));
+        // printf("Beta(degrees):%f ; sinBeta:%f\n",(beta/PI)*180,sin(beta));
 
 
         glPopMatrix();

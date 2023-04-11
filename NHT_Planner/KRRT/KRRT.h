@@ -26,14 +26,14 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592654;
-        double eps = 1;
+        double eps = 0.001;
 
         int coords[2] ={0,0};
         int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
         int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
         int K = 200000;
         int n_scenarios = 5;
-        int tolerance = 5;
+        int tolerance = 1;
         static const int n_trials = 10;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
