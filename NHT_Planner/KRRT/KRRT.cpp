@@ -32,7 +32,7 @@
     }
     }
 
-    Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
+    Xstate KRRT::propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
     {
     /*
         The present function propagate the dynamics based on a specific input. In addition,
@@ -45,7 +45,6 @@
     */
         Xstate x_prop(i_x_k); 
         Xstate x_k(i_x_k);
-        double h = 0.01; // Step_time 
         double prop_time = u_k.get_tprop();
         // if(x_k[2] < 0)
         // {
@@ -56,8 +55,14 @@
             x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
             x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
             x_prop[2] = x_k[2] + u_k[1]*h;
-            x_prop[3] = 0;
+            x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
 
+            if(x_prop[3] > PI/2 || x_prop[3] < -PI/2)
+            {
+                x_k.state = 2; //Trapped 
+                u_k.set_tprop(i/100.0);
+                return x_k; 
+            }
             if(check_collision(x_prop,map,x_size,y_size))
             {
             x_k = x_prop;
@@ -82,7 +87,7 @@
     std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
     std::uniform_real_distribution<double> rand_x(0,70.0);
     std::uniform_real_distribution<double> rand_theta(-PI,PI);
-    std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
+    std::uniform_real_distribution<double> rand_beta(-PI/2.0,PI/2.0);
 
     std::uniform_int_distribution<int> rand_map_coordsx(0,999);
     std::uniform_int_distribution<int> rand_map_coordsy(0,999);
@@ -320,9 +325,6 @@
 
         int quad = 5;
 
-        auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-        std::default_random_engine gen(seed);
-
         std::uniform_real_distribution<double> rand_t_prop(0.0,8);
 
         std::uniform_int_distribution<int> rand_u_vel(50,100);
@@ -334,7 +336,7 @@
         std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
         std::uniform_real_distribution<double> rand_x(0,70.0);
         std::uniform_real_distribution<double> rand_theta(-PI,PI);
-        std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
+        std::uniform_real_distribution<double> rand_beta(-PI/2.0,PI/2.0);
 
         std::uniform_int_distribution<int> rand_map_coordsx(0,999);
         std::uniform_int_distribution<int> rand_map_coordsy(0,999);
@@ -353,19 +355,19 @@
         for(int i = 0; i < K; ++i)
         {
 
-            auto start_time = std::chrono::system_clock::now();
+            auto start_time = std::chrono::high_resolution_clock::now();
             double prob = dist_prob(gen); //Creating random number representing probability 
             if(prob > 0.95) //Goal biasing by 5% 
             {
                 x_rand = x_goal; //Assigning qrandom to be goal
             } else if(prob > 0.80)
             {
-                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
                 x_rand = x_r;
             }
             else
             {
-                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
+                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
                 x_rand = x_r;
             }
             if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
@@ -395,7 +397,7 @@
 
             double dist2goal = euclidean(x_goal,q_new->getXstate());
 
-            if(dist2goal < 1)
+            if(dist2goal < tolerance)
             {
                 printf("Goal found at K: %d\n", i);
                 // printf("Initial State: \n");
@@ -407,14 +409,14 @@
                 getPlan(plan,tree);
                 return true;
             }
-            else if(dist2goal < 3)
+            else if(dist2goal < tolerance+2)
             {
                 near_goal = true;
             }
             
-            auto end_time = std::chrono::system_clock::now();
-            auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-            auto time_passed = time_delay.count()*1e-9;
+            auto end_time = std::chrono::high_resolution_clock::now();
+            auto time_delay = std::chrono::duration_cast<std::chrono::microseconds> (end_time-start_time);
+            auto time_passed = time_delay.count()*1e-6;
             accum_time+=time_passed;
             // printf("Accumulated_time: %.4fseconds\n",accum_time);
             if(accum_time > 10.0)
@@ -561,9 +563,9 @@
     }
     void KRRT::updte_pos_obj(const Xstate& inc_x)
     {
-        husky_robot.Move(inc_x[0],inc_x[1],inc_x[2]);
-        path.Move(inc_x[0],inc_x[1],inc_x[2]);
-        t.Move(inc_x[0],inc_x[1],inc_x[2]);
+        husky_robot.Move(inc_x[0],inc_x[1],inc_x[2],inc_x[3]);
+        path.Move(inc_x[0],inc_x[1],inc_x[2],inc_x[3]);
+        t.Move(inc_x[0],inc_x[1],inc_x[2],inc_x[3]);
     }
     void KRRT::draw_obj()
     {
@@ -602,7 +604,7 @@
             {	
                 idx = 0;
                 x_k = plan[0]->getXstate(); 
-                husky_robot.Move(coords_start[0],coords_start[1],0);
+                husky_robot.Move(coords_start[0],coords_start[1],0,0);
             }	
 
             u_k = plan[idx]->getUstate();
@@ -624,9 +626,9 @@
 
                 // updte_pos_obj(x_k);
 
-                husky_robot.Move(x_prop[0],x_prop[1],x_prop[2]);
-                path.Move(x_prop[0],x_prop[1],x_prop[2]);
-                t.Move(x_prop[0],x_prop[1],x_prop[2]);
+                husky_robot.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
+                path.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
+                t.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
 
                 // draw_obj();
 
@@ -655,19 +657,19 @@
     {
         start_pos.setDim(block_width[0],block_width[1]);
         start_pos.setColor(255,0,0);
-        start_pos.Move(coords_start[0],coords_start[1],0);
+        start_pos.Move(coords_start[0],coords_start[1],0,0);
 
         goal_pos.setDim(block_width[0],block_width[1]);
         goal_pos.setColor(255,0,0);
-        goal_pos.Move(coords_goal[0],coords_goal[1],0);
+        goal_pos.Move(coords_goal[0],coords_goal[1],0,0);
 
         husky_robot.setDim(20,15);
         husky_robot.setColor(255,240,10);
-        husky_robot.Move(coords_start[0],coords_start[1],0);
+        husky_robot.Move(coords_start[0],coords_start[1],0,0);
 
         path.setDim(1,1);
         path.setColor(0,140,255);
-        path.Move(coords_start[0],coords_start[1],0);
+        path.Move(coords_start[0],coords_start[1],0,0);
 
         t.set_anchor(coords_start[0] + 5,coords_start[1]);
         t.setDim(block_width[0],block_width[1]);
@@ -680,7 +682,7 @@
             {	
                 idx = 0;
                 x_p = plan[0]->getXstate(); 
-                husky_robot.Move(coords_start[0],coords_start[1],0);
+                husky_robot.Move(coords_start[0],coords_start[1],0,0);
                 return true;
             }	
         return false;

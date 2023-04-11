@@ -26,12 +26,14 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592654;
+        double eps = 1;
 
         int coords[2] ={0,0};
         int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
         int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
-        int K = 100000;
+        int K = 200000;
         int n_scenarios = 5;
+        int tolerance = 5;
         static const int n_trials = 10;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
@@ -110,6 +112,8 @@ class KRRT
         bool planner();
         void Initialize();
         int getPlanSize();
+
+        Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size);
     public:
         
         bool plan_trials();
@@ -136,6 +140,7 @@ class KRRT
         {
             std::ofstream myFile(file_path);
         };
+
         bool def_start_pos(Xstate& inc_x);
         bool def_goal_pos(Xstate& inc_x);
         void set_objects();

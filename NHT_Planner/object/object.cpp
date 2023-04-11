@@ -17,13 +17,14 @@
         this->w = i_w;
     }
 
-    void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle)
+    void object::Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle,GLfloat i_beta)
     {
         this->x = i_x;
         this->y = i_y;
         x_w = i_x*block_side;
         y_w = (ofs_y-i_y)*block_side;
         this->angle = i_angle; 
+        this->beta = i_beta;
         pos_idx.push_back(i_x);
         pos_idx.push_back(i_y);
     }
@@ -168,6 +169,16 @@
         glVertex2i(x_w+w/2,y_w+h/2);
         glVertex2i(x_w+w/2+20,y_w+h/2);
         glEnd();
+
+        glColor3ub(255,0,100);
+        glLineWidth(2);
+        glBegin(GL_LINES);
+        glVertex2i(x_w,y_w+h/2);
+        glVertex2i(x_w-20,y_w+h/2+20*sin(beta));
+        glEnd();
+
+        printf("Beta(degrees):%f ; sinBeta:%f\n",(beta/PI)*180,sin(beta));
+
 
         glPopMatrix();
     }

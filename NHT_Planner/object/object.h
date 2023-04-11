@@ -17,7 +17,7 @@
 class object 
 {
 	public:
-		GLfloat x=0,y=0,angle=0,w=0,h=0,x_w=0,y_w=0;
+		GLfloat x=0,y=0,angle=0,w=0,h=0,x_w=0,y_w=0,beta = 0;
 		GLubyte r=0,g=0,b=0;
 		float block_side = 15.0;
 		float ofs_y = 50;
@@ -26,7 +26,7 @@ class object
 		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
 		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
 		void setDim(GLfloat i_w, GLfloat i_h);
-		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle);
+		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle, GLfloat i_beta);
 		void Draw_object(void);
 		void Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
 		void Draw_in_center(void);
