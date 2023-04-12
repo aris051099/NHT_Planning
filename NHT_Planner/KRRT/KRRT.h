@@ -26,7 +26,7 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592654;
-        double eps = 0.001;
+        double eps = 0.01;
 
         int coords[2] ={0,0};
         int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
@@ -99,6 +99,7 @@ class KRRT
         double calc_angle(int xf[],int xi[]);
 
         int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree);
+        int getPlanSize();
         
         void nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs);
         void CleanUp(std::vector<node*>& tree, KDTree& Ktree);
@@ -109,11 +110,12 @@ class KRRT
         void updte_pos_obj(const Xstate& inc_x);
         void draw_obj();
         void UpdateControl();
-        bool planner();
         void Initialize();
-        int getPlanSize();
+        
+        bool planner();
 
         Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size);
+        Xstate propagate_one_step(Xstate& inc_x,Ustate& inc_u);
     public:
         
         bool plan_trials();

@@ -32,6 +32,7 @@
     }
     }
 
+
     Xstate KRRT::propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
     {
     /*
@@ -52,11 +53,11 @@
         // }
         for(int i = 0; i < sec2msec(prop_time) ; ++i)
         {
-            x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-            x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-            x_prop[2] = x_k[2] + u_k[1]*h;
-            x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
-
+            // x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+            // x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+            // x_prop[2] = x_k[2] + u_k[1]*h;
+            // x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
+            x_prop = propagate_one_step(x_k,u_k);
             if(x_prop[3] > PI/2 || x_prop[3] < -PI/2)
             {
                 x_k.state = 2; //Trapped 
@@ -77,6 +78,17 @@
         x_prop.state = 1;
         return x_prop; 
     }
+
+    Xstate KRRT::propagate_one_step( Xstate& x_k, Ustate& u_k)
+    {
+        Xstate x_prop(x_k);
+        x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+        x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+        x_prop[2] = x_k[2] + u_k[1]*h;
+        x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
+        return x_prop;
+    }
+
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
     std::uniform_int_distribution<int> rand_u_vel(50,100);
     std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);

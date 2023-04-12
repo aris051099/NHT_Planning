@@ -37,20 +37,20 @@
  * Programs that do not will automatically get a 0.
  * */
 
-Xstate propagate_one_step(const KRRT& RRT)
-{
-	Xstate x_prop;
-	Xstate x_k(RRT.x_p);
-	Ustate u_k(RRT.u_k);
-	double h = RRT.h;
-    double eps = RRT.eps;
-    x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-    x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-    x_prop[2] = x_k[2] + u_k[1]*h;
-    x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
+// Xstate propagate_one_step(const KRRT& RRT)
+// {
+// 	Xstate x_prop;
+// 	Xstate x_k(RRT.x_p);
+// 	Ustate u_k(RRT.u_k);
+// 	double h = RRT.h;
+//     double eps = RRT.eps;
+//     x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+//     x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+//     x_prop[2] = x_k[2] + u_k[1]*h;
+//     x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
 
-	return x_prop;
-}
+// 	return x_prop;
+// }
 int main(int argc, char ** argv) 
 {
     KRRT RRT;
@@ -81,7 +81,7 @@ int main(int argc, char ** argv)
             for(int i = 0; i < prop_time*100 ; ++i)
             {
                
-				x_prop = propagate_one_step(RRT);
+				x_prop = RRT.propagate_one_step(RRT.x_p,RRT.u_k);
 
                 RRT.x_p = x_prop;
 
