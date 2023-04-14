@@ -25,6 +25,53 @@
 /* Input Arguments */
 
 #define PI 3.141592654
+
+class ObstacleFinder 
+{
+public:
+  ObstacleFinder(double* map, int mapRows, int mapCols) : map_(map), mapRows_(mapRows), mapCols_(mapCols) {}
+
+  // Function to find and return the separate obstacles in the map
+  std::vector<std::vector<int>> findObstacles() 
+  {
+    std::vector<std::vector<int>> obstacles;
+    for (int i = 0; i < mapRows_; ++i) {
+      for (int j = 0; j < mapCols_; ++j) {
+        if (map_[i * mapCols_ + j] == 1) {
+          std::vector<int> obstacle;
+          findObstacleDFS(i, j, obstacle);
+          obstacles.push_back(obstacle);
+        }
+      }
+    }
+    return obstacles;
+  }
+
+private:
+  double* map_; // Pointer to the map array
+  int mapRows_; // Number of rows in the map
+  int mapCols_; // Number of columns in the map
+
+  // Recursive function to perform depth-first search (DFS) to find an obstacle
+  void findObstacleDFS(int row, int col, std::vector<int>& obstacle) 
+  {
+    if (row < 0 || row >= mapRows_ || col < 0 || col >= mapCols_ || map_[row * mapCols_ + col] != 1)
+      return;
+    obstacle.push_back(row * mapCols_ + col);
+    map_[row * mapCols_ + col] = 0; // Mark the visited cell as free space
+    findObstacleDFS(row - 1, col, obstacle); // North
+    findObstacleDFS(row + 1, col, obstacle); // South
+    findObstacleDFS(row, col - 1, obstacle); // West
+    findObstacleDFS(row, col + 1, obstacle); // East
+  }
+};
+
+void get2DCoordinates(int index,int width, int& row, int& col)
+{
+    col = index / width;
+    row = index % width;
+}
+
 /** Your final solution will be graded by an grading script which will
  * send the default 6 arguments:
  *    map, numOfDOFs, commaSeparatedStartPos, commaSeparatedGoalPos, 
@@ -56,6 +103,24 @@ int main(int argc, char ** argv)
     KRRT RRT;
 
     RRT.LoadMap(argv[1]);
+
+    ObstacleFinder obstacleFinder(RRT.map_1.map_ptr, RRT.map_1.width, RRT.map_1.height);
+    std::vector<std::vector<int>> obstacles = obstacleFinder.findObstacles();
+
+    // Print the indices of cells in each obstacle
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < obstacles.size(); ++i) 
+    {
+        std::cout << "Obstacle " << i + 1 << ": ";
+        for (int j = 0; j < obstacles[i].size(); ++j) 
+        {
+        get2DCoordinates(obstacles[i][j],RRT.map_1.height,x,y);
+        std::cout << x << "," << y << " ";
+        }
+        std::cout << std::endl;
+    }
+
 	if(RRT.one_shot_plan())
 	{
         std::cout << "Rendering planner" << std::endl;
