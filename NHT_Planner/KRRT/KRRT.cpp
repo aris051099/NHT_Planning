@@ -91,20 +91,10 @@
 
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
     std::uniform_int_distribution<int> rand_u_vel(50,100);
-    std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
+    std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
     std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
-
-    std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-    std::uniform_real_distribution<double> rand_x(0,70.0);
-    std::uniform_real_distribution<double> rand_theta(-PI,PI);
-    std::uniform_real_distribution<double> rand_beta(-PI/2.0,PI/2.0);
-
-    std::uniform_int_distribution<int> rand_map_coordsx(0,999);
-    std::uniform_int_distribution<int> rand_map_coordsy(0,999);
-
-    std::uniform_real_distribution<double> dist_prob(0.0,1);
     void KRRT::Initialize()
     {
         u_start.setState(0,0,0);
@@ -307,7 +297,10 @@
                 u_k[1] = near_rand_u_ang_vel(gen);
                 u_k.set_tprop(rand_t_prop(gen));
             }
-
+            if(u_k[1] > alpha*u_k[1])
+            {
+                continue;
+            }
             x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
 
             double dist = euclidean(x_rand,x_prop);
@@ -337,16 +330,6 @@
 
         int quad = 5;
 
-        std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-
-        std::uniform_int_distribution<int> rand_u_vel(50,100);
-        std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
-
-        std::uniform_int_distribution<int> near_rand_u_vel(10,50);
-        std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
-
-        std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-        std::uniform_real_distribution<double> rand_x(0,70.0);
         std::uniform_real_distribution<double> rand_theta(-PI,PI);
         std::uniform_real_distribution<double> rand_beta(-PI/2.0,PI/2.0);
 
@@ -433,7 +416,7 @@
             auto time_passed = time_delay.count()*1e-6;
             accum_time+=time_passed;
             // printf("Accumulated_time: %.4fseconds\n",accum_time);
-            if(accum_time > 10.0)
+            if(accum_time > time2exit)
             {
                 return false;
             }
@@ -549,6 +532,15 @@
         auto start_time = std::chrono::system_clock::now();
         while(!too_long)
         {
+
+            if(!tree.empty())
+            {
+                CleanUp(tree,Ktree);
+            }
+            if(!plan.empty())
+            {
+                plan.clear();
+            }
             bool success = planner();
             if(!success)
             {
@@ -559,9 +551,15 @@
             {
                 too_long = true;
             }
+            if(n_tries%3 == 0)
+            {
+                printf("Alpha value:%f",alpha);
+                alpha+=0.25;
+                printf("--> %f \n",alpha);
+            }
             if(n_tries >=15)
             {
-                too_long = true;
+                return false;
             }
         }	
         too_long = false;

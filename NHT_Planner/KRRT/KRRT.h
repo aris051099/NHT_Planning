@@ -27,6 +27,8 @@ class KRRT
         double h = 0.01;
         double c_pi= 3.141592654;
         double eps = 0.075;
+        double alpha = 0.5;
+        double time2exit = 20.0;
 
         int coords[2] ={0,0};
         int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
