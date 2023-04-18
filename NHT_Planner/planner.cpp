@@ -104,22 +104,22 @@ int main(int argc, char ** argv)
 
     RRT.LoadMap(argv[1]);
 
-    ObstacleFinder obstacleFinder(RRT.map_1.map_ptr, RRT.map_1.width, RRT.map_1.height);
-    std::vector<std::vector<int>> obstacles = obstacleFinder.findObstacles();
+    // ObstacleFinder obstacleFinder(RRT.map_1.map_ptr, RRT.map_1.width, RRT.map_1.height);
+    // std::vector<std::vector<int>> obstacles = obstacleFinder.findObstacles();
 
-    // Print the indices of cells in each obstacle
-    int x = 0;
-    int y = 0;
-    for (int i = 0; i < obstacles.size(); ++i) 
-    {
-        std::cout << "Obstacle " << i + 1 << ": ";
-        for (int j = 0; j < obstacles[i].size(); ++j) 
-        {
-        get2DCoordinates(obstacles[i][j],RRT.map_1.height,x,y);
-        std::cout << x << "," << y << " ";
-        }
-        std::cout << std::endl;
-    }
+    // // Print the indices of cells in each obstacle
+    // int x = 0;
+    // int y = 0;
+    // for (int i = 0; i < obstacles.size(); ++i) 
+    // {
+    //     std::cout << "Obstacle " << i + 1 << ": ";
+    //     for (int j = 0; j < obstacles[i].size(); ++j) 
+    //     {
+    //     get2DCoordinates(obstacles[i][j],RRT.map_1.height,x,y);
+    //     std::cout << x << "," << y << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
 
 	if(RRT.one_shot_plan())
 	{
@@ -130,38 +130,36 @@ int main(int argc, char ** argv)
         FsOpenWindow(0,0,1000,1000,1);
         for(;;)
         {
-            FsPollDevice();
+          FsPollDevice();
             if(FSKEY_ESC==FsInkey())
             {
                 break;
             }
+          RRT.ResetPos();
+          
+          RRT.u_k = RRT.plan[RRT.idx]->getUstate();
 
-			RRT.ResetPos();
-			
-            RRT.u_k = RRT.plan[RRT.idx]->getUstate();
+          double prop_time = RRT.u_k.get_tprop();
 
-            double prop_time = RRT.u_k.get_tprop();
+          Xstate x_prop;
+          for(int i = 0; i < prop_time*100 ; ++i)
+          {
+            x_prop = RRT.propagate_one_step(RRT.x_p,RRT.u_k);
 
-            Xstate x_prop;
-            for(int i = 0; i < prop_time*100 ; ++i)
-            {
-               
-				x_prop = RRT.propagate_one_step(RRT.x_p,RRT.u_k);
+            RRT.x_p = x_prop;
 
-                RRT.x_p = x_prop;
+            //Rendering
 
-                //Rendering
+            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-                glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+            RRT.updte_pos_obj(x_prop);
+                    
+            RRT.draw_obj();
 
-				RRT.updte_pos_obj(x_prop);
-                
-                RRT.draw_obj();
-
-                FsSwapBuffers();
-                // FsSleep(1);
-            }
-            ++RRT.idx; 
+            FsSwapBuffers();
+            // FsSleep(1);
+          }
+          ++RRT.idx; 
         }
 	}
 	return 0;

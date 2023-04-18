@@ -375,11 +375,13 @@
             } else if(prob > 0.80)
             {
                 Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
                 x_rand = x_r;
             }
             else
             {
                 Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
                 x_rand = x_r;
             }
             if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
@@ -695,6 +697,9 @@
                 idx = 0;
                 x_p = plan[0]->getXstate(); 
                 husky_robot.Move(coords_start[0],coords_start[1],0,0);
+                husky_robot.pos_idx.clear();
+                path.pos_idx.clear();
+                t.pos_idx.clear();
                 return true;
             }	
         return false;
