@@ -91,7 +91,7 @@
 
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
     std::uniform_int_distribution<int> rand_u_vel(50,100);
-    std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
+    std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
     std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
@@ -297,10 +297,10 @@
                 u_k[1] = near_rand_u_ang_vel(gen);
                 u_k.set_tprop(rand_t_prop(gen));
             }
-            if(u_k[1] > alpha*u_k[1])
-            {
-                continue;
-            }
+            // if(u_k[1] > alpha*u_k[1])
+            // {
+            //     continue;
+            // }
             x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
 
             double dist = euclidean(x_rand,x_prop);
@@ -357,14 +357,14 @@
                 x_rand = x_goal; //Assigning qrandom to be goal
             } else if(prob > 0.80)
             {
-                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
-                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
+                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
                 x_rand = x_r;
             }
             else
             {
-                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
-                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
+                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
+                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
                 x_rand = x_r;
             }
             if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
