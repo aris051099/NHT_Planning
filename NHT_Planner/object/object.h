@@ -10,7 +10,7 @@
 #include <fssimplewindow.h>
 #include <ysglfontdata.h>
 #include <unordered_map>
-#define PI 3.141592654
+#define PI 3.141592653589793
 
 #define GETMAPINDEX_UL0(X, Y, XSIZE, YSIZE) (Y*XSIZE + X)
 

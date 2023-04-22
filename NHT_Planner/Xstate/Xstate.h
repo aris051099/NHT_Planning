@@ -69,6 +69,23 @@ class Ustate : public state<double,2>
         state_elem[1] = u2;
         this->t_prop = inc_t;
     }
+
+    Ustate operator+(const Ustate& other) const {
+        Ustate result;
+        for (int i = 0; i < arr_size; ++i) {
+            result.state_elem[i] = this->state_elem[i] + other.state_elem[i];
+        }
+        return result;
+    }
+
+    // Overload the * operator for multiplication with a constant
+    Ustate operator*(double scalar) const {
+        Ustate result;
+        for (int i = 0; i < arr_size; ++i) {
+            result.state_elem[i] = this->state_elem[i] * scalar;
+        }
+        return result;
+    }
 };
 
 class Xstate : public state<double,4>
@@ -117,6 +134,25 @@ class Xstate : public state<double,4>
       }
       return false;
     }
+
+        // Overload the + operator
+    Xstate operator+(const Xstate& other) const {
+        Xstate result;
+        for (int i = 0; i < arr_size; ++i) {
+            result.state_elem[i] = this->state_elem[i] + other.state_elem[i];
+        }
+        return result;
+    }
+
+    // Overload the * operator for multiplication with a constant
+    Xstate operator*(double scalar) const {
+        Xstate result;
+        for (int i = 0; i < 4; ++i) {
+            result.state_elem[i] = this->state_elem[i] * scalar;
+        }
+        return result;
+    }
+
 
     inline void sum(Xstate inc_x)
     {

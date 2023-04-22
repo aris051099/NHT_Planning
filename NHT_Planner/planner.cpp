@@ -25,13 +25,6 @@
 
 #define PI 3.141592654
 
-int Testing()
-{
-  double a = 1;
-  a+=a ;
-  return a;
-}
-
 class ObstacleFinder 
 {
 public:
@@ -104,6 +97,11 @@ void get2DCoordinates(int index,int width, int& row, int& col)
 
 // 	return x_prop;
 // }
+
+  // int sec2msec(double sec)
+  // {
+  // return (std::round(sec*100.0)/100.0)*100;
+  // }
 int main(int argc, char ** argv) 
 {
     KRRT RRT;
@@ -127,6 +125,24 @@ int main(int argc, char ** argv)
     //     std::cout << std::endl;
     // }
 
+  {
+    //Testing of integration methods
+    Xstate x1_euler;
+    Xstate x1_rk4;
+    Xstate x_euler;
+    Xstate x_rk4; 
+    Ustate u(0.9,0.1);
+    for(int i = 0; i < 100 ; ++i)
+    {
+          x_euler = RRT.propagate_one_step(x1_euler,u);
+          x1_euler = x_euler;
+          x_rk4 = RRT.rk4step(x1_rk4,u,0.01);
+          x1_rk4 = x_rk4;
+    } 
+  //Now print the results
+  std::cout << "Euler: " << x_euler[0] << " " << x_euler[1] << " " << x_euler[2] << " " << x_euler[3] << std::endl;
+  std::cout << "Rk4:" << x_rk4[0] << " " << x_rk4[1] << " " << x_rk4[2] << " " << x_rk4[3] << std::endl;
+  }
 	if(RRT.one_shot_plan())
 	{
 
@@ -155,11 +171,13 @@ int main(int argc, char ** argv)
           double prop_time = RRT.u_k.get_tprop();
 
           Xstate x_prop;
-          for(int i = 0; i < prop_time*100 ; ++i)
+          Xstate x_prop2;
+          for(int i = 0; i < RRT.sec2msec(prop_time)  ; ++i)
           {
-            x_prop = RRT.propagate_one_step(RRT.x_p,RRT.u_k);
+            // x_prop = RRT.propagate_one_step(RRT.x_p,RRT.u_k);
+            x_prop = RRT.rk4step(RRT.x_p,RRT.u_k,RRT.h);
 
-            RRT.myfile << x_prop[3]*(180/PI) << ",";
+            RRT.myfile << x_prop[3]  << ",";
             RRT.myfile << RRT.u_k[0] << ",";
             RRT.myfile << RRT.u_k[1] << ","<< "\n";
 
