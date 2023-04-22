@@ -28,7 +28,8 @@ class node
 		}
 		void setParent(node* incoming);
 		node *getParent();
-		const Xstate& getXstate() const;
+		const Xstate& getconstXstate() const;
+		Xstate& getXstate();
 		Ustate& getUstate();
 		void setXstate(Xstate& x);
 		void setUstate(Ustate& u);

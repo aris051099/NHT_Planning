@@ -47,10 +47,7 @@
         Xstate x_prop(i_x_k); 
         Xstate x_k(i_x_k);
         double prop_time = u_k.get_tprop();
-        // if(x_k[2] < 0)
-        // {
-        //   x_k[2] = 2*PI - x_k[2];
-        // }
+
         for(int i = 0; i < sec2msec(prop_time) ; ++i)
         {
             // x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
@@ -58,15 +55,15 @@
             // x_prop[2] = x_k[2] + u_k[1]*h;
             // x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
             x_prop = propagate_one_step(x_k,u_k);
-            if(x_prop[3] > PI/2 || x_prop[3] < -PI/2)
-            {
-                x_k.state = 2; //Trapped 
-                u_k.set_tprop(i/100.0);
-                return x_k; 
-            }
+            // if(x_prop[3] > PI/2 || x_prop[3] < -PI/2)
+            // {
+            //     x_k.state = 2; //Trapped 
+            //     u_k.set_tprop(i/100.0);
+            //     return x_k; 
+            // }
             if(check_collision(x_prop,map,x_size,y_size))
             {
-            x_k = x_prop;
+                x_k = x_prop;
             }
             else
             {
@@ -85,12 +82,13 @@
         x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
         x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
         x_prop[2] = x_k[2] + u_k[1]*h;
-        x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
+        x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + alpha*u_k[1]*h;
         return x_prop;
     }
 
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-    std::uniform_int_distribution<int> rand_u_vel(50,100);
+    std::uniform_int_distribution<int> rand_u_vel(50,95);
+    // std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
     std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
@@ -135,9 +133,9 @@
         // auto x_goal = x_sgoal.getPointer();
         // auto x_near = x_snear.getPointer();
         double dist = 0; 
-        for(int i = 0; i < x_goal.size(); i+=1)
+        for(int i = 0; i < x_goal.size(); i++)
         {
-            dist+= pow(x_goal[i]-x_near[i],2);
+            dist+= weights[i]*pow(x_goal[i]-x_near[i],2);
         }
         return sqrt(dist);
     }
@@ -172,7 +170,7 @@
     double KRRT::calc_radius(std::vector<node*>& tree)
     {
         double d = 3; 
-        double gamma = 500;
+        double gamma = 1000;
         double delta = (PI*PI)/2;
         double V = tree.size();
         return (gamma/delta)*pow((log(V)/V),1/d);
@@ -232,25 +230,26 @@
         // 	delete p; 
         // 	p = nullptr;
         // }
-        bool isRoot = false;
-        for(size_t i =0;i < tree.size(); ++i)
-        {
-            if(tree[i] == Ktree.getRoot())
-            {
-                Ktree.removeRoot();
-                isRoot = true;
-            }
-            if(!isRoot)
-            {
-                delete tree[i];
-                tree[i] = nullptr;
-            }
-        }
-        tree.clear();
+        // bool isRoot = false;
+        // for(size_t i =0;i < tree.size(); ++i)
+        // {
+        //     if(tree[i] == Ktree.getRoot())
+        //     {
+        //         Ktree.removeRoot();
+        //         isRoot = true;
+        //     }
+        //     if(!isRoot)
+        //     {
+        //         delete tree[i];
+        //         tree[i] = nullptr;
+        //     }
+        // }
+        // tree.clear();
+        Ktree.cleanUp();
     }
-    void KRRT::getPlan(std::vector<node*>& plan,std::vector<node*>& tree)
+    void KRRT::getPlan(std::vector<node*>& plan,node* q_last)
     {
-        for(node* p = tree.back(); p != nullptr; p = plan.back()->getParent())
+        for(node* p = q_last; p != nullptr; p = plan.back()->getParent())
         {
             plan.push_back(p);
         }
@@ -280,7 +279,7 @@
         map_coords[0] = map_1.block_x*std::round(map_coords[0]);
         map_coords[1] = map_1.block_y*(map_1.height - std::round(map_coords[1]));
     }
-    void KRRT::steer(Xstate x_near,Xstate x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal)
+    void KRRT::steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal)
     {
         // Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
         Xstate x_prop;
@@ -302,6 +301,7 @@
             //     continue;
             // }
             x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
+
 
             double dist = euclidean(x_rand,x_prop);
             if(dist < min_dist)
@@ -341,9 +341,10 @@
         std::uniform_int_distribution<int> n_rand_map_coordsx(x_goal[0]-quad,x_goal[0]+quad);
         std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
 
-        tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
+        // tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
+        node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
 
-        Ktree.Insert(tree.back());
+        Ktree.Insert(qstart);
 
         std::cout<< "Number of samples: "<< K << std::endl; 
 
@@ -355,16 +356,16 @@
             if(prob > 0.95) //Goal biasing by 5% 
             {
                 x_rand = x_goal; //Assigning qrandom to be goal
-            } else if(prob > 0.80)
+            } else if(prob > 0.85) //0.8
             {
-                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
-                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
                 x_rand = x_r;
             }
             else
             {
-                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
-                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
+                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
                 x_rand = x_r;
             }
             if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
@@ -376,7 +377,8 @@
             // {
             // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
             // }
-            int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
+
+            // int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
 
             node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
 
@@ -389,7 +391,7 @@
 
             node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
 
-            tree.push_back(q_new);
+            // tree.push_back(q_new);
             Ktree.Insert(q_new);
 
             double dist2goal = euclidean(x_goal,q_new->getXstate());
@@ -403,7 +405,7 @@
                 // std::cout << x_min << std::endl;
                 // printf("Goal state:\n");
                 // std::cout<<x_goal<< std::endl;
-                getPlan(plan,tree);
+                getPlan(plan,q_new);
                 return true;
             }
             else if(dist2goal < tolerance+2)
@@ -551,12 +553,12 @@
             {
                 too_long = true;
             }
-            if(n_tries%3 == 0)
-            {
-                printf("Alpha value:%f",alpha);
-                alpha+=0.25;
-                printf("--> %f \n",alpha);
-            }
+            // if(n_tries%3 == 0)
+            // {
+            //     printf("Alpha value:%f",alpha);
+            //     alpha+=0.25;
+            //     printf("--> %f \n",alpha);
+            // }
             if(n_tries >=15)
             {
                 return false;
@@ -568,7 +570,7 @@
         auto time_passed = time_delay.count()*1e-9;
         std::cout<<"--------------- RESULTS---------------"<<std::endl;
         std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-        std::cout<<"Tree size:" << tree.size() << std::endl;
+        std::cout<<"Tree size:" << Ktree.size << std::endl;
         std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
         std::cout<<"--------------------------------------"<<std::endl;
         return true;

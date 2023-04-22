@@ -17,6 +17,7 @@ struct results
 	double time; 
 	double cost;
 	double node_expansions;
+    double beta;
 };
 
 class KRRT
@@ -26,16 +27,17 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592654;
-        double eps = 0.05;
-        double alpha = 0.5;
-        double time2exit = 10.0;
+        double eps = 0.5;
+        double alpha = 1;
+        double time2exit = 20.0;
+        double weights[4] = {1,1,1,4};
 
         int coords[2] ={0,0};
         int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
         int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
         int K = 200000;
         int n_scenarios = 5;
-        int tolerance = 1;
+        int tolerance = 5;
         static const int n_trials = 10;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
@@ -105,9 +107,9 @@ class KRRT
         
         void nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs);
         void CleanUp(std::vector<node*>& tree, KDTree& Ktree);
-        void getPlan(std::vector<node*>& plan,std::vector<node*>& tree);
+        void getPlan(std::vector<node*>& plan,node* q_last);
         void map2block(double *map_coords,map map_1);
-        void steer(Xstate x_near,Xstate x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
+        void steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
         void Add_Edge(node *q_min,node *q_near);
         void updte_pos_obj(const Xstate& inc_x);
         void draw_obj();
@@ -128,7 +130,8 @@ class KRRT
         {
             Initialize();
             seed = std::chrono::system_clock::now().time_since_epoch().count();
-            gen.seed(seed);  
+            // gen.seed(seed);
+            gen.seed(14968483);  
         };
         ~KRRT()
         {

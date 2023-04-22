@@ -37,6 +37,8 @@ public:
     void Insert(node* q_new);
     void setNull();
     void removeRoot();
+    void cleanUp();
+    int size = 0;
 
     bool is_empty() const;
 private:
@@ -51,9 +53,9 @@ private:
 
     void insert(node*& Knode, node* q_new, int depth,node* parent) const;
 
-    void cleanup(node* node);
-
     node* find_recursive(node* Knode,const node*inc_q, int depth);
+    
+    void cleanup(node* node);
 };
 
        

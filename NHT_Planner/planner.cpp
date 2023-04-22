@@ -22,9 +22,15 @@
 #include <unordered_set>
 #include <KRRT.h>
 #include <fssimplewindow.h>
-/* Input Arguments */
 
 #define PI 3.141592654
+
+int Testing()
+{
+  double a = 1;
+  a+=a ;
+  return a;
+}
 
 class ObstacleFinder 
 {
@@ -123,6 +129,8 @@ int main(int argc, char ** argv)
 
 	if(RRT.one_shot_plan())
 	{
+
+        RRT.myfile.open("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
         std::cout << "Rendering planner" << std::endl;
 
         RRT.set_objects();
@@ -139,12 +147,21 @@ int main(int argc, char ** argv)
           
           RRT.u_k = RRT.plan[RRT.idx]->getUstate();
 
+          // if(RRT.idx != 0)
+          // {
+          //   RRT.x_p = RRT.plan[RRT.idx-1]->getXstate();
+          // }
+
           double prop_time = RRT.u_k.get_tprop();
 
           Xstate x_prop;
           for(int i = 0; i < prop_time*100 ; ++i)
           {
             x_prop = RRT.propagate_one_step(RRT.x_p,RRT.u_k);
+
+            RRT.myfile << x_prop[3]*(180/PI) << ",";
+            RRT.myfile << RRT.u_k[0] << ",";
+            RRT.myfile << RRT.u_k[1] << ","<< "\n";
 
             RRT.x_p = x_prop;
 
@@ -161,6 +178,7 @@ int main(int argc, char ** argv)
           }
           ++RRT.idx; 
         }
+        RRT.myfile.close();
 	}
 	return 0;
 }

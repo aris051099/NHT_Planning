@@ -1,6 +1,17 @@
 #ifndef KDTREE    
     #define KDTREE
     #include "KDtree.h"
+
+    void KDTree::cleanUp()
+    {
+        size = 0;
+        if(root != nullptr)
+        {
+            cleanup(root);
+            root = nullptr;
+        }
+
+    }
     node* KDTree::nearest_neighbor(const Xstate& target,double r) const 
     {
         double min_distance = std::numeric_limits<double>::max();
@@ -29,6 +40,7 @@
     }
     void KDTree::Insert(node* q_new)
     {
+        size +=1;
         insert(root,q_new,0,nullptr);
     }
 
@@ -147,7 +159,7 @@
         }
 
         int axis = depth % 4;
-        Xstate point = inc_q->getXstate();
+        Xstate point = inc_q->getconstXstate();
         printf("%d",axis);
         bool goLeft = point[axis] < Knode->reached_state[axis];
         node* nextNode = goLeft ? Knode->left: Knode->right;
