@@ -27,7 +27,7 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592653589793;
-        double eps = 0.1;
+        double eps = 0.075;
         double alpha = 1.0;
         double time2exit = 10.0;
         double weights[4] = {1.0,1.0,1.0,1.0};
@@ -108,6 +108,7 @@ class KRRT
         void nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs);
         void CleanUp(std::vector<node*>& tree, KDTree& Ktree);
         void getPlan(std::vector<node*>& plan,node* q_last);
+        void getPlan_vector(std::vector<node*>& plan,std::vector<node*>& i_tree);
         void map2block(double *map_coords,map map_1);
         void steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
         void Add_Edge(node *q_min,node *q_near);

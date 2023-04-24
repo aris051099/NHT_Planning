@@ -143,6 +143,12 @@ int main(int argc, char ** argv)
   std::cout << "Euler: " << x_euler[0] << " " << x_euler[1] << " " << x_euler[2] << " " << x_euler[3] << std::endl;
   std::cout << "Rk4:" << x_rk4[0] << " " << x_rk4[1] << " " << x_rk4[2] << " " << x_rk4[3] << std::endl;
   }
+
+  if(RRT.plan_trials())
+  {
+    std::cout << "Planning successful" << std::endl;
+    return 0;
+  }
 	if(RRT.one_shot_plan())
 	{
 

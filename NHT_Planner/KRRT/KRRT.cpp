@@ -38,7 +38,7 @@
         x_prop[0] = u[0]*cos(x[2]);
         x_prop[1] = u[0]*sin(x[2]);
         x_prop[2] = u[1];
-        x_prop[3] = 0.1*u[0]*sin(x[3]) + u[1];
+        x_prop[3] = eps*u[0]*sin(x[3]) + u[1];
         return x_prop;
     }
 
@@ -113,8 +113,8 @@
 
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
     std::uniform_int_distribution<int> rand_u_vel(50,95);
-    std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
-    // std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
+    // std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
+    std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
     std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
@@ -251,22 +251,22 @@
         // 	delete p; 
         // 	p = nullptr;
         // }
-        // bool isRoot = false;
-        // for(size_t i =0;i < tree.size(); ++i)
-        // {
-        //     if(tree[i] == Ktree.getRoot())
-        //     {
-        //         Ktree.removeRoot();
-        //         isRoot = true;
-        //     }
-        //     if(!isRoot)
-        //     {
-        //         delete tree[i];
-        //         tree[i] = nullptr;
-        //     }
-        // }
-        // tree.clear();
-        Ktree.cleanUp();
+        bool isRoot = false;
+        for(size_t i =0;i < tree.size(); ++i)
+        {
+            if(tree[i] == Ktree.getRoot())
+            {
+                Ktree.removeRoot();
+                isRoot = true;
+            }
+            if(!isRoot)
+            {
+                delete tree[i];
+                tree[i] = nullptr;
+            }
+        }
+        tree.clear();
+        // Ktree.cleanUp();
     }
     void KRRT::getPlan(std::vector<node*>& plan,node* q_last)
     {
@@ -276,6 +276,15 @@
         }
         reverse(plan.begin(),plan.end());
     };
+    void KRRT::getPlan_vector(std::vector<node*>& plan,std::vector<node*>& i_tree)
+    {
+        node* q_last = i_tree.back();
+        for(node* p = q_last; p != nullptr; p = plan.back()->getParent())
+        {
+            plan.push_back(p);
+        }
+        reverse(plan.begin(),plan.end());   
+    }
     double KRRT::calc_angle(double xf,double yf,double xi,double yi)
     {	
         double angle = atan2(yf-yi,xf-xi);
@@ -374,10 +383,10 @@
         std::uniform_int_distribution<int> n_rand_map_coordsx(x_goal[0]-quad,x_goal[0]+quad);
         std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
 
-        // tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
-        node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
+        tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
+        // node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
 
-        Ktree.Insert(qstart);
+        // Ktree.Insert(qstart);
 
         std::cout<< "Number of samples: "<< K << std::endl; 
 
@@ -405,27 +414,34 @@
             {
                 continue;
             }
+
             double r = L2_norm(x_rand);
+
             // if(tree.size() > 1)
             // {
             // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
             // }
 
-            // int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
+            int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
 
-            node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
-
-            if(q_near == nullptr)
+            if(nn_idx == -1)
                 continue;
 
-            if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
+            // node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
+
+            // if(q_near == nullptr)
+            //     continue;
+
+            // if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
+            if(ObstacleFree(tree[nn_idx]->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             {
                 near_goal = false;
 
-                node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
+                // node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
+                node* q_new = new node(tree[nn_idx]->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),tree[nn_idx],u_best,x_best);
 
-                // tree.push_back(q_new);
-                Ktree.Insert(q_new);
+                tree.push_back(q_new);
+                // Ktree.Insert(q_new);
 
                 double dist2goal = euclidean(x_goal,q_new->getXstate());
 
@@ -438,7 +454,8 @@
                     // std::cout << x_min << std::endl;
                     // printf("Goal state:\n");
                     // std::cout<<x_goal<< std::endl;
-                    getPlan(plan,q_new);
+                    // getPlan(plan,q_new);
+                    getPlan_vector(plan,tree);
                     return true;
                 }
                 else if(dist2goal < tolerance+2)
@@ -543,23 +560,22 @@
             {
                 printf("%.4f,",res[i].time);
                 myfile << res[i].time << ",";
+                myfile << res[i].node_expansions << ",";
+                myfile << res[i].cost << ",";
+                myfile <<" \n";
             }
             printf("\n");
-            myfile << "\n";
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].node_expansions);
-                myfile << res[i].node_expansions << ",";
+                
             }
-            myfile <<"\n";
-            printf("\n");
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].cost);
-                myfile << res[i].cost << ",";
+                
             }
             printf("\n");
-            myfile <<"\n";
         }
         myfile.close();
         return true;
