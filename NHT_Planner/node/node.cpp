@@ -9,7 +9,11 @@
     {
         return parent;
     }
-    const Xstate& node::getXstate() const
+    const Xstate& node::getconstXstate() const
+    {
+        return reached_state;
+    }
+    Xstate& node::getXstate() 
     {
         return reached_state;
     }

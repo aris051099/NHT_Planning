@@ -17,6 +17,7 @@ struct results
 	double time; 
 	double cost;
 	double node_expansions;
+    double beta;
 };
 
 class KRRT
@@ -25,13 +26,18 @@ class KRRT
         bool render = false;
         double* map_t = nullptr;
         double h = 0.01;
-        double c_pi= 3.141592654;
+        double c_pi= 3.141592653589793;
+        double eps = 0.075;
+        double alpha = 1.0;
+        double time2exit = 10.0;
+        double weights[4] = {1.0,1.0,1.0,1.0};
 
         int coords[2] ={0,0};
         int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
         int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
-        int K = 100000;
+        int K = 200000;
         int n_scenarios = 5;
+        int tolerance = 3;
         static const int n_trials = 10;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
@@ -68,7 +74,7 @@ class KRRT
         object path; 
         tether t; 
 
-        std::chrono::system_clock::rep seed;
+        unsigned int seed;
         std::default_random_engine gen;
         
         std::fstream myfile;
@@ -89,7 +95,6 @@ class KRRT
 
         double euclidean(Xstate& x_goal,const Xstate& x_near);
         double euclidean(double xf,double yf,double xi,double yi);
-        double euclidean(double *coord_f,double *coord_b);
         double L2_norm(const Xstate& x_s);
         double LQR_Cost(Xstate& x_k,Ustate& u_k);
         double calc_radius(std::vector<node*>& tree);
@@ -97,19 +102,30 @@ class KRRT
         double calc_angle(int xf[],int xi[]);
 
         int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree);
+        int getPlanSize();
+        int sec2msec(double sec);
         
         void nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs);
         void CleanUp(std::vector<node*>& tree, KDTree& Ktree);
-        void getPlan(std::vector<node*>& plan,std::vector<node*>& tree);
+        void getPlan(std::vector<node*>& plan,node* q_last);
+        void getPlan_vector(std::vector<node*>& plan,std::vector<node*>& i_tree);
         void map2block(double *map_coords,map map_1);
-        void steer(Xstate x_near,Xstate x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
+        void steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
         void Add_Edge(node *q_min,node *q_near);
         void updte_pos_obj(const Xstate& inc_x);
         void draw_obj();
         void UpdateControl();
-        bool planner();
         void Initialize();
-        int getPlanSize();
+        
+        bool planner();
+        bool ObstacleFree(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
+
+        Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size);
+        Xstate propagate_one_step(Xstate& inc_x,Ustate& inc_u);
+
+        Xstate dynamics (const Xstate& x, const Ustate& u, double h);
+        Xstate rk4step(const Xstate& x, const Ustate& u, double h);
+
     public:
         
         bool plan_trials();
@@ -120,7 +136,9 @@ class KRRT
         {
             Initialize();
             seed = std::chrono::system_clock::now().time_since_epoch().count();
-            gen.seed(seed);  
+            std::cout << seed << std::endl;
+            // gen.seed(seed);
+            gen.seed(14968483);  
         };
         ~KRRT()
         {
@@ -136,6 +154,7 @@ class KRRT
         {
             std::ofstream myFile(file_path);
         };
+
         bool def_start_pos(Xstate& inc_x);
         bool def_goal_pos(Xstate& inc_x);
         void set_objects();

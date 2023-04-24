@@ -2,9 +2,9 @@
     #define KiRTT
     #include "KRRT.h"
 
-    int sec2msec(double sec)
+    int KRRT::sec2msec(double sec)
     {
-    return sec*100;
+    return (std::round(sec*100.0)/100.0)*100;
     }
 
     bool check_collision(Xstate x_prop, double *map, int x_size,int y_size) 
@@ -32,7 +32,25 @@
     }
     }
 
-    Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
+    Xstate KRRT::dynamics (const Xstate& x, const Ustate& u, double h)
+    {
+        Xstate x_prop;
+        x_prop[0] = u[0]*cos(x[2]);
+        x_prop[1] = u[0]*sin(x[2]);
+        x_prop[2] = u[1];
+        x_prop[3] = eps*u[0]*sin(x[3]) + u[1];
+        return x_prop;
+    }
+
+    Xstate KRRT::rk4step(const Xstate& x, const Ustate& u, double h)
+    {
+        Xstate k1 = dynamics(x, u, h);
+        Xstate k2 = dynamics(x + k1 * (h / 2), u, h);
+        Xstate k3 = dynamics(x + k2 * (h / 2), u, h);
+        Xstate k4 = dynamics(x + k3 * h, u, h);
+        return x + (k1 + k2*2 + k3*2 + k4) * (h / 6);
+    }
+    Xstate KRRT::propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
     {
     /*
         The present function propagate the dynamics based on a specific input. In addition,
@@ -44,23 +62,31 @@
         Husky width = 990 mm = 0.990 m; Huksy height = 670 mm = 0.67 m
     */
         Xstate x_prop(i_x_k); 
+        Xstate x_prop2(i_x_k);
         Xstate x_k(i_x_k);
-        double h = 0.01; // Step_time 
         double prop_time = u_k.get_tprop();
-        // if(x_k[2] < 0)
-        // {
-        //   x_k[2] = 2*PI - x_k[2];
-        // }
+        // printf("Beta = %f\n",x_prop[3]);
         for(int i = 0; i < sec2msec(prop_time) ; ++i)
         {
-            x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-            x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-            x_prop[2] = x_k[2] + u_k[1]*h;
-            x_prop[3] = 0;
+            // x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+            // x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+            // x_prop[2] = x_k[2] + u_k[1]*h;
+            // x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + u_k[1]*h;
+            // x_prop = propagate_one_step(x_k,u_k);
+            x_prop = rk4step(x_k,u_k,h);
+            // std::cout<< "x_prop = " << x_prop << std::endl;
+            // std::cout << "x_prop2 = " << x_prop2 << std::endl;
+            // printf("Beta = %f\n",x_prop[3]*180.0/PI);
 
+            // if(x_prop[3] > PI/2 || x_prop[3] < -PI/2)
+            // {
+            //     x_k.state = 2; //Trapped 
+            //     u_k.set_tprop(i/100.0);
+            //     return x_k; 
+            // }
             if(check_collision(x_prop,map,x_size,y_size))
             {
-            x_k = x_prop;
+                x_k = x_prop;
             }
             else
             {
@@ -72,22 +98,26 @@
         x_prop.state = 1;
         return x_prop; 
     }
+
+    Xstate KRRT::propagate_one_step( Xstate& x_k, Ustate& u_k)
+    {
+        Xstate x_prop(x_k);
+        x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
+        x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
+        x_prop[2] = x_k[2] + u_k[1]*h;
+        x_prop[3] = x_k[3] + eps*u_k[0]*h*sin(x_k[3]) + alpha*u_k[1]*h;
+        // printf("u_k[0] = %f; u_k[1] = %f\n",u_k[0],u_k[1]);
+        // printf("x_k[3] = %f; eps*u_k[0]*h*sin(x_k[3]) = %f; alpha*u_k[1]*h = %f ; x_prop[3] = %f\n",x_k[3],eps*u_k[0]*h*sin(x_k[3]),alpha*u_k[1]*h,x_prop[3]);
+        return x_prop;
+    }
+
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-    std::uniform_int_distribution<int> rand_u_vel(50,100);
+    std::uniform_int_distribution<int> rand_u_vel(50,95);
+    // std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
     std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
     std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
-
-    std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-    std::uniform_real_distribution<double> rand_x(0,70.0);
-    std::uniform_real_distribution<double> rand_theta(-PI,PI);
-    std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
-
-    std::uniform_int_distribution<int> rand_map_coordsx(0,999);
-    std::uniform_int_distribution<int> rand_map_coordsy(0,999);
-
-    std::uniform_real_distribution<double> dist_prob(0.0,1);
     void KRRT::Initialize()
     {
         u_start.setState(0,0,0);
@@ -128,19 +158,15 @@
         // auto x_goal = x_sgoal.getPointer();
         // auto x_near = x_snear.getPointer();
         double dist = 0; 
-        for(int i = 0; i < x_goal.size(); i+=1)
+        for(int i = 0; i < x_goal.size(); i++)
         {
-            dist+= pow(x_goal[i]-x_near[i],2);
+            dist+= weights[i]*pow(x_goal[i]-x_near[i],2);
         }
         return sqrt(dist);
     }
     double KRRT::euclidean(double xf,double yf,double xi,double yi)
     {
         return sqrt(pow(xf-xi,2)+pow(yf-yi,2));
-    }
-    double KRRT::euclidean(double *coord_f,double *coord_b)
-    {
-        return sqrt(pow(coord_f[0]-coord_b[0],2)+pow(coord_f[1]-coord_b[0],2));
     }
     double KRRT::L2_norm(const Xstate& x_s)
     {
@@ -165,7 +191,7 @@
     double KRRT::calc_radius(std::vector<node*>& tree)
     {
         double d = 3; 
-        double gamma = 500;
+        double gamma = 1000;
         double delta = (PI*PI)/2;
         double V = tree.size();
         return (gamma/delta)*pow((log(V)/V),1/d);
@@ -240,15 +266,25 @@
             }
         }
         tree.clear();
+        // Ktree.cleanUp();
     }
-    void KRRT::getPlan(std::vector<node*>& plan,std::vector<node*>& tree)
+    void KRRT::getPlan(std::vector<node*>& plan,node* q_last)
     {
-        for(node* p = tree.back(); p != nullptr; p = plan.back()->getParent())
+        for(node* p = q_last; p != nullptr; p = plan.back()->getParent())
         {
             plan.push_back(p);
         }
         reverse(plan.begin(),plan.end());
     };
+    void KRRT::getPlan_vector(std::vector<node*>& plan,std::vector<node*>& i_tree)
+    {
+        node* q_last = i_tree.back();
+        for(node* p = q_last; p != nullptr; p = plan.back()->getParent())
+        {
+            plan.push_back(p);
+        }
+        reverse(plan.begin(),plan.end());   
+    }
     double KRRT::calc_angle(double xf,double yf,double xi,double yi)
     {	
         double angle = atan2(yf-yi,xf-xi);
@@ -273,7 +309,7 @@
         map_coords[0] = map_1.block_x*std::round(map_coords[0]);
         map_coords[1] = map_1.block_y*(map_1.height - std::round(map_coords[1]));
     }
-    void KRRT::steer(Xstate x_near,Xstate x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal)
+    void KRRT::steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal)
     {
         // Xstate x_near = tree[nn_idx]->getXstate(); //Grabs that qnear
         Xstate x_prop;
@@ -290,8 +326,12 @@
                 u_k[1] = near_rand_u_ang_vel(gen);
                 u_k.set_tprop(rand_t_prop(gen));
             }
-
+            // if(u_k[1] > alpha*u_k[1])
+            // {
+            //     continue;
+            // }
             x_prop = propagate(x_near,u_k,map_1.map_ptr,map_1.width,map_1.height);
+
 
             double dist = euclidean(x_rand,x_prop);
             if(dist < min_dist)
@@ -302,6 +342,18 @@
                 x_best = x_prop;
             }
         };
+    }
+    bool KRRT::ObstacleFree(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal)
+    {
+        steer(x_near,x_rand,map_1,x_best,u_best,prob,near_goal);
+        if(x_best.state!=2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     bool KRRT::planner()
     {
@@ -320,21 +372,8 @@
 
         int quad = 5;
 
-        auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-        std::default_random_engine gen(seed);
-
-        std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-
-        std::uniform_int_distribution<int> rand_u_vel(50,100);
-        std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
-
-        std::uniform_int_distribution<int> near_rand_u_vel(10,50);
-        std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
-
-        std::uniform_real_distribution<double> rand_xdot(-1.0,1.0);
-        std::uniform_real_distribution<double> rand_x(0,70.0);
         std::uniform_real_distribution<double> rand_theta(-PI,PI);
-        std::uniform_real_distribution<double> rand_thetadot(-1.0,1.0);
+        std::uniform_real_distribution<double> rand_beta(-PI/2.0,PI/2.0);
 
         std::uniform_int_distribution<int> rand_map_coordsx(0,999);
         std::uniform_int_distribution<int> rand_map_coordsy(0,999);
@@ -345,82 +384,99 @@
         std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
 
         tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
+        // node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
 
-        Ktree.Insert(tree.back());
+        // Ktree.Insert(qstart);
 
         std::cout<< "Number of samples: "<< K << std::endl; 
 
         for(int i = 0; i < K; ++i)
         {
 
-            auto start_time = std::chrono::system_clock::now();
+            auto start_time = std::chrono::high_resolution_clock::now();
             double prob = dist_prob(gen); //Creating random number representing probability 
             if(prob > 0.95) //Goal biasing by 5% 
             {
                 x_rand = x_goal; //Assigning qrandom to be goal
-            } else if(prob > 0.80)
+            } else if(prob > 0.85) //0.8
             {
-                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
                 x_rand = x_r;
             }
             else
             {
-                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
+                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
                 x_rand = x_r;
             }
             if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
             {
                 continue;
             }
+
             double r = L2_norm(x_rand);
+
             // if(tree.size() > 1)
             // {
             // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
             // }
+
             int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
 
-            node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
-
-            if(q_near == nullptr)
+            if(nn_idx == -1)
                 continue;
 
-            steer(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal);
+            // node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
 
-            near_goal = false;
+            // if(q_near == nullptr)
+            //     continue;
 
-            node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
-
-            tree.push_back(q_new);
-            Ktree.Insert(q_new);
-
-            double dist2goal = euclidean(x_goal,q_new->getXstate());
-
-            if(dist2goal < 1)
+            // if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
+            if(ObstacleFree(tree[nn_idx]->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             {
-                printf("Goal found at K: %d\n", i);
-                // printf("Initial State: \n");
-                // std::cout << x_0 << std::endl;
-                // printf("Final state: \n");
-                // std::cout << x_min << std::endl;
-                // printf("Goal state:\n");
-                // std::cout<<x_goal<< std::endl;
-                getPlan(plan,tree);
-                return true;
+                near_goal = false;
+
+                // node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
+                node* q_new = new node(tree[nn_idx]->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),tree[nn_idx],u_best,x_best);
+
+                tree.push_back(q_new);
+                // Ktree.Insert(q_new);
+
+                double dist2goal = euclidean(x_goal,q_new->getXstate());
+
+                if(dist2goal < tolerance)
+                {
+                    printf("Goal found at K: %d\n", i);
+                    // printf("Initial State: \n");
+                    // std::cout << x_0 << std::endl;
+                    // printf("Final state: \n");
+                    // std::cout << x_min << std::endl;
+                    // printf("Goal state:\n");
+                    // std::cout<<x_goal<< std::endl;
+                    // getPlan(plan,q_new);
+                    getPlan_vector(plan,tree);
+                    return true;
+                }
+                else if(dist2goal < tolerance+2)
+                {
+                    near_goal = true;
+                }
+                auto end_time = std::chrono::high_resolution_clock::now();
+                auto time_delay = std::chrono::duration_cast<std::chrono::microseconds> (end_time-start_time);
+                auto time_passed = time_delay.count()*1e-6;
+                accum_time+=time_passed;
+                // printf("Accumulated_time: %.4fseconds\n",accum_time);
+                if(accum_time > time2exit)
+                {
+                    return false;
+                }
             }
-            else if(dist2goal < 3)
+            else
             {
-                near_goal = true;
+                continue;
             }
-            
-            auto end_time = std::chrono::system_clock::now();
-            auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-            auto time_passed = time_delay.count()*1e-9;
-            accum_time+=time_passed;
-            // printf("Accumulated_time: %.4fseconds\n",accum_time);
-            if(accum_time > 10.0)
-            {
-                return false;
-            }
+            // steer(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal);
         }
         printf("No plan found \n");
         // CleanUp(tree);
@@ -504,23 +560,22 @@
             {
                 printf("%.4f,",res[i].time);
                 myfile << res[i].time << ",";
+                myfile << res[i].node_expansions << ",";
+                myfile << res[i].cost << ",";
+                myfile <<" \n";
             }
             printf("\n");
-            myfile << "\n";
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].node_expansions);
-                myfile << res[i].node_expansions << ",";
+                
             }
-            myfile <<"\n";
-            printf("\n");
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].cost);
-                myfile << res[i].cost << ",";
+                
             }
             printf("\n");
-            myfile <<"\n";
         }
         myfile.close();
         return true;
@@ -533,6 +588,15 @@
         auto start_time = std::chrono::system_clock::now();
         while(!too_long)
         {
+
+            if(!tree.empty())
+            {
+                CleanUp(tree,Ktree);
+            }
+            if(!plan.empty())
+            {
+                plan.clear();
+            }
             bool success = planner();
             if(!success)
             {
@@ -543,9 +607,15 @@
             {
                 too_long = true;
             }
+            // if(n_tries%3 == 0)
+            // {
+            //     printf("Alpha value:%f",alpha);
+            //     alpha+=0.25;
+            //     printf("--> %f \n",alpha);
+            // }
             if(n_tries >=15)
             {
-                too_long = true;
+                return false;
             }
         }	
         too_long = false;
@@ -554,16 +624,16 @@
         auto time_passed = time_delay.count()*1e-9;
         std::cout<<"--------------- RESULTS---------------"<<std::endl;
         std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-        std::cout<<"Tree size:" << tree.size() << std::endl;
+        std::cout<<"Tree size:" << Ktree.size << std::endl;
         std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
         std::cout<<"--------------------------------------"<<std::endl;
         return true;
     }
     void KRRT::updte_pos_obj(const Xstate& inc_x)
     {
-        husky_robot.Move(inc_x[0],inc_x[1],inc_x[2]);
-        path.Move(inc_x[0],inc_x[1],inc_x[2]);
-        t.Move(inc_x[0],inc_x[1],inc_x[2]);
+        husky_robot.Move(inc_x[0],inc_x[1],inc_x[2],inc_x[3]);
+        path.Move(inc_x[0],inc_x[1],inc_x[2],inc_x[3]);
+        t.Move(inc_x[0],inc_x[1],inc_x[2],inc_x[3]);
     }
     void KRRT::draw_obj()
     {
@@ -602,7 +672,7 @@
             {	
                 idx = 0;
                 x_k = plan[0]->getXstate(); 
-                husky_robot.Move(coords_start[0],coords_start[1],0);
+                husky_robot.Move(coords_start[0],coords_start[1],0,0);
             }	
 
             u_k = plan[idx]->getUstate();
@@ -624,9 +694,9 @@
 
                 // updte_pos_obj(x_k);
 
-                husky_robot.Move(x_prop[0],x_prop[1],x_prop[2]);
-                path.Move(x_prop[0],x_prop[1],x_prop[2]);
-                t.Move(x_prop[0],x_prop[1],x_prop[2]);
+                husky_robot.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
+                path.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
+                t.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
 
                 // draw_obj();
 
@@ -655,19 +725,19 @@
     {
         start_pos.setDim(block_width[0],block_width[1]);
         start_pos.setColor(255,0,0);
-        start_pos.Move(coords_start[0],coords_start[1],0);
+        start_pos.Move(coords_start[0],coords_start[1],0,0);
 
         goal_pos.setDim(block_width[0],block_width[1]);
         goal_pos.setColor(255,0,0);
-        goal_pos.Move(coords_goal[0],coords_goal[1],0);
+        goal_pos.Move(coords_goal[0],coords_goal[1],0,0);
 
         husky_robot.setDim(20,15);
         husky_robot.setColor(255,240,10);
-        husky_robot.Move(coords_start[0],coords_start[1],0);
+        husky_robot.Move(coords_start[0],coords_start[1],0,0);
 
         path.setDim(1,1);
         path.setColor(0,140,255);
-        path.Move(coords_start[0],coords_start[1],0);
+        path.Move(coords_start[0],coords_start[1],0,0);
 
         t.set_anchor(coords_start[0] + 5,coords_start[1]);
         t.setDim(block_width[0],block_width[1]);
@@ -680,7 +750,10 @@
             {	
                 idx = 0;
                 x_p = plan[0]->getXstate(); 
-                husky_robot.Move(coords_start[0],coords_start[1],0);
+                husky_robot.Move(coords_start[0],coords_start[1],0,0);
+                husky_robot.pos_idx.clear();
+                path.pos_idx.clear();
+                t.pos_idx.clear();
                 return true;
             }	
         return false;
