@@ -144,11 +144,18 @@ int main(int argc, char ** argv)
   std::cout << "Rk4:" << x_rk4[0] << " " << x_rk4[1] << " " << x_rk4[2] << " " << x_rk4[3] << std::endl;
   }
 
+#if TRIALS
   if(RRT.plan_trials())
   {
     std::cout << "Planning successful" << std::endl;
     return 0;
   }
+  else
+  {
+    return 1;
+  }
+#endif
+
 	if(RRT.one_shot_plan())
 	{
 

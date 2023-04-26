@@ -52,15 +52,6 @@
     }
     Xstate KRRT::propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size)
     {
-    /*
-        The present function propagate the dynamics based on a specific input. In addition,
-        a collision checking method is included. Based on a map, make sure it does not get out of bounds
-        However I need to include, the absolute displacement + relative displacement. 
-        
-        After propagating one step, we calculate the (x,y) coordinate and make sure the cell is not 1;
-        NOTES: This will also depend on the resolution of the map and the resolution for rendering. Be aware
-        Husky width = 990 mm = 0.990 m; Huksy height = 670 mm = 0.67 m
-    */
         Xstate x_prop(i_x_k); 
         Xstate x_prop2(i_x_k);
         Xstate x_k(i_x_k);
@@ -90,9 +81,9 @@
             }
             else
             {
-            x_k.state = 2; //Trapped 
-            u_k.set_tprop(i/100.0);
-            return x_k;
+                x_k.state = 2; //Trapped 
+                u_k.set_tprop(i/100.0);
+                return x_k;
             }
         }
         x_prop.state = 1;
@@ -112,9 +103,16 @@
     }
 
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-    std::uniform_int_distribution<int> rand_u_vel(50,95);
-    // std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
-    std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
+    #if CONST
+        std::uniform_int_distribution<int> rand_u_vel(50,95);
+        std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
+    #endif 
+
+    #if !CONST
+        std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
+        std::uniform_int_distribution<int> rand_u_vel(10,95);
+    #endif 
+
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
     std::uniform_real_distribution<double> near_rand_u_ang_vel(-2.0,2.0);
@@ -191,7 +189,7 @@
     double KRRT::calc_radius(std::vector<node*>& tree)
     {
         double d = 3; 
-        double gamma = 1000;
+        double gamma = 500;
         double delta = (PI*PI)/2;
         double V = tree.size();
         return (gamma/delta)*pow((log(V)/V),1/d);
@@ -214,11 +212,12 @@
                 double dist = euclidean(x_rand,tree[i]->getXstate());
                     if(dist > 0 && dist < r)
                     {
-                        if(dist < min)
-                        {
-                            min_node_idx = i;
-                            min = dist;	
-                        }
+                        return i;
+                        // if(dist < min)
+                        // {
+                        //     min_node_idx = i;
+                        //     min = dist;	
+                        // }
                     }
             }
         }
@@ -246,27 +245,33 @@
     }
     void KRRT::CleanUp(std::vector<node*>& tree, KDTree& Ktree)
     {
+
         // for(node* p:tree)
         // {
         // 	delete p; 
         // 	p = nullptr;
         // }
-        bool isRoot = false;
-        for(size_t i =0;i < tree.size(); ++i)
-        {
-            if(tree[i] == Ktree.getRoot())
+        #if LIN_TREE
+            bool isRoot = false;
+            for(size_t i =0;i < tree.size(); ++i)
             {
-                Ktree.removeRoot();
-                isRoot = true;
+                if(tree[i] == Ktree.getRoot())
+                {
+                    Ktree.removeRoot();
+                    isRoot = true;
+                }
+                if(!isRoot)
+                {
+                    delete tree[i];
+                    tree[i] = nullptr;
+                }
             }
-            if(!isRoot)
-            {
-                delete tree[i];
-                tree[i] = nullptr;
-            }
-        }
-        tree.clear();
-        // Ktree.cleanUp();
+            tree.clear();
+        #endif
+
+        #if !LIN_TREE
+            Ktree.cleanUp();
+        #endif
     }
     void KRRT::getPlan(std::vector<node*>& plan,node* q_last)
     {
@@ -352,7 +357,7 @@
         }
         else
         {
-            return false;
+            return true;
         }
     }
     bool KRRT::planner()
@@ -383,11 +388,15 @@
         std::uniform_int_distribution<int> n_rand_map_coordsx(x_goal[0]-quad,x_goal[0]+quad);
         std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
 
+    #if LIN_TREE
         tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
-        // node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
-
-        // Ktree.Insert(qstart);
-
+    #endif
+        //printing x_start
+        // printf("x_start: %f,%f,%f,%f\n",x_start[0],x_start[1],x_start[2],x_start[3]);
+    #if !LIN_TREE
+        node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
+        Ktree.Insert(qstart);
+    #endif
         std::cout<< "Number of samples: "<< K << std::endl; 
 
         for(int i = 0; i < K; ++i)
@@ -415,37 +424,45 @@
                 continue;
             }
 
-            double r = L2_norm(x_rand);
+            // double r = L2_norm(x_rand);
 
             // if(tree.size() > 1)
             // {
             // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
             // }
 
+        #if LIN_TREE
             int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
 
             if(nn_idx == -1)
                 continue;
+        #endif
 
-            // node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
+        #if !LIN_TREE
+            node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
 
-            // if(q_near == nullptr)
-            //     continue;
+            if(q_near == nullptr)
+                continue;
+        #endif
 
             // if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             if(ObstacleFree(tree[nn_idx]->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             {
                 near_goal = false;
 
-                // node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
+            #if LIN_TREE
                 node* q_new = new node(tree[nn_idx]->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),tree[nn_idx],u_best,x_best);
-
                 tree.push_back(q_new);
-                // Ktree.Insert(q_new);
+            #endif
+
+            #if !LIN_TREE
+                node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
+                Ktree.Insert(q_new);
+            #endif
 
                 double dist2goal = euclidean(x_goal,q_new->getXstate());
 
-                if(dist2goal < tolerance)
+                if(dist2goal < tolerance && q_new->g < tether_length)
                 {
                     printf("Goal found at K: %d\n", i);
                     // printf("Initial State: \n");
@@ -454,8 +471,13 @@
                     // std::cout << x_min << std::endl;
                     // printf("Goal state:\n");
                     // std::cout<<x_goal<< std::endl;
-                    // getPlan(plan,q_new);
+
+                #if LIN_TREE
                     getPlan_vector(plan,tree);
+                #endif    
+                #if !LIN_TREE    
+                    getPlan(plan,q_new);
+                #endif    
                     return true;
                 }
                 else if(dist2goal < tolerance+2)
@@ -485,6 +507,7 @@
     }
     bool KRRT::plan_trials()
     {
+        myfile.open("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
         for(int trials = 0; trials < n_scenarios; trials++)
         {
             results res[n_trials];
@@ -510,52 +533,36 @@
             while(succ_trial < 10)
             {
                 auto start_time = std::chrono::system_clock::now();
-                while(!too_long)
+                if(plan_to_goal())
                 {
+                    n_tries = 0;
+                    too_long = false;
+                    auto end_time = std::chrono::system_clock::now();
+                    auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+                    auto time_passed = time_delay.count()*1e-9;
+                    res[succ_trial].time = time_passed;
+                    res[succ_trial].cost = plan.back()->g;
+                    #if LIN_TREE
+                        res[succ_trial].node_expansions = tree.size();
+                    #endif
+                    #if !LIN_TREE
+                        res[succ_trial].node_expansions = Ktree.size;
+                    #endif
 
-                    if(!tree.empty())
-                    {
-                        CleanUp(tree,Ktree);
-                    }
-                    
-                    if(!plan.empty())
-                    {
-                        plan.clear();
-                    }
-
-                    bool success = planner();
-                    if(!success)
-                    {
-                        n_tries++;
-                        printf("Number of tries: %d \n", n_tries);
-                    }
-                    else
-                    {
-                        too_long = true;
-                    }
-                    if(n_tries >=15)
-                    {
-                        too_long = true;
-                    }
-                }	
-                n_tries = 0;
-                too_long = false;
-                auto end_time = std::chrono::system_clock::now();
-                auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-                auto time_passed = time_delay.count()*1e-9;
-                res[succ_trial].time = time_passed;
-                res[succ_trial].cost = plan.back()->g;
-                res[succ_trial].node_expansions = tree.size();
-                ++succ_trial;
-                // std::cout<<"--------------- RESULTS---------------"<<std::endl;
-                // std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-                // std::cout<<"Tree size:" << tree.size() << std::endl;
-                // std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-                // std::cout<<"--------------------------------------"<<std::endl;
+                    ++succ_trial;
+                    // std::cout<<"--------------- RESULTS---------------"<<std::endl;
+                    // std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+                    // std::cout<<"Tree size:" << tree.size() << std::endl;
+                    // std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+                    // std::cout<<"--------------------------------------"<<std::endl;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
-            myfile.open("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
-            myfile << "Configuration#" << trials << "\n";
+            // myfile << "Configuration#" << trials << "\n";
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].time);
@@ -570,6 +577,7 @@
                 printf("%.4f,",res[i].node_expansions);
                 
             }
+            printf("\n");
             for(int i = 0; i < succ_trial; ++i)
             {
                 printf("%.4f,",res[i].cost);
@@ -580,12 +588,14 @@
         myfile.close();
         return true;
     }
-    bool KRRT::one_shot_plan()
+    bool KRRT::plan_to_goal()
     {
+        // seed+=rand()%500;
+        // printf("Seed: %d \n",seed); 
+        // gen.seed(seed); 
         bool too_long = false; 
         bool reset_planner = false;  	
         int n_tries = 0;
-        auto start_time = std::chrono::system_clock::now();
         while(!too_long)
         {
 
@@ -613,21 +623,33 @@
             //     alpha+=0.25;
             //     printf("--> %f \n",alpha);
             // }
-            if(n_tries >=15)
+            if(n_tries >=50)
             {
                 return false;
             }
-        }	
-        too_long = false;
-        auto end_time = std::chrono::system_clock::now();
-        auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
-        auto time_passed = time_delay.count()*1e-9;
-        std::cout<<"--------------- RESULTS---------------"<<std::endl;
-        std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
-        std::cout<<"Tree size:" << Ktree.size << std::endl;
-        std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
-        std::cout<<"--------------------------------------"<<std::endl;
-        return true;
+        }
+        return true;	
+    }
+    bool KRRT::one_shot_plan()
+    {
+        auto start_time = std::chrono::system_clock::now();
+        if(plan_to_goal())
+        {
+            auto end_time = std::chrono::system_clock::now();
+            auto time_delay = std::chrono::duration_cast<std::chrono::nanoseconds> (end_time-start_time);
+            auto time_passed = time_delay.count()*1e-9;
+            std::cout<<"--------------- RESULTS---------------"<<std::endl;
+            std::cout<<"Planning time: "<< time_passed << " seconds" << std::endl;
+            std::cout<<"Tree size:" << Ktree.size << std::endl;
+            std::cout<<"Cost of the plan: " << plan.back()->g << std::endl; 
+            std::cout<<"--------------------------------------"<<std::endl;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
     void KRRT::updte_pos_obj(const Xstate& inc_x)
     {

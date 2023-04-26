@@ -12,6 +12,9 @@
 #include <object.h>
 #include <KDtree.h>
 
+#define CONST true
+#define TRIALS true
+#define LIN_TREE true 
 struct results
 {
 	double time; 
@@ -27,14 +30,15 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592653589793;
-        double eps = 0.075;
+        double eps = 0.1;
         double alpha = 1.0;
-        double time2exit = 10.0;
+        double time2exit = 20;
         double weights[4] = {1.0,1.0,1.0,1.0};
+        double tether_length = 70.0;
 
         int coords[2] ={0,0};
-        int coords_start[2]={30,20}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-        int coords_goal[2]={7,46}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
+        int coords_start[2]={40,46}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
+        int coords_goal[2]={45,10}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
         int K = 200000;
         int n_scenarios = 5;
         int tolerance = 3;
@@ -119,6 +123,7 @@ class KRRT
         
         bool planner();
         bool ObstacleFree(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
+        bool plan_to_goal();
 
         Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size);
         Xstate propagate_one_step(Xstate& inc_x,Ustate& inc_u);
@@ -137,8 +142,8 @@ class KRRT
             Initialize();
             seed = std::chrono::system_clock::now().time_since_epoch().count();
             std::cout << seed << std::endl;
-            // gen.seed(seed);
-            gen.seed(14968483);  
+            gen.seed(seed);
+            // gen.seed(14968483);  
         };
         ~KRRT()
         {
