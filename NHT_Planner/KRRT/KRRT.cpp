@@ -409,27 +409,26 @@
                 x_rand = x_goal; //Assigning qrandom to be goal
             } else if(prob > 0.85) //0.8
             {
-                Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
                 // Xstate x_r((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
-                x_rand = x_r;
+                x_rand.setState((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),0);
+                // x_rand.setState((double)n_rand_map_coordsx(gen),(double)n_rand_map_coordsy(gen),rand_theta(gen),rand_beta(gen));
             }
             else
             {
-                Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
+                // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
                 // Xstate x_r((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
-                x_rand = x_r;
+                x_rand.setState((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),0);
+                // x_rand.setState((double)rand_map_coordsx(gen)/10.0,(double)rand_map_coordsy(gen)/10.0,rand_theta(gen),rand_beta(gen));
             }
             if(x_rand[0] > map_1.width && x_rand[1] > map_1.height)
             {
                 continue;
             }
 
-            // double r = L2_norm(x_rand);
+            
 
-            // if(tree.size() > 1)
-            // {
-            // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
-            // }
+
 
         #if LIN_TREE
             int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
@@ -439,14 +438,18 @@
         #endif
 
         #if !LIN_TREE
+            double r = L2_norm(x_rand);
+            // if(tree.size() > 1)
+            // {
+            // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
+            // }
             node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
-
             if(q_near == nullptr)
                 continue;
         #endif
 
-            // if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
-            if(ObstacleFree(tree[nn_idx]->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
+            if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
+            // if(ObstacleFree(tree[nn_idx]->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             {
                 near_goal = false;
 
@@ -600,6 +603,7 @@
         {
 
             if(!tree.empty())
+            // if(Ktree.size > 0)
             {
                 CleanUp(tree,Ktree);
             }

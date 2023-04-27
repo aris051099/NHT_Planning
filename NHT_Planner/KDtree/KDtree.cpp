@@ -57,7 +57,7 @@
         double dy = a[1] - b[1];
         double dz = a[2] - b[2];
         double dw = a[3] - b[3];
-        return dx * dx + dy * dy + dz * dz + dw * dw;
+        return sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
     }
 
     void KDTree::nearest_neighbor(node* Knode,const Xstate& target, double& min_distance, node*& nearest_Xstate,double r) const 
@@ -67,12 +67,15 @@
 
         double distance = squared_distance(Knode->getXstate(), target);
 
-        // if (distance < min_distance && distance <= r)
-        if (distance < min_distance)
+        // if ( distance < min_distance && distance <= r)
+        // if(distance <= r)
+        // if (distance < min_distance)
+        if (distance <= r && distance < min_distance)
         {
-                min_distance = distance;
-                nearest_Xstate = Knode;
+            min_distance = distance;
+            nearest_Xstate = Knode;  
         }
+
         
 
         double axis_diff = 0;

@@ -13,8 +13,8 @@
 #include <KDtree.h>
 
 #define CONST true
-#define TRIALS true
-#define LIN_TREE true 
+#define TRIALS false
+#define LIN_TREE false
 struct results
 {
 	double time; 
@@ -30,18 +30,18 @@ class KRRT
         double* map_t = nullptr;
         double h = 0.01;
         double c_pi= 3.141592653589793;
-        double eps = 0.1;
+        double eps = 0.085;
         double alpha = 1.0;
-        double time2exit = 20;
+        double time2exit = 20.0;
         double weights[4] = {1.0,1.0,1.0,1.0};
         double tether_length = 70.0;
+        double tolerance = 5.0;
 
         int coords[2] ={0,0};
         int coords_start[2]={40,46}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
         int coords_goal[2]={45,10}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
         int K = 200000;
         int n_scenarios = 5;
-        int tolerance = 3;
         static const int n_trials = 10;
 
         int start_x_coord_array[5] = {30,10,5,5,40};
