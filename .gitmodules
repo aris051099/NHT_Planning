@@ -1,0 +1,6 @@
+[submodule "third_party/MMLPlayer"]
+	path = third_party/MMLPlayer
+	url = https://github.com/captainys/MMLPlayer.git
+[submodule "third_party/public"]
+	path = third_party/public
+	url = https://github.com/captainys/public.git
