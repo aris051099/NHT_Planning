@@ -208,17 +208,16 @@
         if(!tree.empty())
         {
             for(int i = 0; i < tree.size(); ++i)
-            { 
+            {
                 double dist = euclidean(x_rand,tree[i]->getXstate());
-                    if(dist > 0 && dist < r)
+                if(dist > 0 && dist < r)
+                {
+                    if(dist < min)
                     {
-                        return i;
-                        // if(dist < min)
-                        // {
-                        //     min_node_idx = i;
-                        //     min = dist;	
-                        // }
+                        min_node_idx = i;
+                        min = dist;
                     }
+                }
             }
         }
         return min_node_idx;
@@ -351,13 +350,13 @@
     bool KRRT::ObstacleFree(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal)
     {
         steer(x_near,x_rand,map_1,x_best,u_best,prob,near_goal);
-        if(x_best.state!=2)
+        if(x_best.state != 2)
         {
             return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
     bool KRRT::planner()

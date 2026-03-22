@@ -21,7 +21,7 @@ class state
     }
     double operator[] (int index) const
     {
-      if(index > arr_size)
+      if(index >= arr_size)
       {
         printf("Index out of bounds");
       }
@@ -29,7 +29,7 @@ class state
     } 
     double& operator[] (int index)
     {
-      if(index > arr_size)
+      if(index >= arr_size)
       {
         printf("Index out of bounds");
       }

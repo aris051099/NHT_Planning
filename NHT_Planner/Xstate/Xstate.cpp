@@ -31,9 +31,9 @@
     Xstate::Xstate()
     {
     state_elem[0] = 0;
-    state_elem[0] = 0;
-    state_elem[0] = 0;
-    state_elem[0] = 0; 
+    state_elem[1] = 0;
+    state_elem[2] = 0;
+    state_elem[3] = 0;
     }
 
     Xstate::Xstate(double x1, double x2, double x3, double x4)

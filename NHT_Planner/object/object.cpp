@@ -239,7 +239,7 @@
         double AB = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
         double AP = sqrt((o_x-x1)*(o_x-x1)+(o_y-y1)*(o_y-y1));
         double PB = sqrt((x2-o_x)*(x2-o_x)+(y2-o_y)*(y2-o_y));
-        if(AB == AP+PB)
+        if(std::abs(AB - (AP+PB)) < 1e-9)
         {
             if(std::min(AP,PB) == AP)
             {
