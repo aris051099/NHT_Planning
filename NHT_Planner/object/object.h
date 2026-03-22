@@ -28,8 +28,6 @@ class object
 		void setDim(GLfloat i_w, GLfloat i_h);
 		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle, GLfloat i_beta);
 		void Draw_object(void);
-		void Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
-		void Draw_in_center(void);
 		void Draw_object_Angle(void);
 		void Draw_coords(void);
 		void Draw_Path(void);

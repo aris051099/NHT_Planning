@@ -17,7 +17,6 @@ class node
 		int axis = -1;
 		node* left = nullptr;
 		node* right = nullptr;
-		std::vector<node*> childs;
 		node(){};
 		node(const Xstate&p,int axis,node* parent): reached_state{p},axis{axis},parent{parent} {};
 		node(double g,double h, node* inc_parent,const Ustate& inc_u_control,const Xstate& X_inc):g{g},h{h},parent{inc_parent},reached_state{X_inc}

@@ -22,23 +22,24 @@ These were correctness-breaking bugs affecting the algorithm's output.
 
 ---
 
-## Phase 2 — Remove Dead Code
+## Phase 2 — Remove Dead Code ✅
 
 Remove all commented-out legacy code, unused files, inactive `#if` branches, and unused class members.
 
 | # | Location | What to Remove | Status |
 |---|----------|----------------|--------|
-| 1 | `Backup.cpp` | Entire file (~722 lines of commented-out legacy code) | ⬜ Pending |
-| 2 | `KDtree/KDtreePoint.h` | Entire file is commented out — serves no purpose | ⬜ Pending |
-| 3 | `Xstate/Xstate.cpp:71-242` | Large block of commented-out dead code (clothoid, collision variants) | ⬜ Pending |
-| 4 | `KRRT/KRRT.cpp` | `#if LIN_TREE` blocks — linear tree path is dead and untested; keep only KDTree path | ⬜ Pending |
-| 5 | `KRRT/KRRT.cpp` | `#if CONST` / `#if !CONST` blocks for random distributions — keep only the active one | ⬜ Pending |
-| 6 | `KRRT/KRRT.cpp` | `#if TRIALS` block in `main` — move trials logic behind a runtime flag instead | ⬜ Pending |
-| 7 | `node/node.h` | `childs` vector — declared but never populated or used | ⬜ Pending |
-| 8 | `planner.cpp` | `ObstacleFinder` class — declared but never instantiated | ⬜ Pending |
-| 9 | `object/object.cpp` | `Draw_in_center()`, `Draw_object_coords()` — never called externally | ⬜ Pending |
-| 10 | `map/map.cpp` | `setWhite()`, `setBlack()`, `printMap()` — unused methods | ⬜ Pending |
-| 11 | `KRRT/KRRT.cpp:683-748` | `Render()` method — duplicate of the render loop in `planner.cpp`, never called | ⬜ Pending |
+| 1 | `Backup.cpp` | Entire file (~722 lines of commented-out legacy code) | ✅ Done |
+| 2 | `KDtree/KDtreePoint.h` | Entire file is commented out — serves no purpose | ✅ Done |
+| 3 | `Xstate/Xstate.cpp:71-242` | Large block of commented-out dead code (clothoid, collision variants) | ✅ Done |
+| 4 | `KRRT/KRRT.cpp` | `#if LIN_TREE` blocks — linear tree path removed; KDTree path unwrapped | ✅ Done |
+| 5 | `KRRT/KRRT.cpp` | `#if CONST` / `#if !CONST` blocks — active path unwrapped, dead path removed | ✅ Done |
+| 6 | `planner.cpp` | `#if TRIALS` block removed; `plan_trials()` method kept for future use | ✅ Done |
+| 7 | `node/node.h` | `childs` vector — removed | ✅ Done |
+| 8 | `planner.cpp` | `ObstacleFinder` class — removed | ✅ Done |
+| 9 | `object/object.cpp` | `Draw_in_center()`, `Draw_object_coords()` — removed; `Draw_Path()` inlined | ✅ Done |
+| 10 | `map/map.cpp` | `setWhite()`, `setBlack()`, `printMap()` — removed | ✅ Done |
+| 11 | `KRRT/KRRT.cpp` | `Render()` method — removed (duplicate of render loop in `planner.cpp`) | ✅ Done |
+| 12 | `KRRT/KRRT.h` | `Add_Edge`, `UpdateControl`, `nearest_n_idx`, `getPlan_vector`, `Render`, duplicate `public:` — removed | ✅ Done |
 
 ---
 

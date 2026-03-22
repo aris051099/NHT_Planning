@@ -3,85 +3,11 @@
  * planner.c
  *
  *=================================================================*/
-#include <math.h>
-#include <random>
-#include <vector>
-#include <array>
-#include <algorithm>
-#include <chrono>
-#include <random>
-#include <tuple>
-#include <string>
-#include <stdexcept>
-#include <regex> // For regex and split logic
-#include <iostream> // cout, endl
-#include <fstream> // For reading/writing files
-#include <assert.h>
-#include <limits>
-#include <queue>
-#include <unordered_set>
+#include <iostream>
+#include <fstream>
 #include <KRRT.h>
 #include <fssimplewindow.h>
 
-#define PI 3.141592654
-
-class ObstacleFinder 
-{
-public:
-  ObstacleFinder(double* map, int mapRows, int mapCols) : map_(map), mapRows_(mapRows), mapCols_(mapCols) {}
-
-  // Function to find and return the separate obstacles in the map
-  std::vector<std::vector<int>> findObstacles() 
-  {
-    std::vector<std::vector<int>> obstacles;
-    for (int i = 0; i < mapRows_; ++i) {
-      for (int j = 0; j < mapCols_; ++j) {
-        if (map_[i * mapCols_ + j] == 1) {
-          std::vector<int> obstacle;
-          findObstacleDFS(i, j, obstacle);
-          obstacles.push_back(obstacle);
-        }
-      }
-    }
-    return obstacles;
-  }
-
-private:
-  double* map_; // Pointer to the map array
-  int mapRows_; // Number of rows in the map
-  int mapCols_; // Number of columns in the map
-
-  // Recursive function to perform depth-first search (DFS) to find an obstacle
-  void findObstacleDFS(int row, int col, std::vector<int>& obstacle) 
-  {
-    if (row < 0 || row >= mapRows_ || col < 0 || col >= mapCols_ || map_[row * mapCols_ + col] != 1)
-      return;
-    obstacle.push_back(row * mapCols_ + col);
-    map_[row * mapCols_ + col] = 0; // Mark the visited cell as free space
-    findObstacleDFS(row - 1, col, obstacle); // North
-    findObstacleDFS(row + 1, col, obstacle); // South
-    findObstacleDFS(row, col - 1, obstacle); // West
-    findObstacleDFS(row, col + 1, obstacle); // East
-  }
-};
-
-void get2DCoordinates(int index,int width, int& row, int& col)
-{
-    col = index / width;
-    row = index % width;
-}
-
-/** Your final solution will be graded by an grading script which will
- * send the default 6 arguments:
- *    map, numOfDOFs, commaSeparatedStartPos, commaSeparatedGoalPos, 
- *    whichPlanner, outputFilePath
- * An example run after compiling and getting the planner.out executable
- * >> ./planner.out map1.txt 5 1.57,0.78,1.57,0.78,1.57 0.392,2.35,3.14,2.82,4.71 0 output.txt
- * See the hw handout for full information.
- * If you modify this for testing (e.g. to try out different hyper-parameters),
- * make sure it can run with the original 6 commands.
- * Programs that do not will automatically get a 0.
- * */
 
 // Xstate propagate_one_step(const KRRT& RRT)
 // {
@@ -143,18 +69,6 @@ int main(int argc, char ** argv)
   std::cout << "Euler: " << x_euler[0] << " " << x_euler[1] << " " << x_euler[2] << " " << x_euler[3] << std::endl;
   std::cout << "Rk4:" << x_rk4[0] << " " << x_rk4[1] << " " << x_rk4[2] << " " << x_rk4[3] << std::endl;
   }
-
-#if TRIALS
-  if(RRT.plan_trials())
-  {
-    std::cout << "Planning successful" << std::endl;
-    return 0;
-  }
-  else
-  {
-    return 1;
-  }
-#endif
 
 	if(RRT.one_shot_plan())
 	{

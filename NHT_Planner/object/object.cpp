@@ -52,55 +52,6 @@
 
     }
 
-    void object::Draw_object_coords(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h)
-    {
-        float w_husky = 20; 
-        float h_husky = 15;
-        i_x =i_x*block_side;
-        i_y =(ofs_y-i_y)*block_side;
-        i_x = i_x + w_husky/2;
-        i_y = i_y + h_husky/2;
-        glColor3ub(this->r,this->g,this->b);
-
-        glBegin(GL_QUADS);
-
-        glTexCoord3f(0.0,0.0,0.0);
-        glVertex3f(i_x,i_y,0); //0,0
-
-        glTexCoord3f(1.0,0.0,0.0);
-        glVertex3f(i_x+w,i_y,0); //1,0
-
-        glTexCoord3f(1.0,1.0,0);
-        glVertex3f(i_x+w,i_y+h,0); // 1,1
-
-        glTexCoord3f(0.0,1.0,0.0);
-        glVertex3f(i_x,i_y+h,0); // 0,1
-
-        glEnd(); 	
-    }
-
-
-    void object::Draw_in_center()
-    {
-        glColor3ub(this->r,this->g,this->b);
-
-        glBegin(GL_QUADS);
-
-        glTexCoord3f(0.0,0.0,0.0);
-        glVertex3f(x_w-w/2 ,y_w-h/2,0); //0,0
-
-        glTexCoord3f(1.0,0.0,0.0);
-        glVertex3f(x_w+w-w/2,y_w-h/2,0); //1,0
-
-        glTexCoord3f(1.0,1.0,0);
-        glVertex3f(x_w+w-w/2,y_w+h-h/2,0); // 1,1
-
-        glTexCoord3f(0.0,1.0,0.0);
-        glVertex3f(x_w-w/2,y_w+h-h/2,0); // 0,1
-
-        glEnd(); 
-    }
-
     // void object::Draw_object_Angle()
     // {
         
@@ -198,7 +149,15 @@
         {
             for(int j = 0; j < pos_idx.size(); j+=2)
             {
-                Draw_object_coords(pos_idx[j],pos_idx[j+1],15,15);
+                float p_x = pos_idx[j]  * block_side;
+                float p_y = (ofs_y - pos_idx[j+1]) * block_side;
+                glColor3ub(this->r,this->g,this->b);
+                glBegin(GL_QUADS);
+                glVertex3f(p_x,     p_y,     0);
+                glVertex3f(p_x + w, p_y,     0);
+                glVertex3f(p_x + w, p_y + h, 0);
+                glVertex3f(p_x,     p_y + h, 0);
+                glEnd();
             }
         }
     }

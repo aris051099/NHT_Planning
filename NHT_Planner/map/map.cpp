@@ -7,19 +7,6 @@
         this->map_ptr = map_i_ptr;
     }
 
-    void map::setWhite()
-    {
-        this->r = 255;
-        this->g = 255;
-        this->b = 255;
-    }
-    void map::setBlack()
-    {
-        this->r = 0;
-        this->g = 0;
-        this->b = 0;          
-    }
-
     void map::loadMap(std::string filepath) {
         std::FILE *f = fopen(filepath.c_str(), "r");
         if (f) {
@@ -98,18 +85,6 @@
                 i_y +=this->block_y;
             }
         }        
-    }
-
-    void map::printMap()
-    {
-        for(int i = 0; i < width*height ; ++i)
-        {
-            if(i%height == 0)
-            {
-                std::cout << std::endl;
-            }
-            std::cout << map_ptr[i] << " ";
-        }
     }
 
     void map::calc_collision_set()

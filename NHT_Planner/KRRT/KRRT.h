@@ -12,9 +12,6 @@
 #include <object.h>
 #include <KDtree.h>
 
-#define CONST true
-#define TRIALS false
-#define LIN_TREE false
 struct results
 {
 	double time; 
@@ -105,20 +102,15 @@ class KRRT
         double calc_angle(double xf,double yf,double xi,double yi);
         double calc_angle(int xf[],int xi[]);
 
-        int nearest_n_idx(Xstate x_rand,std::vector<node*>& tree);
         int getPlanSize();
         int sec2msec(double sec);
         
-        void nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs);
         void CleanUp(std::vector<node*>& tree, KDTree& Ktree);
         void getPlan(std::vector<node*>& plan,node* q_last);
-        void getPlan_vector(std::vector<node*>& plan,std::vector<node*>& i_tree);
         void map2block(double *map_coords,map map_1);
         void steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
-        void Add_Edge(node *q_min,node *q_near);
         void updte_pos_obj(const Xstate& inc_x);
         void draw_obj();
-        void UpdateControl();
         void Initialize();
         
         bool planner();
@@ -131,12 +123,9 @@ class KRRT
         Xstate dynamics (const Xstate& x, const Ustate& u, double h);
         Xstate rk4step(const Xstate& x, const Ustate& u, double h);
 
-    public:
-        
         bool plan_trials();
         bool one_shot_plan();
 
-        void Render();
         KRRT()
         {
             Initialize();

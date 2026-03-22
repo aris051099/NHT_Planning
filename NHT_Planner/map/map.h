@@ -27,9 +27,6 @@ class map
         map(void);
         map(double *map_i_ptr);
         void loadMap(std::string filepath);
-        void setWhite();
-        void setBlack();
         void renderMap();
-        void printMap();
         void calc_collision_set();
 };

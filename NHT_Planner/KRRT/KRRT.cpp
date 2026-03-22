@@ -103,15 +103,8 @@
     }
 
     std::uniform_real_distribution<double> rand_t_prop(0.0,8);
-    #if CONST
-        std::uniform_int_distribution<int> rand_u_vel(50,95);
-        std::uniform_real_distribution<double> rand_u_ang_vel(-0.25,0.25);
-    #endif 
-
-    #if !CONST
-        std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
-        std::uniform_int_distribution<int> rand_u_vel(10,95);
-    #endif 
+    std::uniform_real_distribution<double> rand_u_ang_vel(-PI,PI);
+    std::uniform_int_distribution<int> rand_u_vel(10,95);
 
 
     std::uniform_int_distribution<int> near_rand_u_vel(10,50);
@@ -195,34 +188,6 @@
         return (gamma/delta)*pow((log(V)/V),1/d);
     }
 
-    int KRRT::nearest_n_idx(Xstate x_rand,std::vector<node*>& tree)
-    {
-        double min = std::numeric_limits<double>::infinity();
-        // double r = 9;
-        double r = L2_norm(x_rand);
-        if(tree.size() > 1)
-        {
-            r = std::min(L2_norm(x_rand),calc_radius(tree));
-        }
-        int min_node_idx = -1;
-        if(!tree.empty())
-        {
-            for(int i = 0; i < tree.size(); ++i)
-            {
-                double dist = euclidean(x_rand,tree[i]->getXstate());
-                if(dist > 0 && dist < r)
-                {
-                    if(dist < min)
-                    {
-                        min_node_idx = i;
-                        min = dist;
-                    }
-                }
-            }
-        }
-        return min_node_idx;
-
-    }
     void KRRT::nearest_nn_idx(Xstate x_rand,double r,std::vector<node*>& tree,std::vector<int>& nn_idxs)
     {
         nn_idxs.clear();
@@ -244,33 +209,7 @@
     }
     void KRRT::CleanUp(std::vector<node*>& tree, KDTree& Ktree)
     {
-
-        // for(node* p:tree)
-        // {
-        // 	delete p; 
-        // 	p = nullptr;
-        // }
-        #if LIN_TREE
-            bool isRoot = false;
-            for(size_t i =0;i < tree.size(); ++i)
-            {
-                if(tree[i] == Ktree.getRoot())
-                {
-                    Ktree.removeRoot();
-                    isRoot = true;
-                }
-                if(!isRoot)
-                {
-                    delete tree[i];
-                    tree[i] = nullptr;
-                }
-            }
-            tree.clear();
-        #endif
-
-        #if !LIN_TREE
-            Ktree.cleanUp();
-        #endif
+        Ktree.cleanUp();
     }
     void KRRT::getPlan(std::vector<node*>& plan,node* q_last)
     {
@@ -280,15 +219,6 @@
         }
         reverse(plan.begin(),plan.end());
     };
-    void KRRT::getPlan_vector(std::vector<node*>& plan,std::vector<node*>& i_tree)
-    {
-        node* q_last = i_tree.back();
-        for(node* p = q_last; p != nullptr; p = plan.back()->getParent())
-        {
-            plan.push_back(p);
-        }
-        reverse(plan.begin(),plan.end());   
-    }
     double KRRT::calc_angle(double xf,double yf,double xi,double yi)
     {	
         double angle = atan2(yf-yi,xf-xi);
@@ -387,15 +317,8 @@
         std::uniform_int_distribution<int> n_rand_map_coordsx(x_goal[0]-quad,x_goal[0]+quad);
         std::uniform_int_distribution<int> n_rand_map_coordsy(x_goal[1]-quad,x_goal[1]+quad);
 
-    #if LIN_TREE
-        tree.push_back(new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start));
-    #endif
-        //printing x_start
-        // printf("x_start: %f,%f,%f,%f\n",x_start[0],x_start[1],x_start[2],x_start[3]);
-    #if !LIN_TREE
         node* qstart = new node(t_passed,euclidean(x_goal,x_start),nullptr,u_start,x_start);
         Ktree.Insert(qstart);
-    #endif
         std::cout<< "Number of samples: "<< K << std::endl; 
 
         for(int i = 0; i < K; ++i)
@@ -429,38 +352,18 @@
 
 
 
-        #if LIN_TREE
-            int nn_idx = nearest_n_idx(x_rand,tree);//Loops through the entire list for the closest neighbor
-
-            if(nn_idx == -1)
-                continue;
-        #endif
-
-        #if !LIN_TREE
             double r = L2_norm(x_rand);
-            // if(tree.size() > 1)
-            // {
-            // 	r = std::min(L2_norm(x_rand),calc_radius(tree));
-            // }
-            node* q_near = Ktree.nearest_neighbor(x_rand,r); //Grabs that qnear
+            node* q_near = Ktree.nearest_neighbor(x_rand,r);
             if(q_near == nullptr)
                 continue;
-        #endif
 
             if(ObstacleFree(q_near->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             // if(ObstacleFree(tree[nn_idx]->getXstate(),x_rand,map_1,x_best,u_best,prob,near_goal))
             {
                 near_goal = false;
 
-            #if LIN_TREE
-                node* q_new = new node(tree[nn_idx]->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),tree[nn_idx],u_best,x_best);
-                tree.push_back(q_new);
-            #endif
-
-            #if !LIN_TREE
                 node* q_new = new node(q_near->g + u_best[0]*u_best.get_tprop(),euclidean(x_goal,x_best),q_near,u_best,x_best);
                 Ktree.Insert(q_new);
-            #endif
 
                 double dist2goal = euclidean(x_goal,q_new->getXstate());
 
@@ -474,12 +377,7 @@
                     // printf("Goal state:\n");
                     // std::cout<<x_goal<< std::endl;
 
-                #if LIN_TREE
-                    getPlan_vector(plan,tree);
-                #endif    
-                #if !LIN_TREE    
                     getPlan(plan,q_new);
-                #endif    
                     return true;
                 }
                 else if(dist2goal < tolerance+2)
@@ -544,12 +442,7 @@
                     auto time_passed = time_delay.count()*1e-9;
                     res[succ_trial].time = time_passed;
                     res[succ_trial].cost = plan.back()->g;
-                    #if LIN_TREE
-                        res[succ_trial].node_expansions = tree.size();
-                    #endif
-                    #if !LIN_TREE
-                        res[succ_trial].node_expansions = Ktree.size;
-                    #endif
+                    res[succ_trial].node_expansions = Ktree.size;
 
                     ++succ_trial;
                     // std::cout<<"--------------- RESULTS---------------"<<std::endl;
@@ -678,73 +571,6 @@
     int KRRT::getPlanSize()
     {
         return plan.size();
-    }
-    void KRRT::Render()
-    {
-        int idx = 0;
-        // bool end_path = false; 
-        Xstate x_k(x_start);
-        std::cout << "Rendering planner" << std::endl;
-        // FsOpenWindow(0,0,w_width,w_height,1);
-        for(;;)
-        {
-            FsPollDevice();
-            if(FSKEY_ESC==FsInkey())
-            {
-                break;
-            }
-            if(idx >= getPlanSize())
-            {	
-                idx = 0;
-                x_k = plan[0]->getXstate(); 
-                husky_robot.Move(coords_start[0],coords_start[1],0,0);
-            }	
-
-            u_k = plan[idx]->getUstate();
-
-            double prop_time = u_k.get_tprop();
-            // // Xstate x_prop(plan[idx]->getXstate());
-            // x_planned = plan[idx]->getXstate();
-            Xstate x_prop;
-            for(int i = 0; i < sec2msec(prop_time) ; ++i)
-            {
-                x_prop[0] = x_k[0] + u_k[0]*cos(x_k[2])*h;
-                x_prop[1] = x_k[1] + u_k[0]*sin(x_k[2])*h;
-                x_prop[2] = x_k[2] + u_k[1]*h;
-                x_prop[3] = 0;
-
-                x_k = x_prop;
-
-                //Rendering
-
-                // updte_pos_obj(x_k);
-
-                husky_robot.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
-                path.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
-                t.Move(x_prop[0],x_prop[1],x_prop[2],x_prop[3]);
-
-                // draw_obj();
-
-                map_1.renderMap();
-
-                start_pos.Draw_object();
-                start_pos.Draw_coords();
-                
-                goal_pos.Draw_object();
-                goal_pos.Draw_coords();
-
-                husky_robot.Draw_object_Angle();
-
-                path.Draw_Path();
-                t.Draw_tether();
-                
-                glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-                
-                FsSwapBuffers();
-                // FsSleep(1);
-            }
-            ++idx; 
-        }
     }
     void KRRT::set_objects()
     {
