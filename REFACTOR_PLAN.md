@@ -43,35 +43,30 @@ Remove all commented-out legacy code, unused files, inactive `#if` branches, and
 
 ---
 
-## Phase 3 — Architecture Refactor
+## Phase 3 — Architecture Refactor ✅
 
 Split the KRRT God Object into focused, single-responsibility classes.
 
-### Current Problem
-`KRRT` owns: planning algorithm + physics simulation + rendering + object management +
-file I/O + random state + statistics. All members are public.
-
-### Target Architecture
+### Architecture
 
 ```
 KRRT/
-├── Dynamics        — rk4step(), propagate_one_step(), dynamics()
-│                     Pure physics, no external dependencies
-├── Sampler         — random control/state sampling
-│                     Owns the random engine and distributions (currently file-scope globals)
-├── KRRT            — planning algorithm only
-│                     Depends on: Dynamics, Sampler, KDTree, map
-└── Renderer        — all OpenGL calls, object drawing, file output
-                      Separated from planning logic entirely
+├── Dynamics.h   — pure physics: f(), rk4step(), euler_step(), propagate(), check_collision()
+├── Sampler.h    — random sampling: owns engine + all distributions (was file-scope globals)
+├── Renderer.h   — visual objects + OpenGL calls: setup(), update(), draw(), reset_trail()
+├── KRRT.h       — planner: composes above, all internals private
+└── KRRT.cpp     — implementation; delegates physics/sampling/rendering to sub-systems
 ```
 
 | # | Task | Status |
 |---|------|--------|
-| 1 | Extract `Dynamics` class from KRRT (`dynamics()`, `rk4step()`, `propagate_one_step()`) | ⬜ Pending |
-| 2 | Extract `Sampler` class — move file-scope random distributions into a class | ⬜ Pending |
-| 3 | Extract `Renderer` class — move all OpenGL/object calls out of KRRT | ⬜ Pending |
-| 4 | Make KRRT members private, expose only a clean planning interface | ⬜ Pending |
-| 5 | Remove rendering state from KRRT (`husky_robot`, `path`, `t`, `start_pos`, `goal_pos`) | ⬜ Pending |
+| 1 | Extract `Dynamics` class — `f()`, `rk4step()`, `euler_step()`, `propagate()` | ✅ Done |
+| 2 | Extract `Sampler` class — file-scope globals moved into class with clean API | ✅ Done |
+| 3 | Extract `Renderer` class — all visual objects and OpenGL calls isolated | ✅ Done |
+| 4 | Privatize KRRT internals — only public: sub-systems, plan, render-loop state | ✅ Done |
+| 5 | Remove visual objects from KRRT (`husky_robot`, `path`, `t`, `start_pos`, `goal_pos`) | ✅ Done |
+| 6 | Remove dead code from KRRT.cpp (`nearest_nn_idx`, `LQR_Cost`, `map2block`, commented blocks) | ✅ Done |
+| 7 | Fix hardcoded CSV path in `planner.cpp` — now writes to `results.csv` relative path | ✅ Done |
 
 ---
 
@@ -103,6 +98,4 @@ KRRT/
 ## Notes
 
 - Third-party libraries (`public`, `MMLPlayer`) are managed as git submodules under `third_party/`.
-- The active planner path is `#if !LIN_TREE` (KDTree-based). The `LIN_TREE` path has not been tested and should be removed in Phase 2.
-- The active control sampling path is `#if !CONST`. The `CONST` path should be removed in Phase 2.
-- Results CSV output path must be made portable before sharing or running on another machine.
+- Results CSV now writes to `results.csv` in the working directory (was hardcoded to a user-specific desktop path).

@@ -1,157 +1,110 @@
-#include <math.h>
-#include <random>
-#include <vector>
-#include <algorithm>
+#pragma once
 #include <chrono>
-#include <string>
-#include <iostream> // cout, endl
-#include <fstream> // For reading/writing files
+#include <fstream>
+#include <iostream>
 #include <limits>
-#include <node.h>
-#include <map.h>
-#include <object.h>
+#include <string>
+#include <vector>
+
 #include <KDtree.h>
+#include <map.h>
+#include <node.h>
+
+#include "Dynamics.h"
+#include "Sampler.h"
+#include "Renderer.h"
 
 struct results
 {
-	double time; 
-	double cost;
-	double node_expansions;
+    double time;
+    double cost;
+    double node_expansions;
     double beta;
 };
 
 class KRRT
 {
-    public:
-        bool render = false;
-        double* map_t = nullptr;
-        double h = 0.01;
-        double c_pi= 3.141592653589793;
-        double eps = 0.085;
-        double alpha = 1.0;
-        double time2exit = 20.0;
-        double weights[4] = {1.0,1.0,1.0,1.0};
-        double tether_length = 70.0;
-        double tolerance = 5.0;
+public:
+    // ── Sub-systems ──────────────────────────────────────────────────────────
+    Dynamics dynamics;
+    Sampler  sampler;
+    Renderer renderer;
 
-        int coords[2] ={0,0};
-        int coords_start[2]={40,46}; //30,20 ; 10,20; 5,35; 40,46;(x,y)
-        int coords_goal[2]={45,10}; // 7, 46; 30,46; 40,15; 48,50; 45,10; (x,y)
-        int K = 200000;
-        int n_scenarios = 5;
-        static const int n_trials = 10;
+    // ── Execution state used by the render loop in planner.cpp ───────────────
+    Xstate       x_p;       // current robot state during plan playback
+    Ustate       u_k;       // current control during plan playback
+    int          idx = 0;   // current waypoint index
+    std::fstream myfile;    // results CSV output stream
 
-        int start_x_coord_array[5] = {30,10,5,5,40};
-        int start_y_coord_array[5] = {20,20,35,35,46};
-        int goal_x_coord_array[5] = {7,30,40,48,45};
-        int goal_y_coord_array[5] = {46,46,15,50,10};
-        int block_width[2] = {15,15};
+    // ── Plan output ───────────────────────────────────────────────────────────
+    std::vector<node*> plan;
 
-        int x_size=0, y_size=0;
-        int idx = 0;
-        int w_width = 1000;
-        int w_height =1000;
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    KRRT();
+    ~KRRT();
 
-        map map_1;
+    // ── Primary interface ─────────────────────────────────────────────────────
+    void LoadMap(const std::string& filepath);
+    bool one_shot_plan();
+    bool plan_trials();
 
-        std::vector<node*> plan; 
-        std::vector<node*> tree;
-        std::vector<results> data;
+    // ── Delegation helpers for planner.cpp render loop ───────────────────────
+    void   set_objects();
+    bool   ResetPos();
+    void   updte_pos_obj(const Xstate& x);
+    void   draw_obj();
+    int    sec2msec(double sec) const;
+    Xstate rk4step(const Xstate& x, const Ustate& u, double h) const;
+    Xstate propagate_one_step(const Xstate& x, const Ustate& u) const;
 
-        Ustate u_start;
-        Ustate u_k;
+private:
+    // ── Map ───────────────────────────────────────────────────────────────────
+    map map_1;
 
-        Xstate x_start; 
-        Xstate x_goal;
-        Xstate x_planned;
-        Xstate x_prop;
-        Xstate x_p;
+    // ── Planning configuration ────────────────────────────────────────────────
+    // PI is available as a macro from object.h via the include chain.
+    static constexpr double time2exit     = 20.0;
+    static constexpr double tether_length = 70.0;
+    static constexpr double tolerance     = 5.0;
+    static constexpr int    K             = 200000;
+    static constexpr int    n_scenarios   = 5;
+    static constexpr int    n_trials      = 10;
 
-        KDTree Ktree;
+    double weights[4]       = {1.0, 1.0, 1.0, 1.0};
+    int    coords_start[2]  = {40, 46};
+    int    coords_goal[2]   = {45, 10};
+    int    block_width[2]   = {15, 15};
 
-        object husky_robot;
-        object start_pos;
-        object goal_pos;
-        object path; 
-        tether t; 
+    int start_x_coord_array[5] = {30, 10,  5,  5, 40};
+    int start_y_coord_array[5] = {20, 20, 35, 35, 46};
+    int goal_x_coord_array[5]  = { 7, 30, 40, 48, 45};
+    int goal_y_coord_array[5]  = {46, 46, 15, 50, 10};
 
-        unsigned int seed;
-        std::default_random_engine gen;
-        
-        std::fstream myfile;
+    // ── Tree and plan state ───────────────────────────────────────────────────
+    KDTree              Ktree;
+    std::vector<node*>  tree;
+    std::vector<results> data;
 
-        inline int get_map_idx(double x,double y,int mode)
-        {
-            if(mode == 1)
-            {
-                return(map_1.height-y-1)*map_1.width + x;
-            }
-            if(mode == 2)
-            {
-                return  y*map_1.height + x;
-            }
+    Ustate u_start;
+    Xstate x_start;
+    Xstate x_goal;
 
-            return 0;
-        }
+    // ── Private methods ───────────────────────────────────────────────────────
+    void   Initialize();
+    bool   planner();
+    bool   plan_to_goal();
+    void   steer(const Xstate& x_near, const Xstate& x_rand,
+                 Xstate& x_best, Ustate& u_best, double prob, bool near_goal);
+    bool   ObstacleFree(const Xstate& x_near, const Xstate& x_rand,
+                        Xstate& x_best, Ustate& u_best, double prob, bool near_goal);
+    void   getPlan(node* q_last);
+    void   CleanUp();
 
-        double euclidean(Xstate& x_goal,const Xstate& x_near);
-        double euclidean(double xf,double yf,double xi,double yi);
-        double L2_norm(const Xstate& x_s);
-        double LQR_Cost(Xstate& x_k,Ustate& u_k);
-        double calc_radius(std::vector<node*>& tree);
-        double calc_angle(double xf,double yf,double xi,double yi);
-        double calc_angle(int xf[],int xi[]);
-
-        int getPlanSize();
-        int sec2msec(double sec);
-        
-        void CleanUp(std::vector<node*>& tree, KDTree& Ktree);
-        void getPlan(std::vector<node*>& plan,node* q_last);
-        void map2block(double *map_coords,map map_1);
-        void steer(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
-        void updte_pos_obj(const Xstate& inc_x);
-        void draw_obj();
-        void Initialize();
-        
-        bool planner();
-        bool ObstacleFree(Xstate& x_near,Xstate& x_rand,map map_1,Xstate& x_best,Ustate& u_best, double prob,bool near_goal);
-        bool plan_to_goal();
-
-        Xstate propagate(Xstate& i_x_k, Ustate& u_k,double *map, int x_size, int y_size);
-        Xstate propagate_one_step(Xstate& inc_x,Ustate& inc_u);
-
-        Xstate dynamics (const Xstate& x, const Ustate& u, double h);
-        Xstate rk4step(const Xstate& x, const Ustate& u, double h);
-
-        bool plan_trials();
-        bool one_shot_plan();
-
-        KRRT()
-        {
-            Initialize();
-            seed = std::chrono::system_clock::now().time_since_epoch().count();
-            std::cout << seed << std::endl;
-            gen.seed(seed);
-            // gen.seed(14968483);  
-        };
-        ~KRRT()
-        {
-            CleanUp(tree,Ktree);
-	        plan.clear();
-        }
-        void LoadMap(std::string filepath)
-        {
-            map_1.loadMap(filepath);
-            map_1.calc_collision_set();
-        }
-        inline void saveResults(char* file_path)
-        {
-            std::ofstream myFile(file_path);
-        };
-
-        bool def_start_pos(Xstate& inc_x);
-        bool def_goal_pos(Xstate& inc_x);
-        void set_objects();
-        bool ResetPos();
+    double euclidean(const Xstate& a, const Xstate& b) const;
+    double euclidean(double xf, double yf, double xi, double yi) const;
+    double L2_norm(const Xstate& x) const;
+    double calc_radius() const;
+    double calc_angle(double xf, double yf, double xi, double yi) const;
+    double calc_angle(int xf[], int xi[]) const;
+    int    getPlanSize() const;
 };
-
