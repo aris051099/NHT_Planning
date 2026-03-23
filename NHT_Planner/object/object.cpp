@@ -52,34 +52,6 @@
 
     }
 
-    // void object::Draw_object_Angle()
-    // {
-        
-    // 	// if(this->angle < 0)
-    // 	// {
-    // 	// 	this->angle = 2*PI-this->angle;
-    // 	// }
-    // 	this->angle = (this->angle/PI) * 180;
-
-    // 	// glLoadIdentity();
-    // 	glPushMatrix();
-
-    // 	glTranslatef(x_w,y_w, 0);      
-    // 	glRotatef(angle, 0.0f, 0.0f, -1.0f);
-    // 	glTranslatef(-x_w, -y_w, 0);
-
-    // 	Draw_in_center();
-
-    // 	glColor3ub(0,0,0);
-    // 	glLineWidth(1);
-    // 	glBegin(GL_LINES);
-    // 	glVertex2f(x_w,y_w);
-    // 	glVertex2f(x_w+20,y_w);
-    // 	glEnd();
-
-    // 	glPopMatrix();
-    // }
-
     void object::Draw_object_Angle()
     {
         

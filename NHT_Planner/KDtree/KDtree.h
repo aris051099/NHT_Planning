@@ -27,8 +27,8 @@ public:
     KDTree() : root(nullptr) {};
     ~KDTree()
     {
-        // cleanup(root);
-        // root = nullptr;
+        cleanup(root);
+        root = nullptr;
     }
 
     node* nearest_neighbor(const Xstate& target,double r) const;

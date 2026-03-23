@@ -57,7 +57,7 @@
         double dy = a[1] - b[1];
         double dz = a[2] - b[2];
         double dw = a[3] - b[3];
-        return sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
+        return dx * dx + dy * dy + dz * dz + dw * dw;
     }
 
     void KDTree::nearest_neighbor(node* Knode,const Xstate& target, double& min_distance, node*& nearest_Xstate,double r) const 
@@ -67,10 +67,7 @@
 
         double distance = squared_distance(Knode->getXstate(), target);
 
-        // if ( distance < min_distance && distance <= r)
-        // if(distance <= r)
-        // if (distance < min_distance)
-        if (distance <= r && distance < min_distance)
+        if (distance <= r * r && distance < min_distance)
         {
             min_distance = distance;
             nearest_Xstate = Knode;  
@@ -164,7 +161,6 @@
 
         int axis = depth % 4;
         Xstate point = inc_q->getconstXstate();
-        printf("%d",axis);
         bool goLeft = point[axis] < Knode->reached_state[axis];
         node* nextNode = goLeft ? Knode->left: Knode->right;
         node* foundNode = find_recursive(nextNode,inc_q,depth+1);

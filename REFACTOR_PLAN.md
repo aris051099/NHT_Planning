@@ -74,15 +74,15 @@ KRRT/
 
 | # | Issue | Location | Status |
 |---|-------|----------|--------|
-| 1 | Magic numbers scattered everywhere (`0.085`, `70.0`, `5.0`, `0.01`, `200000`, `20.0`, etc.) | `KRRT.h`, `KRRT.cpp` | ⬜ Pending |
-| 2 | Hardcoded file path `C:/Users/arisa/Desktop/...` | `planner.cpp:162`, `KRRT.cpp:513` | ⬜ Pending |
-| 3 | Debug `printf("%d", axis)` left in production code | `KDtree/KDtree.cpp:167` | ⬜ Pending |
-| 4 | `squared_distance()` in KDTree actually returns sqrt (misnamed) | `KDtree/KDtree.cpp` | ⬜ Pending |
-| 5 | `pos_idx` in `object` grows every frame and is never cleared (memory leak) | `object/object.cpp:20-30` | ⬜ Pending |
-| 6 | Raw `new`/`delete` throughout — replace with `std::unique_ptr` where ownership is clear | `KRRT.cpp`, `KDtree.cpp` | ⬜ Pending |
-| 7 | Inconsistent naming: `q_near` vs `x_near` vs `Knode` for the same concept | `KRRT.cpp` | ⬜ Pending |
-| 8 | Missing virtual destructor on `object` base class (`tether` inherits from it) | `object/object.h` | ⬜ Pending |
-| 9 | `KDTree` has no destructor — potential leak if `cleanUp()` not called | `KDtree/KDtree.h` | ⬜ Pending |
+| 1 | Magic numbers scattered everywhere | `KRRT.h`, `KRRT.cpp` | ✅ Already named constants (`time2exit`, `tether_length`, `tolerance`, `K`, `h`, `eps`) |
+| 2 | Hardcoded file path `C:/Users/arisa/Desktop/...` | `KRRT.cpp:plan_trials()` | ✅ Done — changed to `results.csv` |
+| 3 | Debug `printf("%d", axis)` left in production code | `KDtree/KDtree.cpp` | ✅ Done — removed |
+| 4 | `squared_distance()` actually called `sqrt()` (misnamed, wrong pruning) | `KDtree/KDtree.cpp` | ✅ Done — removed sqrt; updated caller to compare `distance <= r*r` |
+| 5 | `pos_idx` grows every frame | `object/object.cpp` | N/A — intentional trail buffer; cleared by `reset_trail()` |
+| 6 | Raw `new`/`delete` throughout | `KRRT.cpp`, `KDtree.cpp` | ⬜ Deferred — requires full ownership redesign |
+| 7 | Dead commented-out `Draw_object_Angle` in object.cpp | `object/object.cpp` | ✅ Done — removed |
+| 8 | Missing virtual destructor on `object` base class | `object/object.h` | ✅ Done — added `virtual ~object() = default;` |
+| 9 | `KDTree` destructor was empty — leak if `cleanUp()` not called | `KDtree/KDtree.h` | ✅ Done — destructor now calls `cleanup(root)` |
 
 ---
 
@@ -90,8 +90,8 @@ KRRT/
 
 | # | Task | Status |
 |---|------|--------|
-| 1 | Add compiler warning flags (`-Wall -Wextra`) to catch future issues | ⬜ Pending |
-| 2 | Restrict `fssimplewindow` linkage to only the libraries that render (currently leaks into `map` and `KRRT` unnecessarily) | ⬜ Pending |
+| 1 | Add compiler warning flags (`/W4` on MSVC, `-Wall -Wextra` on GCC/Clang) | ✅ Done — applied to all project targets via `foreach` in root CMakeLists.txt; third-party libs unaffected |
+| 2 | Restrict `fssimplewindow` linkage to only libraries that call OpenGL | ✅ Done — removed from `KRRT` (gets it transitively via `object`); `map` and `object` keep it (both call OpenGL directly) |
 
 ---
 

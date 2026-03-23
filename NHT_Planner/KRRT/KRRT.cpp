@@ -296,7 +296,7 @@ bool KRRT::one_shot_plan()
 
 bool KRRT::plan_trials()
 {
-    myfile.open("C:/Users/arisa/Desktop/Path_Planning/NHT_Planning/NHT_Planner/results.csv");
+    myfile.open("results.csv");
     for(int trial = 0; trial < n_scenarios; ++trial)
     {
         results res[n_trials];

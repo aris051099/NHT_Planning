@@ -16,12 +16,12 @@ add_subdirectory(../third_party/MMLPlayer/mmlplayer ${CMAKE_BINARY_DIR}/mmlplaye
 
 add_executable(planner planner.cpp)
 
+target_link_libraries(planner fssimplewindow map object Xstate KDtree node KRRT)
 
-target_link_libraries(planner fssimplewindow)
-target_link_libraries(planner map)
-target_link_libraries(planner ysbitmapfont)
-target_link_libraries(planner object)
-target_link_libraries(planner Xstate)
-target_link_libraries(planner KDtree)
-target_link_libraries(planner node)
-target_link_libraries(planner KRRT)
+# Warning flags for our own targets only (third-party subdirs are above this point)
+foreach(tgt Xstate node map object KDtree KRRT planner)
+    target_compile_options(${tgt} PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:/W4>
+        $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-Wall -Wextra>
+    )
+endforeach()

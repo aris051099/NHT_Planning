@@ -25,6 +25,7 @@ class object
 		std::vector<double> pos_idx; 
 		object(void);
 		object(GLfloat i_x, GLfloat i_y, GLfloat i_w, GLfloat i_h);
+		virtual ~object() = default;
 		void setColor(GLubyte i_r, GLubyte i_g, GLubyte i_b);
 		void setDim(GLfloat i_w, GLfloat i_h);
 		void Move(GLfloat i_x, GLfloat i_y, GLfloat i_angle, GLfloat i_beta);
