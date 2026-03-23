@@ -54,18 +54,12 @@
 
     void object::Draw_object_Angle()
     {
-        
-        // if(this->angle < 0)
-        // {
-        // 	this->angle = 2*PI-this->angle;
-        // }
-        this->angle = (this->angle/PI) * 180;
+        float angle_deg = (this->angle / PI) * 180.0f;
 
-        // glLoadIdentity();
         glPushMatrix();
 
-        glTranslatef(x_w+w/2,y_w+h/2, 0);      
-        glRotatef(angle, 0.0f, 0.0f, -1.0f);
+        glTranslatef(x_w+w/2,y_w+h/2, 0);
+        glRotatef(angle_deg, 0.0f, 0.0f, -1.0f);
         glTranslatef(-x_w-w/2, -y_w-h/2, 0);
 
         glColor3ub(this->r,this->g,this->b);

@@ -97,7 +97,15 @@ double KRRT::euclidean(const Xstate& a, const Xstate& b) const
 {
     double dist = 0;
     for(int i = 0; i < a.size(); ++i)
-        dist += weights[i] * (a[i] - b[i]) * (a[i] - b[i]);
+    {
+        double d = a[i] - b[i];
+        if(i >= 2) // wrap angular dimensions (theta, beta)
+        {
+            while(d >  PI) d -= 2.0 * PI;
+            while(d < -PI) d += 2.0 * PI;
+        }
+        dist += weights[i] * d * d;
+    }
     return std::sqrt(dist);
 }
 
@@ -125,16 +133,12 @@ double KRRT::calc_radius() const
 
 double KRRT::calc_angle(double xf, double yf, double xi, double yi) const
 {
-    double angle = std::atan2(yf - yi, xf - xi);
-    if(angle < 0) angle += 2.0 * PI;
-    return angle;
+    return std::atan2(yf - yi, xf - xi);  // returns [-π, π]
 }
 
 double KRRT::calc_angle(int xf[], int xi[]) const
 {
-    double angle = std::atan2(xf[1] - xi[1], xf[0] - xi[0]);
-    if(angle < 0) angle += 2.0 * PI;
-    return angle;
+    return std::atan2(xf[1] - xi[1], xf[0] - xi[0]);  // returns [-π, π]
 }
 
 // ── Steering ─────────────────────────────────────────────────────────────────

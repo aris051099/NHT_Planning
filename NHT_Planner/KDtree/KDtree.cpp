@@ -28,11 +28,11 @@ node* KDTree::nearest_neighbor(const Xstate& target, double r) const
 
 double KDTree::squared_distance(const Xstate& a, const Xstate& b) const
 {
-    double dx = a[0] - b[0];
-    double dy = a[1] - b[1];
-    double dz = a[2] - b[2];
-    double dw = a[3] - b[3];
-    return dx * dx + dy * dy + dz * dz + dw * dw;
+    double dx     = a[0] - b[0];
+    double dy     = a[1] - b[1];
+    double dtheta = wrap_angle(a[2] - b[2]);
+    double dbeta  = wrap_angle(a[3] - b[3]);
+    return dx * dx + dy * dy + dtheta * dtheta + dbeta * dbeta;
 }
 
 void KDTree::nearest_neighbor(node* Knode, const Xstate& target,
@@ -49,7 +49,7 @@ void KDTree::nearest_neighbor(node* Knode, const Xstate& target,
     }
 
     int    axis      = Knode->axis % N_DIM;
-    double axis_diff = target[axis] - Knode->reached_state[axis];
+    double axis_diff = axis_difference(axis, target[axis], Knode->reached_state[axis]);
 
     node* first_child  = axis_diff <= 0 ? Knode->left : Knode->right;
     node* second_child = axis_diff <= 0 ? Knode->right : Knode->left;
