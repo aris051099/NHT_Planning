@@ -2,10 +2,6 @@
     #define MAP
     #include "map.h"
     map::map(void) {};
-    map::map(double *map_i_ptr)
-    {
-        this->map_ptr = map_i_ptr;
-    }
 
     void map::loadMap(std::string filepath) {
         std::FILE *f = fopen(filepath.c_str(), "r");
@@ -19,7 +15,7 @@
             throw std::runtime_error("Invalid loadMap parsing map metadata");
         }
         ////// Go through file and add to m_occupancy
-        map_ptr = new double[height*width];
+        map_ptr = std::make_unique<double[]>(height*width);
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {

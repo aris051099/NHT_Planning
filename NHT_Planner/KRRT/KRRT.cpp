@@ -151,7 +151,7 @@ void KRRT::steer(const Xstate& x_near, const Xstate& x_rand,
             : sampler.sample_control();
 
         Xstate x_prop = dynamics.propagate(
-            x_near, u_k, map_1.map_ptr, map_1.width, map_1.height);
+            x_near, u_k, map_1.map_ptr.get(), map_1.width, map_1.height);
 
         double dist = euclidean(x_rand, x_prop);
         if(dist < min_dist)

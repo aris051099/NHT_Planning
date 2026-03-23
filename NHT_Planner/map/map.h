@@ -1,5 +1,6 @@
 #pragma once
 #include <stdlib.h>
+#include <memory>
 #include <vector>
 #include <tuple>
 #include <random>
@@ -19,14 +20,13 @@
 class map 
 {
     public: 
-        double *map_ptr = nullptr;
+        std::unique_ptr<double[]> map_ptr;
         int height = 0,width = 0; 
         int block_x = 15;
         int block_y = 15; 
         GLubyte r=0,g=0,b=0;
         std::unordered_map<int,std::tuple<double,double>> obstacle_set;
         map(void);
-        map(double *map_i_ptr);
         void loadMap(std::string filepath);
         void renderMap();
         void calc_collision_set();
