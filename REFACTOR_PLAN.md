@@ -83,6 +83,7 @@ KRRT/
 | 7 | Dead commented-out `Draw_object_Angle` in object.cpp | `object/object.cpp` | ✅ Done — removed |
 | 8 | Missing virtual destructor on `object` base class | `object/object.h` | ✅ Done — added `virtual ~object() = default;` |
 | 9 | `KDTree` destructor was empty — leak if `cleanUp()` not called | `KDtree/KDtree.h` | ✅ Done — destructor now calls `cleanup(root)` |
+| 10 | KDTree `axis = depth` instead of `depth % 4` — pruning broken past depth 4 | `KDtree/KDtree.cpp` | ✅ Done — see [KDTree Overhaul](#kdtree-overhaul-phase-4-item-10) below |
 
 ---
 
@@ -150,35 +151,178 @@ pointer to the physics engine (`Dynamics::propagate`) now calls `.get()` to obta
 
 ### What Remains — Tree Nodes (⬜ Deferred)
 
-Each `node` in the KD-tree has two child pointers (`left`, `right`) and a back-pointer to its
-`parent`. The KD-tree *owns* these nodes (it allocates and deletes them). The planner's `plan`
-vector holds pointers to some of these same nodes, but it does not own them — it just reads them.
+#### Background: How the KD-tree works in this planner
+
+A **KD-tree** is a data structure for organizing points in multi-dimensional space so you can
+quickly answer "which existing point is closest to this new point?" — a question the planner asks
+thousands of times per run.
+
+Every time the KRRT planner explores a new robot state, it:
+
+1. Creates a new `node` on the heap with `new node(...)`.
+2. Inserts that node into the KD-tree with `Ktree.Insert(q_new)`.
+3. The KD-tree places the node in the right position by comparing coordinates along alternating
+   axes (x, y, theta, beta), giving it O(log n) lookups instead of checking every node.
+
+The tree grows to **tens of thousands of nodes** during a single planning run. When planning is
+done, all those nodes must be freed.
+
+#### Current ownership model
+
+There are **two data structures** pointing at the same `node` objects, with different roles:
 
 ```
-KDTree (owner)
+KDTree (the OWNER — responsible for creating and destroying nodes)
   └── root
-       ├── left  ──▶ node ──▶ ...
-       └── right ──▶ node ──▶ ...
+       ├── left  ──▶ node
+       │               ├── left  ──▶ node ──▶ ...
+       │               └── right ──▶ node ──▶ ...
+       └── right ──▶ node
+                       ├── left  ──▶ ...
+                       └── right ──▶ ...
 
-plan[] (observer — points into the same nodes, does not own them)
-  [0] ──▶ node (in tree)
-  [1] ──▶ node (in tree)
+plan[] (an OBSERVER — borrows pointers to some of those same nodes)
+  [0] ──▶ node (lives inside the tree above)
+  [1] ──▶ node (lives inside the tree above)
+  [2] ──▶ node (lives inside the tree above)
   ...
 ```
 
-Converting this to `unique_ptr` would mean:
-- `node::left` and `node::right` become `std::unique_ptr<node>` (owning children).
-- `node::parent` stays as a raw `node*` (non-owning back-pointer — the parent does not belong to
-  the child).
-- `plan` stays as `std::vector<node*>` (non-owning observers).
-- The `KDTree::Insert()` method would need to accept `std::unique_ptr<node>` and *move* it into
-  the tree, rather than taking a raw pointer.
-- The recursive `cleanup()` function and destructor become trivial — destroying the root
-  automatically cascades to all children.
+- The **KD-tree** is the owner. It holds every node through `left`/`right` child pointers.
+  When the tree is destroyed, it recursively walks the tree and calls `delete` on each node.
+- The **plan** is an observer. After the planner finds a path, it walks from the goal node
+  back to the start (following `parent` pointers) and collects those nodes into a vector.
+  The plan never allocates or frees nodes — it just reads them.
 
-This is deferred because it touches **4–5 files** and changes the KDTree's public API. The current
-code is safe because the KDTree destructor (fixed in Phase 4 item 9) now properly frees all nodes
-on destruction.
+This "one owner, many observers" pattern is common. The danger is that if the owner frees the
+nodes while the observer still holds pointers to them, those pointers become **dangling** — they
+point to memory that no longer belongs to us. Accessing a dangling pointer is undefined behavior
+(crashes, corrupted data, or worse — it silently works until it doesn't).
+
+In our code this is safe today because `plan` is always used *before* the KDTree is destroyed, and
+both live inside the same `KRRT` object. But nothing in the code *enforces* that — a future change
+could accidentally break this ordering.
+
+#### What `unique_ptr` would give us
+
+With `unique_ptr`, the ownership is encoded in the type system — the compiler itself prevents you
+from accidentally creating two owners or forgetting to free memory:
+
+```cpp
+// Current (raw pointers — ownership is implicit, enforced by convention):
+struct node {
+    node* left   = nullptr;   // who frees this? you have to read the code to know
+    node* right  = nullptr;
+    node* parent = nullptr;   // is this an owner too? no, but nothing says so
+};
+
+// With unique_ptr (ownership is explicit in the types):
+struct node {
+    std::unique_ptr<node> left;    // "I own my left child"
+    std::unique_ptr<node> right;   // "I own my right child"
+    node* parent = nullptr;        // raw pointer = "I'm just borrowing this"
+};
+```
+
+With this change:
+- **Automatic cleanup**: Deleting the root cascades through `left` and `right` automatically.
+  No manual `cleanup()` function needed. No chance of forgetting to call it.
+- **No double-free**: `unique_ptr` cannot be copied. If you try to have two owners, the compiler
+  gives you an error *before the program runs*. With raw pointers, double-free is a silent bug
+  that may crash unpredictably.
+- **Self-documenting**: Anyone reading `node* parent` immediately knows "this is borrowed, not
+  owned", because owned pointers use `unique_ptr`.
+
+#### Why it is deferred
+
+The change is conceptually clean but mechanically invasive:
+
+| What changes | Why |
+|-------------|-----|
+| `node.h` | `left`/`right` become `unique_ptr<node>` |
+| `KDtree.h` | `root` becomes `unique_ptr<node>` |
+| `KDtree.cpp` | `Insert()` must accept `unique_ptr<node>` and `std::move` it into position; `cleanup()` can be removed entirely |
+| `KRRT.cpp` | `new node(...)` becomes `std::make_unique<node>(...)`, then moved into the tree |
+| `KRRT.h` | `plan` stays as `vector<node*>` (observer), but `getPlan()` must be careful not to take ownership |
+
+The KDTree's recursive `insert()` function passes ownership down the tree as it descends. With
+raw pointers this is just `Knode->left = q_new`. With `unique_ptr` it becomes
+`Knode->left = std::move(q_new)` — the same idea, but every intermediate step must explicitly
+*move* rather than copy. Missing a single `std::move` is a compile error (safe, but tedious to
+get right across all code paths).
+
+The current code is **safe without this change** because:
+- The KDTree destructor (fixed in Phase 4 item 9) properly frees all nodes.
+- `plan` is always consumed before the tree is destroyed.
+- The `KRRT` destructor calls `CleanUp()` then clears `plan`, in that order.
+
+---
+
+## KDTree Overhaul (Phase 4, Item 10)
+
+### The Bug — Pruning Stopped Working After Depth 4
+
+A KD-tree speeds up "find the nearest point" queries by **pruning** — skipping entire branches of
+the tree that provably cannot contain a closer point. In a 4D state space (x, y, theta, beta),
+the tree cycles through the 4 axes at each level: level 0 splits on x, level 1 on y, level 2 on
+theta, level 3 on beta, level 4 on x again, and so on.
+
+Each node must remember which axis it splits on so the search knows how to prune. The bug was in
+how the axis was stored:
+
+```cpp
+// In insert():
+int axis = depth % 4;   // ✓ CORRECT — used to decide left/right placement
+// ...
+Knode->axis = depth;     // ✗ BUG — stored raw depth (0, 1, 2, ... 17+)
+```
+
+When the nearest-neighbor search later read `Knode->axis`, it expected a value 0–3:
+
+```cpp
+switch (Knode->axis) {
+    case 0: axis_diff = target[0] - node[0]; break;  // x
+    case 1: axis_diff = target[1] - node[1]; break;  // y
+    case 2: axis_diff = target[2] - node[2]; break;  // theta
+    case 3: axis_diff = target[3] - node[3]; break;  // beta
+    // axis >= 4 ? nothing matches → axis_diff stays 0
+}
+```
+
+For any node deeper than 4 levels, `axis_diff` was always 0, which meant:
+- The pruning check `axis_diff² < min_distance` became `0 < min_distance` → **always true**
+- Both subtrees were always searched — the tree lost its O(log n) advantage
+
+With 200,000 nodes and a tree depth of ~17, only the top 4 levels pruned correctly. Everything
+below was a brute-force scan. The tree was doing the work of a linked list.
+
+**Fix:** `Knode->axis = depth % N_DIM` — now every node stores 0, 1, 2, or 3. The search also
+uses `Knode->axis % N_DIM` as a direct array index instead of a switch statement.
+
+### Dead Code Removed
+
+Only 3 methods were ever called by the planner: `Insert()`, `nearest_neighbor()`, and `cleanUp()`.
+Everything else was removed:
+
+| Removed | Why |
+|---------|-----|
+| `AxisComparator` struct | Never used |
+| `XstateIter` typedef | Never used |
+| `find()` / `find_recursive()` | Never called |
+| `getRoot()` | Never called |
+| `setNull()` | Never called — also dangerous: leaks entire tree without freeing |
+| `removeRoot()` | Never called — also dangerous: deletes root but orphans all children |
+| `is_empty()` | Never called |
+| `parent` param in `insert()` | Passed recursively but never used |
+
+### Other Improvements
+
+- **`N_DIM` constant** replaces hardcoded `4` throughout
+- **`r²` squaring** moved inside the public `nearest_neighbor()` — callers pass a plain Euclidean
+  radius, the method squares it once before the recursive search
+- **`insert()` simplified** — the 4-way `if/else` chain replaced with direct array indexing:
+  `q_new->getXstate()[axis] < Knode->reached_state[axis]`
+- **File reduced** from ~170 lines to ~90 lines
 
 ---
 
